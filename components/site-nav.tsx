@@ -1,11 +1,19 @@
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 
-const links: Array<{ href: string; label: string }> = [
+interface NavLink {
+  href: string;
+  label: string;
+  /** Si true, mostramos un dot rojo discreto a la derecha del label. */
+  dot?: boolean;
+}
+
+const links: NavLink[] = [
   { href: "/", label: "Inicio" },
   { href: "/lore", label: "Lore" },
   { href: "/personajes", label: "Personajes" },
   { href: "/episodio-1", label: "Episodio 1" },
+  { href: "/cambios", label: "Cambios", dot: true },
 ];
 
 interface SiteNavProps {
@@ -36,9 +44,15 @@ export function SiteNav({ className }: SiteNavProps) {
             <Link
               key={link.href}
               href={link.href}
-              className="rounded-md px-2 py-1 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+              className="relative inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
             >
               {link.label}
+              {link.dot && (
+                <span
+                  aria-label="hay novedades"
+                  className="size-1.5 rounded-full bg-red-500"
+                />
+              )}
             </Link>
           ))}
         </nav>

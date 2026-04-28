@@ -1,21 +1,41 @@
+import Link from "next/link";
 import { readMarkdown, extractToc } from "@/lib/markdown";
 import { getLastUpdated } from "@/lib/git";
 import { MarkdownRenderer } from "@/components/markdown-renderer";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 
 export const metadata = {
   title: "Lore — Pax",
   description:
-    "Lore canónico del universo Pax: cíclopes, chispas, ushnus y la regla de la resonancia.",
+    "Lore del universo Pax. Versión amigable por default, versión técnica completa disponible.",
 };
 
-// Server component — todo se lee y renderiza en build/SSR.
-export default async function LorePage() {
-  const doc = await readMarkdown("lore.md");
+type LoreVariant = "amigable" | "tecnica";
+
+interface PageProps {
+  searchParams: Promise<{ v?: string }>;
+}
+
+const SOURCES: Record<LoreVariant, { file: string; relPath: string }> = {
+  amigable: { file: "lore-amigable.md", relPath: "content/lore-amigable.md" },
+  tecnica: { file: "lore.md", relPath: "content/lore.md" },
+};
+
+export default async function LorePage({ searchParams }: PageProps) {
+  const sp = await searchParams;
+  const variant: LoreVariant = sp?.v === "tecnica" ? "tecnica" : "amigable";
+  const source = SOURCES[variant];
+
+  const doc = await readMarkdown(source.file);
   const toc = extractToc(doc.content, 3);
-  const updated = await getLastUpdated("content/lore.md");
+  const updated = await getLastUpdated(source.relPath);
+
+  const otherVariant: LoreVariant =
+    variant === "amigable" ? "tecnica" : "amigable";
+  const toggleHref = otherVariant === "tecnica" ? "/lore?v=tecnica" : "/lore";
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-8 sm:py-12">
@@ -26,6 +46,29 @@ export default async function LorePage() {
             Última actualización: {updated}
           </Badge>
         )}
+      </div>
+
+      {/* Toggle amigable / técnico */}
+      <div className="mb-6 flex flex-col gap-3 rounded-lg border border-border bg-card p-3 sm:flex-row sm:items-center sm:justify-between">
+        <div className="text-sm">
+          <span className="font-medium">
+            {variant === "amigable"
+              ? "Lore amigable (recomendado)"
+              : "Lore técnico (canon completo)"}
+          </span>
+          <span className="ml-2 text-muted-foreground">
+            {variant === "amigable"
+              ? "Versión corta para colaboradores."
+              : "Versión exhaustiva con todas las reglas internas."}
+          </span>
+        </div>
+        <Button asChild variant="outline" size="sm">
+          <Link href={toggleHref}>
+            {otherVariant === "tecnica"
+              ? "Ver versión técnica completa"
+              : "Volver a la versión amigable"}
+          </Link>
+        </Button>
       </div>
 
       {/* Mobile: TOC colapsable arriba */}

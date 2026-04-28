@@ -8,6 +8,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { getChangelogEntries } from "@/lib/changelog";
 
 interface SectionCard {
   href: string;
@@ -29,18 +30,21 @@ const sections: SectionCard[] = [
     title: "Personajes",
     description:
       "Jiggy, Wiz, Byte, Luxa, Zek y Mariela. Galería con descripción, prompt visual y ficha.",
-    status: "proximamente",
+    status: "disponible",
   },
   {
     href: "/episodio-1",
     title: "Episodio 1",
     description:
       "Script, beat sheet, storyboard y guion técnico del piloto.",
-    status: "proximamente",
+    status: "disponible",
   },
 ];
 
-export default function Home() {
+export default async function Home() {
+  const entries = await getChangelogEntries();
+  const recent = entries.slice(0, 3);
+
   return (
     <div className="flex flex-col">
       <section className="relative isolate overflow-hidden">
@@ -110,6 +114,57 @@ export default function Home() {
           })}
         </div>
       </section>
+
+      {recent.length > 0 && (
+        <section className="mx-auto w-full max-w-5xl px-4 pb-16">
+          <div className="mb-6 flex items-baseline justify-between gap-3">
+            <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl">
+              Últimos cambios
+            </h2>
+            <Link
+              href="/cambios"
+              className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+            >
+              Ver todos los cambios →
+            </Link>
+          </div>
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {recent.map((entry) => (
+              <Card key={entry.heading} className="h-full">
+                <CardHeader>
+                  {entry.date && (
+                    <Badge
+                      variant="outline"
+                      className="mb-1 w-fit text-xs font-normal"
+                    >
+                      {entry.date}
+                    </Badge>
+                  )}
+                  <CardTitle className="text-base leading-snug">
+                    {entry.title}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="pt-0">
+                  {entry.bullets.length > 0 ? (
+                    <ul className="space-y-1.5 text-sm text-muted-foreground">
+                      {entry.bullets.slice(0, 3).map((b, i) => (
+                        <li
+                          key={i}
+                          className="relative pl-3 before:absolute before:left-0 before:top-2 before:size-1 before:rounded-full before:bg-muted-foreground/60"
+                        >
+                          {b}
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p className="text-sm text-muted-foreground">Sin detalles.</p>
+                  )}
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </section>
+      )}
     </div>
   );
 }
