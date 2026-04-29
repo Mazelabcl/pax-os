@@ -13,6 +13,7 @@ const links: NavLink[] = [
   { href: "/lore", label: "Lore" },
   { href: "/personajes", label: "Personajes" },
   { href: "/episodio-1", label: "Episodio 1" },
+  { href: "/estilo", label: "Estilo" },
   { href: "/cambios", label: "Cambios", dot: true },
 ];
 

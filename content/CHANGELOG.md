@@ -4,6 +4,14 @@ title: Cambios recientes
 
 # Qué cambió
 
+## 2026-04-28 — Episodio 1 completo: pitch + escenas + prompts Nano Banana + Seedance
+- Pitch reescrito en 1 párrafo vendedor + TLDR claro
+- 14 escenas canónicas con IDs estables
+- 15 prompts Nano Banana para storyboard con references de personajes
+- 16 prompts Seedance optimizados con best practices 2026
+- Página nueva /estilo con DNA visual y paleta canónica
+- Cada prompt copiable de un click (style-lock + prompt + negative juntos)
+
 ## 2026-04-28 — Sesión 2: web app v1
 - Scaffold inicial (landing + lore + páginas base)
 - Galería de personajes con foto + prompt copiable

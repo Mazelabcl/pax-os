@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { getChangelogEntries } from "@/lib/changelog";
+import { getEpisodio1Tldr } from "@/lib/episodio";
 
 interface SectionCard {
   href: string;
@@ -17,33 +18,44 @@ interface SectionCard {
   status?: "disponible" | "proximamente";
 }
 
-const sections: SectionCard[] = [
-  {
-    href: "/lore",
-    title: "Lore",
-    description:
-      "El universo Pax: cíclopes subterráneos, chispas, ushnus y la regla de la pregunta sincera.",
-    status: "disponible",
-  },
-  {
-    href: "/personajes",
-    title: "Personajes",
-    description:
-      "Jiggy, Wiz, Byte, Luxa, Zek y Mariela. Galería con descripción, prompt visual y ficha.",
-    status: "disponible",
-  },
-  {
-    href: "/episodio-1",
-    title: "Episodio 1",
-    description:
-      "Script, beat sheet, storyboard y guion técnico del piloto.",
-    status: "disponible",
-  },
-];
-
 export default async function Home() {
-  const entries = await getChangelogEntries();
+  const [entries, episodioTldr] = await Promise.all([
+    getChangelogEntries(),
+    getEpisodio1Tldr(),
+  ]);
   const recent = entries.slice(0, 3);
+
+  const sections: SectionCard[] = [
+    {
+      href: "/lore",
+      title: "Lore",
+      description:
+        "El universo Pax: cíclopes subterráneos, chispas, ushnus y la regla de la pregunta sincera.",
+      status: "disponible",
+    },
+    {
+      href: "/personajes",
+      title: "Personajes",
+      description:
+        "Jiggy, Wiz, Byte, Luxa, Zek y Mariela. Galería con descripción, prompt visual y ficha.",
+      status: "disponible",
+    },
+    {
+      href: "/episodio-1",
+      title: "Episodio 1",
+      description:
+        episodioTldr ??
+        "Script, beat sheet, storyboard y guion técnico del piloto.",
+      status: "disponible",
+    },
+    {
+      href: "/estilo",
+      title: "Estilo",
+      description:
+        "DNA visual canónico: paleta, lighting, references y el style-lock copiable para todos los prompts.",
+      status: "disponible",
+    },
+  ];
 
   return (
     <div className="flex flex-col">
