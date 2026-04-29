@@ -1,4 +1,20 @@
+import { existsSync } from "node:fs";
+import path from "node:path";
 import { readMarkdown } from "./markdown";
+
+/**
+ * Resolvé un concept-id (ej. `concept-cave-wide-dark`) al PNG físico si existe
+ * en `public/images/concepts/`. Devuelve el path relativo a `public/` listo para
+ * `<img src="/...">` o null si todavía no está generado.
+ *
+ * Se usa en `parseImageSlotsTable` para upgrade-ar slots TBD a `available` sin
+ * tener que tocar los .md cada vez que se genera un concept art.
+ */
+function resolveConceptPng(conceptId: string): string | null {
+  const rel = `images/concepts/${conceptId}.png`;
+  const abs = path.join(process.cwd(), "public", rel);
+  return existsSync(abs) ? rel : null;
+}
 
 // =============================================================================
 // Tipos públicos
@@ -341,6 +357,16 @@ function parseImageSlotsTable(body: string): ImageSlot[] {
       } else if (pngMatch) {
         // PNG sin checkmark (raro, pero lo tratamos como disponible).
         refPath = pngMatch[1].replace(/^public\//, "");
+        estado = "available";
+      }
+    }
+
+    // Upgrade: si el slot apunta a un concept ID y el PNG ya existe físicamente
+    // en `public/images/concepts/`, lo marcamos como available sin tocar el .md.
+    if (estado === "tbd" && conceptId && !refPath) {
+      const resolved = resolveConceptPng(conceptId);
+      if (resolved) {
+        refPath = resolved;
         estado = "available";
       }
     }
