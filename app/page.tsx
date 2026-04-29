@@ -41,11 +41,12 @@ export default async function Home() {
       status: "disponible",
     },
     {
-      href: "/episodio-1",
+      href: "/episodio-1?tab=concept-arts",
       title: "Episodio 1",
       description:
-        episodioTldr ??
-        "Script, beat sheet, storyboard y guion técnico del piloto.",
+        (episodioTldr ??
+          "Script, beat sheet, storyboard y guion técnico del piloto.") +
+        " Antes de generar imágenes, revisá la tab Concept arts para el orden de generación.",
       status: "disponible",
     },
     {

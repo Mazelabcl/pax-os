@@ -13,6 +13,8 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
+import { ImageSlotsTable } from "@/components/image-slots-table";
+import type { ImageSlot } from "@/lib/episodio";
 
 interface PromptCardProps {
   numero: string;
@@ -20,6 +22,8 @@ interface PromptCardProps {
   beat: string | null;
   /** Paths relativos a `public/`. */
   refs: string[];
+  /** Slots `@imageN` parseados de la tabla del prompt. Si no se pasa o queda vacío, el card cae al render legacy de refs. */
+  slots?: ImageSlot[];
   prompt: string;
   negative: string | null;
   /** Texto completo (style-lock + refs + prompt + negative) ya armado server-side. */
@@ -35,6 +39,7 @@ export function PromptCard({
   titulo,
   beat,
   refs,
+  slots,
   prompt,
   negative,
   fullCopy,
@@ -74,7 +79,9 @@ export function PromptCard({
         )}
       </CardHeader>
       <CardContent className="flex flex-col gap-3">
-        {refs.length > 0 && (
+        {slots && slots.length > 0 ? (
+          <ImageSlotsTable slots={slots} />
+        ) : refs.length > 0 ? (
           <div className="flex flex-col gap-2">
             <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
               Reference images ({refs.length})
@@ -104,7 +111,7 @@ export function PromptCard({
               ))}
             </div>
           </div>
-        )}
+        ) : null}
 
         <div className="flex flex-wrap items-center gap-2">
           <Button

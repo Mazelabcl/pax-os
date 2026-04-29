@@ -4,6 +4,13 @@ title: Cambios recientes
 
 # Qué cambió
 
+## 2026-04-29 — Prompts en inglés puro + concept arts pipeline
+- Storyboard y Seedance reescritos en inglés 100%, sin jerga del lore (Uray Pacha, qhocha, wayra, etc. → descripción visual literal)
+- Nuevo formato @imageN con tabla explícita: cada prompt arranca con qué imagen subir en cada slot
+- Tab nueva "Concept arts" con 30 prompts Nano Banana para generar locations, props y first-frames
+- Orden de generación con dependencias: HEROs → derivados → first-frames Seedance
+- Cada slot @imageN ahora muestra ✓ disponible o ⚠ generar primero (con link al concept art)
+
 ## 2026-04-28 — Episodio 1 completo: pitch + escenas + prompts Nano Banana + Seedance
 - Pitch reescrito en 1 párrafo vendedor + TLDR claro
 - 14 escenas canónicas con IDs estables
