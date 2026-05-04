@@ -8,6 +8,18 @@ status: borrador para lore-critic R2
 
 # Lore Pax v4 — R2
 
+## 0. ¿Qué es Pax?
+
+Bajo la corteza del planeta vive una civilización que pocos humanos arriba conocen: los Pax. Llevan generaciones cuidando una red de cristales subterráneos que mantienen al mundo en equilibrio. Están distribuidos en seis naciones repartidas por todo el planeta, cada una arraigada a la cultura ancestral del territorio que tiene encima — maya bajo Yucatán, andina bajo los Andes, ainu-tibetana bajo Hokkaido, megalítica bajo las islas británicas, y así.
+
+Estos cristales se cargan con la solidaridad de los humanos arriba — cada gesto de gentileza, grande o pequeño, los enciende un poco más. Los Pax son runners-alquimistas: corren circuitos cargados de cristales y, en trance ritual, destilan su luz para devolverla a la superficie como pulsos invisibles de empatía. Cada pulso induce, en algún humano que esté abierto, un calorcito en el pecho que lo empuja a hacer él mismo algo amable. Círculo virtuoso.
+
+Pero hace generaciones que la solidaridad arriba viene cayendo. Los pulsos cada vez son más débiles. Los cristales se apagan. Y un cristal forzado en la destilación puede romperse — y un cristal roto libera lo opuesto: apatía, indiferencia, ausencia interior. El antagonista de esta historia no es un villano. Es un drift gradual, una decadencia silenciosa que nadie nombra arriba pero los Pax registran abajo en sus tablas de carga.
+
+Lo que sigue es el lore técnico de cómo funciona todo esto, nación por nación, regla por regla. Si querés primero la versión accesible en 2 minutos antes de meterte acá, andá a [/v2/pitch](/v2/pitch).
+
+---
+
 ## 1. Imagen de apertura
 
 > *Esta luna, por primera vez en una generación, un cristal Apu se quebró en mitad de un ritual. No hubo culpable. No hubo prisa. Solo un chasqui que respiró fuera de tiempo. Lo que salió no fue luz: fue silencio.*
