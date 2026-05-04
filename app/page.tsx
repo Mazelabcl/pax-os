@@ -85,6 +85,22 @@ export default async function Home() {
             sincera arriba enciende un cristal abajo. Acá vas a encontrar el
             lore, los personajes y el material del episodio 1.
           </p>
+
+          <Link
+            href="/v2"
+            className="group inline-flex items-center gap-3 rounded-lg border border-fuchsia-500/50 bg-fuchsia-500/10 px-4 py-2.5 text-sm font-medium text-fuchsia-100 transition-colors hover:bg-fuchsia-500/20 sm:text-base"
+          >
+            <Badge
+              variant="outline"
+              className="border-fuchsia-400/50 bg-fuchsia-500/20 text-[10px] font-semibold uppercase tracking-widest text-fuchsia-100"
+            >
+              Nuevo
+            </Badge>
+            <span>Ver V2 — post-feedback de Pipez</span>
+            <span className="text-fuchsia-300 transition-transform group-hover:translate-x-0.5">
+              →
+            </span>
+          </Link>
         </div>
       </section>
 

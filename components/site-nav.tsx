@@ -6,6 +6,8 @@ interface NavLink {
   label: string;
   /** Si true, mostramos un dot rojo discreto a la derecha del label. */
   dot?: boolean;
+  /** Si true, resaltamos el link con color V2 (acento fuchsia). */
+  v2?: boolean;
 }
 
 const links: NavLink[] = [
@@ -14,6 +16,7 @@ const links: NavLink[] = [
   { href: "/personajes", label: "Personajes" },
   { href: "/episodio-1", label: "Episodio 1" },
   { href: "/estilo", label: "Estilo" },
+  { href: "/v2", label: "V2", v2: true },
   { href: "/cambios", label: "Cambios", dot: true },
 ];
 
@@ -45,7 +48,12 @@ export function SiteNav({ className }: SiteNavProps) {
             <Link
               key={link.href}
               href={link.href}
-              className="relative inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+              className={cn(
+                "relative inline-flex items-center gap-1.5 rounded-md px-2 py-1 transition-colors",
+                link.v2
+                  ? "border border-fuchsia-500/40 bg-fuchsia-500/10 text-fuchsia-200 hover:bg-fuchsia-500/20"
+                  : "text-muted-foreground hover:bg-accent hover:text-foreground",
+              )}
             >
               {link.label}
               {link.dot && (
