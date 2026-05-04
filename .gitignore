@@ -41,3 +41,7 @@ yarn-error.log*
 next-env.d.ts
 
 .vercel
+
+# trabajo interno (voice notes + debates entre agentes)
+feedback-pipez.txt
+process-log/
