@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import {
   Card,
@@ -96,6 +97,21 @@ export default function V2Home() {
           </Badge>
         </div>
       </header>
+
+      {/* Hero — la piedra apagándose: firma visual del IP, cold open del piloto */}
+      <figure className="mb-10 overflow-hidden rounded-xl border border-fuchsia-500/30 shadow-2xl">
+        <Image
+          src="/images/anchors/img-01-piedra-apagandose.png"
+          alt="La kuya cediendo bajo los Andes — cold open del piloto"
+          width={1536}
+          height={1024}
+          priority
+          className="h-auto w-full"
+        />
+        <figcaption className="bg-fuchsia-500/5 px-4 py-2 text-xs italic text-muted-foreground sm:text-sm">
+          La kuya cediendo bajo los Andes — primera imagen del IP.
+        </figcaption>
+      </figure>
 
       {/* Onboarding: resumen del pitch — actualizar si pitch.md cambia */}
       <section className="mb-12 rounded-xl border border-fuchsia-500/40 bg-fuchsia-500/5 p-5 sm:p-7">

@@ -8,6 +8,8 @@ date: 2026-05-04
 
 Si llegaste a este sitio sin saber qué es Pax, esto es para vos. Antes de meterte en el lore técnico, en los personajes y en el guion del piloto, acá tenés el universo completo en sus partes esenciales: la premisa, el mundo, la regla central, el riesgo, la protagonista y la tesis del show. Cuando termines de leer esta página, las cards del final te llevan a cada pieza con todo el detalle.
 
+![La kuya cediendo bajo los Andes.](/images/anchors/img-01-piedra-apagandose.png)
+
 ## Pax en 30 segundos
 
 Qué pasaría si bajo la corteza del planeta viviera una civilización antigua que lleva siglos cuidando un sistema invisible que sostiene el equilibrio del mundo, y que ese sistema solo se enciende cuando los humanos arriba son solidarios entre sí. Hace generaciones que la solidaridad cae. El sistema se está apagando. Y hay una adolescente maya, en un cenote olvidado de Yucatán, que sin saberlo acaba de hacer el primer gesto en una generación que reactiva el ciclo.
@@ -17,6 +19,8 @@ Qué pasaría si bajo la corteza del planeta viviera una civilización antigua q
 Bajo la superficie del planeta hay una civilización antigua: los Pax. No son una tribu chica — están repartidos por todo el mundo, en una red de túneles que recorre el planeta entero. Cada nación Pax hereda la estética y los rituales de la cultura ancestral más cercana al territorio que tiene encima.
 
 Los Pax bajo Yucatán visten y rezan como mayas. Los que viven bajo los Andes son herederos de los rituales andinos. Los de Rapa Nui se mueven entre tubos de lava y resuenan con los moai. Y así, nación por nación, cada Pax habita el subsuelo de una civilización ancestral distinta. Son seis en total. El piloto se enfoca en dos.
+
+![La red latente bajo las seis naciones.](/images/anchors/img-02-red-gemas.png)
 
 ## Quiénes son los Pax
 
@@ -38,6 +42,8 @@ Si un runner pierde el trance o fuerza el ritual, el cristal se quiebra. Un cris
 
 El anti-pulso no genera odio ni violencia (eso sería un villano clásico, y Pax no es eso). Genera ausencia interior. La persona alcanzada siente que las cosas le importan un poco menos. La empatía se le retira sin que lo note. La gentileza le parece, por un rato, innecesaria.
 
+![El anti-pulso atravesando una calle cualquiera.](/images/anchors/img-03-ola-muda.png)
+
 Por eso la decadencia de las últimas generaciones: los runners se fueron quedando sin pulso humano que destilar, y los pocos cristales que cargan a veces se rompen en el intento. La indiferencia arriba se acumula. El sistema se apaga.
 
 ## La protagonista
@@ -48,9 +54,13 @@ No es heroína, no es especial en ningún sentido visible. Hace seis meses que d
 
 Lo único que hace, en el piloto, es volver sola a un cenote olvidado después de una tormenta — contra la decisión de su propia cooperativa familiar, sin testigos — y limpiarlo. Y eso, sin que ella se entere, basta.
 
+![Itzel sale del cenote, sin saber que algo cambió abajo.](/images/anchors/img-05-itzel-cenote.png)
+
 ## El piloto en 3 frases
 
 Una madrugada distinta, un cristal sagrado se quiebra bajo los Andes en mitad de un ritual antiguo. Lejos, en Yucatán, una adolescente decide volver sola a un cenote que su familia abandonó y limpiarlo vestida, sin que nadie la vea. Por primera vez en una generación, hay pulso.
+
+![Lo roto al amanecer — cierre del piloto.](/images/anchors/img-04-objeto-roto.png)
 
 ## Por qué importa
 
