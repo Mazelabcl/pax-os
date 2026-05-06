@@ -6,19 +6,24 @@ image: /images/personajes/luxa.png
 
 # Luxa
 
-> Redefinición Quest 2: Luxa pasa a ser **comic relief con corazón** — chistosa, cómica, contagia humor. Diferenciada explícitamente de Agatha.
+> Redefinición Quest 2: Luxa es **exploradora cómica** — sigue siendo la exploradora luminosa empática del clan, pero ahora con vena humorística declarada. Su comic relief NO reemplaza a su rol de exploradora; lo complementa.
 
 ## Descripción
 
-Cíclope verde turquesa, la alegría del equipo. Chistosa, cómica, contagia humor. Hace que el clan se ría incluso cuando la cosa está fea. Comic relief con corazón — su humor no es escape, es **regulación**: cuando la urgencia se pone solemne, Luxa la corta con una broma y el grupo recupera oxígeno.
+Cíclope verde turquesa. **Es la exploradora del clan** — la que se va primero a investigar lo desconocido, la que vuelve con datos del terreno, la que se atreve a entrar en cuevas que nadie quiso. Y al mismo tiempo es **la alegría del equipo** — chistosa, cómica, contagia humor. Hace que el clan se ría incluso cuando la cosa está fea. Comic relief con corazón — su humor no es escape, es **regulación**: cuando la urgencia se pone solemne, Luxa la corta con una broma y el grupo recupera oxígeno.
+
+Su exploración tiene timing cómico. Encuentra cosas raras y las narra como standup: *"Acabo de descubrir un templo de hace 10.000 años. Y dejaron galletas. Sí, galletas. Las probé. No estaban ricas."*
 
 Timing impecable. Sabe cuándo soltar la frase y cuándo callarse. Su ternura está escondida en la broma — cuando la cosa está MUY fea, suelta una frase tierna sin chiste y descoloca a todo el mundo.
 
 ## Rol en el clan
 
-Termorregulador. Si el ánimo baja, lo levanta. Si la urgencia sobrepasa, la diluye con humor sin restarle peso.
+**Doble rol:** exploradora avanzada + termorregulador emocional.
 
-**Diferencia clave con Agatha:** Agatha es maternal-espiritual, sostiene desde abajo. Luxa es comic relief con corazón, levanta desde arriba. Agatha pausa, Luxa suelta. Indispensables ambas. Ninguna reemplaza a la otra.
+- **Exploradora:** se adelanta. Trae info del terreno desconocido. Es la que pisa primero las rucas nuevas y reporta qué se siente.
+- **Termorregulador:** si el ánimo baja, lo levanta. Si la urgencia sobrepasa, la diluye con humor sin restarle peso.
+
+**Diferencia clave con Agatha:** Agatha es maternal-espiritual, sostiene desde abajo. Luxa es comic relief con corazón, levanta desde arriba — y además explora. Agatha pausa, Luxa suelta. Indispensables ambas. Ninguna reemplaza a la otra.
 
 Su cristal dorado-cálido contrasta con el magenta frío de Jiggy y el púrpura de Wiz — calidez visual del clan, calidez emocional del clan, la misma cosa.
 
@@ -38,4 +43,4 @@ Cristal luminoso amarillo cálido (#FFE34D) en la mano + pañuelo púrpura en la
 
 ## Notas
 
-Cambio Quest 2 vs Quest 1: rol pasa de "exploradora luminosa empática" (que pisaba a Agatha) a "comic relief con timing". Visual no cambia — sigue con cristal dorado y pañuelo. Cambia la **vibra**: pose más juguetona, sonrisa más traviesa, energía más rápida. Si el char sheet existente está cargado de serenidad, regenerar vía `pax-image-gen` para inyectar pulso comic.
+Cambio Quest 2 vs Quest 1: rol amplía de "exploradora luminosa empática" a **"exploradora luminosa empática + comic relief con timing"**. NO se reemplaza — se suma. Visual no cambia — sigue con cristal dorado y pañuelo. Vibra es exploradora con humor, no payasa. **NO regenerar visual** (decisión aldot 2026-05-05).

@@ -31,10 +31,10 @@
             "id": "3ed67a5e8e0e67b9",
             "type": "leaf",
             "state": {
-              "type": "graph",
+              "type": "empty",
               "state": {},
-              "icon": "lucide-git-fork",
-              "title": "Vista gráfica"
+              "icon": "lucide-file",
+              "title": "Nueva pestaña"
             }
           }
         ]
@@ -187,6 +187,7 @@
   },
   "left-ribbon": {
     "hiddenItems": {
+      "publish:Publicar cambios...": false,
       "switcher:Abrir selector rápido": false,
       "graph:Abrir vista gráfica": false,
       "canvas:Crear nuevo lienzo": false,
@@ -196,8 +197,14 @@
       "bases:Crear nueva base": false
     }
   },
-  "active": "3ed67a5e8e0e67b9",
+  "active": "cdb820a2645797e9",
   "lastOpenFiles": [
+    "Sin título 3.base",
+    "Sin título 4.base",
+    "Sin título 5.base",
+    "Sin título 2.base",
+    "Sin título 1.base",
+    "Sin título.base",
     "Bienvenido.md",
     "cree un enlace.md"
   ]

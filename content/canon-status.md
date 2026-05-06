@@ -57,6 +57,23 @@ Este archivo es la fuente de verdad sobre qué pertenece al universo Pax oficial
 - `content/principles.md` (Quest 2 first principles)
 - `content/personajes/_canon.md`
 
+### v1 — 2026-05-05 (sesión Quest 2 reset, lore + cast completo)
+**Promovido a canon por aldot directamente:**
+- `public/images/personajes/kz.png` — char sheet KZ generado y aprobado por aldot
+- `public/images/personajes/onyx.png` — char sheet Onyx generado y aprobado por aldot
+- `public/images/personajes/agatha.png` — char sheet Agatha generado y aprobado por aldot
+
+**Canon texto Quest 2:**
+- `content/lore.md` (lore reset Quest 2 con cast completo + rucas + storytelling Pipez)
+- `content/personajes/{kz,onyx,agatha}.md` — fichas nuevas
+- `content/personajes/{byte,luxa}.md` — fichas redefinidas Quest 2
+
+**Canon decisiones:**
+- Byte y Luxa NO se regeneran visualmente (decisión aldot). Solo cambia la descripción/vibra.
+- Luxa = exploradora + cómica (NO solo cómica).
+- Sub-arquetipos visuales Pax oficiales: "exposed-cyclops" (Jiggy, Wiz) vs "domed-mask" (KZ, Onyx, Agatha).
+- Anchors Quest 1 archivadas en `archive/quest-1/anchors-rejected/`.
+
 ---
 
 ## Exploratorios actuales (NO canon)
