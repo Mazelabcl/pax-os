@@ -1,0 +1,42 @@
+started=2026-05-04T21:35:51.267761
+finished=2026-05-04T21:37:56.228055
+elapsed_s=125.0
+
+[Imagen 1]
+  status=OK
+  iters=1
+  path=C:\Users\aldot\.gemini\antigravity\scratch\pax-os\content\v2\anchors\img-01-piedra-apagandose.png
+  error=None
+
+[Imagen 2]
+  status=OK
+  iters=1
+  path=C:\Users\aldot\.gemini\antigravity\scratch\pax-os\content\v2\anchors\img-02-red-gemas.png
+  error=None
+
+[Imagen 3]
+  status=OK
+  iters=1
+  path=C:\Users\aldot\.gemini\antigravity\scratch\pax-os\content\v2\anchors\img-03-ola-muda.png
+  error=None
+
+[Imagen 4]
+  status=OK
+  iters=1
+  path=C:\Users\aldot\.gemini\antigravity\scratch\pax-os\content\v2\anchors\img-04-objeto-roto.png
+  error=None
+
+[Imagen 5]
+  status=OK
+  iters=1
+  path=C:\Users\aldot\.gemini\antigravity\scratch\pax-os\content\v2\anchors\img-05-itzel-cenote.png
+  error=None
+  fallback_used=False
+    [X] PFD operativo visible
+    [X] Plano arriba de rodillas
+    [X] Sin tela mojada pegada
+    [X] Sin close-up torso
+    [X] Cara al agua, no camara
+    [X] Adolescente cooperativista, no modelo
+    [X] Objeto operativo en mano
+

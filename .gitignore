@@ -45,3 +45,8 @@ next-env.d.ts
 # trabajo interno (voice notes + debates entre agentes)
 feedback-pipez.txt
 process-log/
+
+# python cache + test images temporales
+scripts/__pycache__/
+scripts/test-apple.png
+scripts/test-gpt-image-2.png
