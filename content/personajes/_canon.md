@@ -6,6 +6,56 @@
 
 ---
 
+## CAST OFICIAL — Quest 2 (post-feedback Pipez 2026-05-05)
+
+### Clan core (los 7 que protagonizan la webserie 12x3min)
+
+| # | Personaje | Arquetipo | Char sheet visual | Estado |
+|---|---|---|---|---|
+| 1 | **Jiggy** | El chasqui — corredor del clan, primer relevo | `public/images/personajes/jiggy.png` (canónico) | Canon |
+| 2 | **KZ** | El más joven — torpe pero genio emocional, corazón del grupo | Pendiente char sheet | Canon-pendiente-aprobación-aldot |
+| 3 | **Onyx** | El motor físico — atlético, fuerte, lealtad inquebrantable | Pendiente char sheet | Canon-pendiente-aprobación-aldot |
+| 4 | **Agatha** | El ancla emocional — espiritual, maternal, brújula de propósito | Pendiente char sheet | Canon-pendiente-aprobación-aldot |
+| 5 | **Wiz** | El viejo sabio — custodio de cristales, humor seco-letal | `public/images/personajes/wiz.png` (canónico) | Canon |
+| 6 | **Byte** | El sabio tecnológico — puzzles, acertijos, patrones (NO hacker cool) | `public/images/personajes/byte.png` (revisar vibra) | Canon-redefinido Quest 2 |
+| 7 | **Luxa** | La alegría del equipo — comic relief con corazón, timing impecable | `public/images/personajes/luxa.png` (revisar vibra) | Canon-redefinido Quest 2 |
+
+### Secundarios (arcos futuros)
+
+| Personaje | Tipo | Char sheet visual | Estado |
+|---|---|---|---|
+| **Zek** | Pax — "amigo cool", boombox que sincroniza pulso del clan | `public/images/personajes/zek.png` | Canon Quest 1, retenido como secundario |
+| **Mariela Salcedo** | Humana — protagonista humana del piloto | `public/images/personajes/mariela.png` | Canon Quest 1, retenida |
+| **Itzel** | Humana — perfil pendiente | Sin char sheet | Pendiente desarrollo |
+
+### Diferenciaciones que no se pueden confundir
+
+- **Agatha vs Luxa:** Agatha es maternal-espiritual, ancla, sostiene desde abajo. Luxa es comic relief con corazón, levanta desde arriba con humor. Agatha pausa, Luxa suelta. Las dos cuidan al grupo en direcciones complementarias.
+- **KZ vs Luxa:** KZ es comic relief por torpeza tierna (es ridículo sin querer). Luxa es comic relief por timing impecable (es chistosa adrede). KZ provoca risa de cariño. Luxa provoca risa de timing.
+- **Wiz vs Byte:** Wiz tiene la sabiduría del custodio (lee la energía, decide redistribución). Byte tiene la sabiduría del operador (descifra patrones, traduce sistemas). Wiz lee el cristal; Byte lee la mecánica.
+- **Onyx vs Jiggy:** Jiggy es el chasqui (relevo, entrega, vuelve). Onyx es el motor físico (carga, abre paso, sostiene). Jiggy mueve cristales; Onyx mueve obstáculos.
+
+### Fichas individuales
+
+Cada personaje tiene ficha en `content/personajes/{slug}.md`:
+- `jiggy.md` — canónico
+- `kz.md` — canon-pendiente-aprobación
+- `onyx.md` — canon-pendiente-aprobación
+- `agatha.md` — canon-pendiente-aprobación
+- `wiz.md` — canónico
+- `byte.md` — redefinido Quest 2 (sabio tecnológico, no hacker)
+- `luxa.md` — redefinido Quest 2 (comic relief con corazón, no exploradora-empática)
+- `zek.md` — canónico (secundario)
+- `mariela.md` — canónico (humana, secundaria)
+
+---
+
+## CHAR SHEETS VISUALES DETALLADOS (canon Quest 1, retenidos)
+
+> Las fichas detalladas abajo son del cast Quest 1 inicial. Siguen siendo source-of-truth visual para los personajes que ya tienen PNG canónico (Jiggy, Wiz, Byte, Luxa, Zek). Para KZ, Onyx, Agatha — char sheets pendientes de generar; ver fichas individuales para visual brief inicial.
+
+---
+
 ## 1. JIGGY — EL EXPLORADOR / CORREDOR (a.k.a. "Gemmy")
 
 **Anatomía exacta:**
