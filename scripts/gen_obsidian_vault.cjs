@@ -6,7 +6,7 @@ const path = require("node:path");
 
 const VERCEL = "https://pax-os.vercel.app";
 const REPO = path.resolve(__dirname, "..");
-const VAULT = "C:/Users/aldot/.gemini/antigravity/scratch/pax";
+const VAULT = path.join(REPO, "pax");
 
 const OUTLINE = fs.readFileSync(
   path.join(REPO, "content", "episodios-12-outline.md"),
