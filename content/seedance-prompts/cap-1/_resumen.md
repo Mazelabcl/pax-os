@@ -6,11 +6,28 @@ status: prompts_listos_para_probar
 
 # Cap 1 — Plan Seedance
 
+## Estructura de carpetas
+
+Cada shot vive en su propia subcarpeta auto-contenida (prompt + sus imagenes pegadas adentro):
+
+```
+content/seedance-prompts/cap-1/
+├── _resumen.md                ← este archivo (indice del cap)
+├── scene-01/  scene-01.md  + 3 PNGs
+├── scene-02/  scene-02.md  + 3 PNGs
+├── scene-03/  scene-03.md  + 3 PNGs
+├── scene-04A/ scene-04A.md + 3 PNGs   ← split anti-patron
+├── scene-04B/ scene-04B.md + 3 PNGs   ← split anti-patron
+├── scene-05/ ... scene-15/
+```
+
+Workflow Seedance: abrir la subcarpeta del shot, arrastrar los PNGs al uploader, copiar el bloque del .md, listo.
+
 ## Total clips
 
 - **Cantidad:** 16 clips totales
   - Shots 01, 02, 03, 05, 06, 07, 08, 09, 10, 11, 12, 13, 14, 15 → 1 clip cada uno = 14 clips
-  - Shot 04 → split en 2 sub-clips (anti-patron 6 caras visibles) = 2 clips
+  - Shot 04 → split en 2 sub-clips (anti-patron 6 caras visibles) = 2 clips (scene-04A + scene-04B)
 - **Duracion total estimada:** ~95 segundos de video Seedance crudo
   - 5s × 8 clips = 40s
   - 7s × 8 clips = 56s
@@ -35,12 +52,12 @@ Costo del **shot recomendado para probar primero** (Scene 08 Onyx, 5s):
 
 ## Refs nuevas pre-generadas (en publicacion como pending_aldot_approval)
 
-Ya generadas con `scripts/openai_images.py::edit_image()` quality=low. Todas viven en `public/images/concepts/` con prefijo `concept-cap1-*`:
+Ya generadas con `scripts/openai_images.py::edit_image()` quality=low. Source de verdad en `public/images/concepts/` con prefijo `concept-cap1-*`. Cada shot que las usa tiene su copia local en su subcarpeta:
 
-1. `public\images\concepts\concept-cap1-tunel-vertical-pax.png` (1997 KB) — tunel vertical con manhole arriba, frontera cromatica magenta-jade abajo / sodium-orange arriba. Para shot 13.
-2. `public\images\concepts\concept-cap1-camara-central-cristales-mapa.png` (2259 KB) — camara central + dais + mapa-constelacion holografico. Para shots 03, 04, 05, 06, 08, 09, 10, 11.
-3. `public\images\concepts\concept-cap1-cristal-pale-cyan-vacio.png` (1367 KB) — el cristal vacio que entrega Wiz. Insert macro. Para shots 11, 12, 13, 15.
-4. `public\images\concepts\concept-cap1-chispa-ancla-dorada.png` (1283 KB) — chispa-ancla dorada-palida easter-egg. Para shot 14.
+1. `concept-cap1-tunel-vertical-pax.png` (1997 KB) — tunel vertical con manhole arriba, frontera cromatica magenta-jade abajo / sodium-orange arriba. Copiado en `scene-13/image2-tunel-vertical.png`.
+2. `concept-cap1-camara-central-cristales-mapa.png` (2259 KB) — camara central + dais + mapa-constelacion holografico. Copiado en `scene-03/image2-camara-central.png`, `scene-04A/image3-camara-central.png`, `scene-04B/image3-camara-central.png`.
+3. `concept-cap1-cristal-pale-cyan-vacio.png` (1367 KB) — el cristal vacio que entrega Wiz. Insert macro. Copiado en `scene-11/image3-cristal-pale-cyan.png`, `scene-12/image3-cristal-pale-cyan.png`, `scene-13/image3-cristal-pale-cyan.png`, `scene-15/image3-cristal-pale-cyan.png`.
+4. `concept-cap1-chispa-ancla-dorada.png` (1283 KB) — chispa-ancla dorada-palida easter-egg. Copiado en `scene-14/image2-chispa-ancla.png`.
 
 **Pendiente:** aldot revisa estos concepts y los promueve (o pide reroll) antes de uso intensivo en producccion. Para HOY, sirven como refs de Seedance.
 
