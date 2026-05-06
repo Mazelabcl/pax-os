@@ -1,199 +1,492 @@
 import Image from "next/image";
 import Link from "next/link";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { listPersonajeSummaries } from "@/lib/personajes";
+import { listEpisodiosOutline } from "@/lib/episodios";
 import { Badge } from "@/components/ui/badge";
-import { getChangelogEntries } from "@/lib/changelog";
-import { getEpisodio1Tldr } from "@/lib/episodio";
+import { Card, CardContent } from "@/components/ui/card";
 
-interface SectionCard {
-  href: string;
-  title: string;
-  description: string;
-  status?: "disponible" | "proximamente";
-}
+export const metadata = {
+  title: "Pax — webserie animada",
+  description:
+    "Pax: una webserie animada sobre una tribu subterránea, sus cristales, y la energía colectiva que mueve al mundo. 12 episodios, 36 minutos.",
+};
+
+// =============================================================================
+// Datos: cast core (orden canon Pipez Quest 2)
+// =============================================================================
+
+const CLAN_CORE_SLUGS = [
+  "jiggy",
+  "kz",
+  "onyx",
+  "agatha",
+  "wiz",
+  "byte",
+  "luxa",
+] as const;
+
+// Tagline corto por personaje (1 línea, derivada de fichas).
+const CLAN_TAGLINE: Record<(typeof CLAN_CORE_SLUGS)[number], string> = {
+  jiggy: "El chasqui. Cruza túneles antes de que termine la frase.",
+  kz: "El más joven. Torpe, intuitivo, corazón del clan.",
+  onyx: "El motor físico. Empuja primero, piensa después.",
+  agatha: "Ancla emocional. Recuerda para qué subimos.",
+  wiz: "El viejo sabio. Custodia los cristales y guarda secretos.",
+  byte: "Cerebro técnico. Encuentra el patrón antes de explicarlo.",
+  luxa: "Comic relief con corazón. La que levanta cuando todo pesa.",
+};
 
 export default async function Home() {
-  const [entries, episodioTldr] = await Promise.all([
-    getChangelogEntries(),
-    getEpisodio1Tldr(),
+  const [personajes, episodios] = await Promise.all([
+    listPersonajeSummaries(),
+    listEpisodiosOutline(),
   ]);
-  const recent = entries.slice(0, 3);
 
-  const sections: SectionCard[] = [
-    {
-      href: "/lore",
-      title: "Lore",
-      description:
-        "El universo Pax: cíclopes subterráneos, chispas, ushnus y la regla de la pregunta sincera.",
-      status: "disponible",
-    },
-    {
-      href: "/personajes",
-      title: "Personajes",
-      description:
-        "Jiggy, Wiz, Byte, Luxa, Zek y Mariela. Galería con descripción, prompt visual y ficha.",
-      status: "disponible",
-    },
-    {
-      href: "/episodio-1?tab=concept-arts",
-      title: "Episodio 1",
-      description:
-        (episodioTldr ??
-          "Script, beat sheet, storyboard y guion técnico del piloto.") +
-        " Antes de generar imágenes, revisá la tab Concept arts para el orden de generación.",
-      status: "disponible",
-    },
-    {
-      href: "/estilo",
-      title: "Estilo",
-      description:
-        "DNA visual canónico: paleta, lighting, references y el style-lock copiable para todos los prompts.",
-      status: "disponible",
-    },
-  ];
+  const clan = CLAN_CORE_SLUGS.map((slug) =>
+    personajes.find((p) => p.slug === slug),
+  ).filter((p): p is NonNullable<typeof p> => Boolean(p));
+
+  // Capítulos con thumbnail disponible (1, 2). Resto = solo texto.
+  const capThumbs: Record<number, string> = {
+    1: "/images/storyboards/cap-1-hook-crystal-dimming.png",
+    2: "/images/storyboards/cap-2-fresco-close-up.png",
+  };
 
   return (
     <div className="flex flex-col">
+      {/* ===================================================================
+          1. HERO
+          =================================================================== */}
       <section className="relative isolate overflow-hidden">
         <div className="absolute inset-0 -z-10">
           <Image
-            src="/images/portadas/portada2.png"
-            alt="Portada del universo Pax"
+            src="/images/concepts/concept-cave-stalagmites-reawakening.png"
+            alt="Caverna Pax con cristales magenta"
             fill
             priority
-            className="object-cover opacity-40"
+            className="object-cover opacity-50"
             sizes="100vw"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-background/20 via-background/70 to-background" />
+          <div className="absolute inset-0 bg-gradient-to-b from-background/30 via-background/70 to-background" />
         </div>
 
-        <div className="mx-auto flex max-w-4xl flex-col items-start gap-6 px-4 py-20 sm:py-28 md:py-36">
-          <Badge variant="secondary" className="uppercase tracking-wider">
-            Mini-serie animada
-          </Badge>
-          <h1 className="text-4xl font-bold tracking-tight sm:text-6xl md:text-7xl">
-            Pax
-          </h1>
-          <p className="max-w-2xl text-base text-muted-foreground sm:text-lg">
-            Cíclopes subterráneos custodiando chispas humanas. Una pregunta
-            sincera arriba enciende un cristal abajo. Acá vas a encontrar el
-            lore, los personajes y el material del episodio 1.
-          </p>
-
-          <Link
-            href="/v2"
-            className="group inline-flex items-center gap-3 rounded-lg border border-fuchsia-500/50 bg-fuchsia-500/10 px-4 py-2.5 text-sm font-medium text-fuchsia-100 transition-colors hover:bg-fuchsia-500/20 sm:text-base"
+        <div className="mx-auto flex min-h-[80vh] max-w-4xl flex-col items-center justify-center gap-6 px-4 py-24 text-center sm:py-32 md:py-40">
+          <Badge
+            variant="secondary"
+            className="bg-fuchsia-500/15 uppercase tracking-wider text-fuchsia-200"
           >
-            <Badge
-              variant="outline"
-              className="border-fuchsia-400/50 bg-fuchsia-500/20 text-[10px] font-semibold uppercase tracking-widest text-fuchsia-100"
-            >
-              Nuevo
-            </Badge>
-            <span>Ver V2 — post-feedback de Pipez</span>
-            <span className="text-fuchsia-300 transition-transform group-hover:translate-x-0.5">
-              →
-            </span>
-          </Link>
+            Webserie animada
+          </Badge>
+          <h1 className="text-balance text-3xl font-bold leading-tight tracking-tight sm:text-5xl md:text-6xl">
+            No es magia.
+            <br />
+            Es el resultado de lo que hacemos.
+          </h1>
+          <p className="max-w-2xl text-balance text-base leading-relaxed text-muted-foreground sm:text-lg md:text-xl">
+            Pax — una webserie animada sobre una tribu subterránea, sus
+            cristales, y la energía colectiva que mueve al mundo.
+          </p>
+          <a
+            href="#pitch"
+            className="mt-6 inline-flex items-center gap-2 rounded-full border border-fuchsia-500/40 bg-fuchsia-500/10 px-5 py-2.5 text-sm font-medium text-fuchsia-100 transition-colors hover:bg-fuchsia-500/20 sm:text-base"
+          >
+            <span aria-hidden>↓</span>
+            <span>Conoce el proyecto</span>
+          </a>
         </div>
       </section>
 
-      <section className="mx-auto w-full max-w-5xl px-4 py-12 sm:py-16">
-        <h2 className="mb-6 text-2xl font-semibold tracking-tight sm:text-3xl">
-          Explorar
-        </h2>
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {sections.map((section) => {
-            const isAvailable = section.status === "disponible";
-            return (
+      {/* ===================================================================
+          2. ELEVATOR PITCH
+          =================================================================== */}
+      <section
+        id="pitch"
+        className="relative scroll-mt-16 bg-gradient-to-b from-background via-fuchsia-950/10 to-background"
+      >
+        <div className="mx-auto grid max-w-6xl gap-10 px-4 py-16 sm:py-24 md:grid-cols-[1.2fr_1fr] md:items-center md:gap-16">
+          <div className="flex flex-col gap-5">
+            <Badge variant="outline" className="w-fit text-xs">
+              La idea
+            </Badge>
+            <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl md:text-4xl">
+              Bajo la tierra hay una tribu cuidando una red invisible.
+            </h2>
+            <div className="space-y-4 text-base leading-relaxed text-muted-foreground sm:text-lg">
+              <p>
+                Bajo la superficie del planeta vive una civilización entera: los{" "}
+                <strong className="text-foreground">Pax</strong>. Cíclopes verdes
+                curiosos, juguetones, alquimistas. Llevan ahí más tiempo del que
+                cualquier humano recuerda.
+              </p>
+              <p>
+                Custodian unos cristales subterráneos que se cargan con la
+                energía que generan los actos de bondad humanos arriba — ayudar,
+                compartir, enseñar, hacer un gesto sin que te lo pidan. Cuando un
+                cristal se llena, los Pax lo activan, y arriba aparece algo
+                concreto: una operación que se cubre, un árbol que crece, un
+                perro que encuentra hogar.
+              </p>
+              <p className="text-foreground">
+                Hoy la red está fallando. Por primera vez, los Pax tienen que
+                subir.
+              </p>
+            </div>
+          </div>
+
+          <div className="relative mx-auto w-full max-w-sm">
+            <div className="absolute -inset-8 -z-10 rounded-full bg-fuchsia-500/20 blur-3xl" />
+            <div className="relative aspect-square w-full overflow-hidden rounded-2xl border border-fuchsia-500/30 bg-muted/30 shadow-2xl">
+              <Image
+                src="/images/personajes/jiggy.png"
+                alt="Jiggy — el chasqui del clan Pax"
+                fill
+                sizes="(max-width: 768px) 80vw, 400px"
+                className="object-cover"
+              />
+            </div>
+            <p className="mt-3 text-center text-xs uppercase tracking-wider text-muted-foreground">
+              Jiggy — el primero en subir
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* ===================================================================
+          3. CÓMO FUNCIONA
+          =================================================================== */}
+      <section className="border-t border-border/50">
+        <div className="mx-auto max-w-6xl px-4 py-16 sm:py-24">
+          <div className="mb-12 max-w-2xl">
+            <Badge variant="outline" className="mb-3 text-xs">
+              El sistema
+            </Badge>
+            <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl md:text-4xl">
+              Cómo funciona Pax
+            </h2>
+            <p className="mt-4 text-base leading-relaxed text-muted-foreground sm:text-lg">
+              Tres pasos simples. Una sola idea: lo que pasa arriba lo construyen
+              las personas que arriba viven. Los Pax solo lo recogen, lo
+              concentran y lo devuelven hecho cosa.
+            </p>
+          </div>
+
+          <div className="grid gap-6 md:grid-cols-3">
+            <ComoCard
+              numero="01"
+              titulo="Los humanos aportan"
+              parrafo="Una clase compartida, un gesto en la calle, una donación pequeña. Cualquier mecánica que mueva valor humano hacia impacto real es una ruca — un punto de aporte. La red está hecha de muchas rucas funcionando a la vez."
+            />
+            <ComoCard
+              numero="02"
+              titulo="Los cristales cargan"
+              parrafo="Cada gesto sincero arriba carga un cristal abajo. Los cristales siempre existieron — los Pax solo los custodian. Son la contabilidad viva de la bondad humana."
+              ring
+            />
+            <ComoCard
+              numero="03"
+              titulo="El mundo se activa"
+              parrafo="Cuando un cristal se llena, los Pax lo activan. La energía sale y arriba aparece algo concreto: una operación cubierta, un árbol que crece, un mensaje que llega justo a tiempo. No es magia. Es el resultado de lo que hacemos."
+            />
+          </div>
+
+          <figure className="mt-12 overflow-hidden rounded-2xl border border-border/50 shadow-2xl">
+            <Image
+              src="/images/concepts/concept-cave-wide-dark.png"
+              alt="Cámara central de cristales del clan Pax"
+              width={1536}
+              height={864}
+              className="h-auto w-full"
+              sizes="(max-width: 1280px) 100vw, 1280px"
+            />
+            <figcaption className="bg-muted/30 px-4 py-2 text-center text-xs italic text-muted-foreground sm:text-sm">
+              Cámara central de cristales — donde el clan custodia la red.
+            </figcaption>
+          </figure>
+        </div>
+      </section>
+
+      {/* ===================================================================
+          4. EL CLAN
+          =================================================================== */}
+      <section className="border-t border-border/50 bg-gradient-to-b from-background to-fuchsia-950/10">
+        <div className="mx-auto max-w-6xl px-4 py-16 sm:py-24">
+          <div className="mb-12 max-w-2xl">
+            <Badge variant="outline" className="mb-3 text-xs">
+              El cast
+            </Badge>
+            <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl md:text-4xl">
+              Los siete que suben
+            </h2>
+            <p className="mt-4 text-base leading-relaxed text-muted-foreground sm:text-lg">
+              Siete Pax con roles claros, voces distintas y una sola misión
+              compartida: reactivar la red. Cámara los sigue a todos, pero cada
+              episodio cede el peso a uno distinto.
+            </p>
+          </div>
+
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {clan.map((p) => (
               <Link
-                key={section.href}
-                href={section.href}
+                key={p.slug}
+                href={`/personajes/${p.slug}`}
                 className="group focus:outline-none"
               >
-                <Card className="h-full transition-colors group-hover:border-primary/60">
-                  <CardHeader>
-                    <div className="flex items-center justify-between gap-2">
-                      <CardTitle className="text-xl">{section.title}</CardTitle>
-                      {!isAvailable && (
-                        <Badge
-                          variant="outline"
-                          className="text-xs font-normal"
-                        >
-                          próximamente
-                        </Badge>
-                      )}
+                <Card className="h-full overflow-hidden p-0 transition-all group-hover:scale-[1.02] group-hover:ring-1 group-hover:ring-fuchsia-500/40">
+                  {p.image && (
+                    <div className="relative aspect-square w-full overflow-hidden bg-muted">
+                      <Image
+                        src={p.image}
+                        alt={p.name}
+                        fill
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                        className="object-cover transition-transform group-hover:scale-105"
+                      />
                     </div>
-                    <CardDescription className="text-sm leading-relaxed">
-                      {section.description}
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent className="pt-0 text-sm text-muted-foreground">
-                    {isAvailable ? "Abrir →" : "Disponible pronto"}
+                  )}
+                  <CardContent className="flex flex-col gap-1.5 p-4">
+                    <div className="flex items-baseline justify-between gap-2">
+                      <h3 className="text-lg font-semibold tracking-tight">
+                        {p.name}
+                      </h3>
+                      <span className="text-xs text-muted-foreground transition-colors group-hover:text-fuchsia-300">
+                        Ver →
+                      </span>
+                    </div>
+                    <p className="text-sm leading-snug text-muted-foreground">
+                      {CLAN_TAGLINE[p.slug as keyof typeof CLAN_TAGLINE] ??
+                        p.shortDescription}
+                    </p>
                   </CardContent>
                 </Card>
               </Link>
-            );
-          })}
+            ))}
+          </div>
+
+          <div className="mt-8 text-center">
+            <Link
+              href="/personajes"
+              className="inline-flex items-center gap-2 text-sm font-medium text-fuchsia-200 transition-colors hover:text-fuchsia-100"
+            >
+              Ver cast completo (incluye humanos y secundarios) →
+            </Link>
+          </div>
         </div>
       </section>
 
-      {recent.length > 0 && (
-        <section className="mx-auto w-full max-w-5xl px-4 pb-16">
-          <div className="mb-6 flex items-baseline justify-between gap-3">
-            <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl">
-              Últimos cambios
+      {/* ===================================================================
+          5. LA HISTORIA — 12 EPISODIOS
+          =================================================================== */}
+      <section className="border-t border-border/50">
+        <div className="mx-auto max-w-5xl px-4 py-16 sm:py-24">
+          <div className="mb-12 max-w-2xl">
+            <Badge variant="outline" className="mb-3 text-xs">
+              La temporada
+            </Badge>
+            <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl md:text-4xl">
+              12 episodios. 36 minutos. Una temporada.
             </h2>
-            <Link
-              href="/cambios"
-              className="text-sm text-muted-foreground transition-colors hover:text-foreground"
-            >
-              Ver todos los cambios →
-            </Link>
+            <p className="mt-4 text-base leading-relaxed text-muted-foreground sm:text-lg">
+              Una sola historia partida en gestos. Cada capítulo es una misión:
+              un Pax sube, encuentra a un humano, abre una ruca y vuelve. Los
+              cristales abajo se cargan un poquito más.
+            </p>
           </div>
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {recent.map((entry) => (
-              <Card key={entry.heading} className="h-full">
-                <CardHeader>
-                  {entry.date && (
-                    <Badge
-                      variant="outline"
-                      className="mb-1 w-fit text-xs font-normal"
-                    >
-                      {entry.date}
-                    </Badge>
-                  )}
-                  <CardTitle className="text-base leading-snug">
-                    {entry.title}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="pt-0">
-                  {entry.bullets.length > 0 ? (
-                    <ul className="space-y-1.5 text-sm text-muted-foreground">
-                      {entry.bullets.slice(0, 3).map((b, i) => (
-                        <li
-                          key={i}
-                          className="relative pl-3 before:absolute before:left-0 before:top-2 before:size-1 before:rounded-full before:bg-muted-foreground/60"
-                        >
-                          {b}
-                        </li>
-                      ))}
-                    </ul>
-                  ) : (
-                    <p className="text-sm text-muted-foreground">Sin detalles.</p>
-                  )}
-                </CardContent>
-              </Card>
-            ))}
+
+          <ol className="flex flex-col gap-3">
+            {episodios.map((ep) => {
+              const thumb = capThumbs[ep.numero];
+              const hasDetail = ep.numero === 1 || ep.numero === 2;
+              const href = hasDetail ? `/episodios/${ep.numero}` : "/lore";
+              return (
+                <li key={ep.numero}>
+                  <Link
+                    href={href}
+                    className="group flex gap-4 rounded-xl border border-border/60 bg-card/40 p-4 transition-colors hover:border-fuchsia-500/40 hover:bg-fuchsia-500/5 sm:gap-6 sm:p-5"
+                  >
+                    <div className="flex shrink-0 items-start gap-3 sm:gap-4">
+                      <span className="font-mono text-xs text-muted-foreground sm:text-sm">
+                        {String(ep.numero).padStart(2, "0")}
+                      </span>
+                      {thumb && (
+                        <div className="relative hidden aspect-video w-32 shrink-0 overflow-hidden rounded-md border border-border/40 bg-muted sm:block sm:w-44">
+                          <Image
+                            src={thumb}
+                            alt={`Storyboard episodio ${ep.numero}`}
+                            fill
+                            sizes="(max-width: 768px) 0px, 176px"
+                            className="object-cover"
+                          />
+                        </div>
+                      )}
+                    </div>
+                    <div className="flex min-w-0 flex-1 flex-col gap-1.5">
+                      <div className="flex flex-wrap items-baseline gap-2">
+                        <h3 className="text-base font-semibold tracking-tight sm:text-lg">
+                          {ep.titulo}
+                        </h3>
+                        {hasDetail ? (
+                          <Badge
+                            variant="outline"
+                            className="border-fuchsia-500/40 text-[10px] font-normal uppercase tracking-wider text-fuchsia-200"
+                          >
+                            Storyboard
+                          </Badge>
+                        ) : (
+                          <Badge
+                            variant="outline"
+                            className="text-[10px] font-normal uppercase tracking-wider text-muted-foreground"
+                          >
+                            Outline
+                          </Badge>
+                        )}
+                      </div>
+                      <p className="text-sm leading-relaxed text-muted-foreground sm:text-[0.95rem]">
+                        {ep.logline}
+                      </p>
+                      <span className="mt-1 text-xs text-fuchsia-300/80 transition-colors group-hover:text-fuchsia-200 sm:text-sm">
+                        {hasDetail ? "Ver episodio →" : "Outline en el lore →"}
+                      </span>
+                    </div>
+                  </Link>
+                </li>
+              );
+            })}
+          </ol>
+        </div>
+      </section>
+
+      {/* ===================================================================
+          6. FOOTER LINKS
+          =================================================================== */}
+      <section className="border-t border-border/50 bg-muted/10">
+        <div className="mx-auto max-w-5xl px-4 py-12 sm:py-16">
+          <h2 className="mb-6 text-lg font-semibold tracking-tight text-muted-foreground sm:text-xl">
+            Más material
+          </h2>
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            <FooterLink
+              href="/lore"
+              title="Lore canónico"
+              desc="El mundo, la tribu, los cristales, las rucas, la crisis. Lectura larga, post-feedback Pipez."
+            />
+            <FooterLink
+              href="/principles"
+              title="Primeros principios"
+              desc="Qué es Pax, cómo funciona, por qué importa. El núcleo del proyecto."
+            />
+            <FooterLink
+              href="/personajes"
+              title="Cast completo"
+              desc="10 fichas: el clan core de 7 Pax + secundarios humanos (Mariela, Itzel) y Pax (Zek)."
+            />
+            <FooterLink
+              href="/roadmap"
+              title="Roadmap"
+              desc="Por dónde va el proyecto. Quests cerradas y futuras."
+            />
+            <FooterLink
+              href="https://publish.obsidian.md/pax"
+              title="Vault público (Obsidian)"
+              desc="El proceso vivo: notas, decisiones, lecciones."
+              external
+            />
+            <FooterLink
+              href="/legacy/v2"
+              title="Archivo Quest 1"
+              desc="La versión vieja de la web. Lore v4, Itzel, episodio 1 v2. Conservado para referencia."
+              muted
+            />
           </div>
-        </section>
-      )}
+        </div>
+      </section>
     </div>
+  );
+}
+
+// =============================================================================
+// Subcomponentes
+// =============================================================================
+
+function ComoCard({
+  numero,
+  titulo,
+  parrafo,
+  ring,
+}: {
+  numero: string;
+  titulo: string;
+  parrafo: string;
+  ring?: boolean;
+}) {
+  return (
+    <div
+      className={
+        "flex flex-col gap-3 rounded-xl border bg-card/60 p-5 sm:p-6 " +
+        (ring
+          ? "border-fuchsia-500/40 shadow-[0_0_0_1px_rgba(232,63,200,0.05)]"
+          : "border-border/60")
+      }
+    >
+      <span className="font-mono text-xs uppercase tracking-widest text-fuchsia-300/80">
+        {numero}
+      </span>
+      <h3 className="text-lg font-semibold tracking-tight sm:text-xl">
+        {titulo}
+      </h3>
+      <p className="text-sm leading-relaxed text-muted-foreground sm:text-[0.95rem]">
+        {parrafo}
+      </p>
+    </div>
+  );
+}
+
+function FooterLink({
+  href,
+  title,
+  desc,
+  external,
+  muted,
+}: {
+  href: string;
+  title: string;
+  desc: string;
+  external?: boolean;
+  muted?: boolean;
+}) {
+  const cls =
+    "group block rounded-lg border bg-card/40 p-4 transition-colors hover:border-fuchsia-500/40 hover:bg-fuchsia-500/5 " +
+    (muted ? "border-border/40 opacity-80" : "border-border/60");
+  const titleCls =
+    "text-sm font-semibold tracking-tight " +
+    (muted ? "text-muted-foreground" : "text-foreground");
+  const content = (
+    <>
+      <div className="mb-1 flex items-baseline justify-between gap-2">
+        <span className={titleCls}>{title}</span>
+        <span className="text-xs text-muted-foreground transition-colors group-hover:text-fuchsia-300">
+          {external ? "↗" : "→"}
+        </span>
+      </div>
+      <p className="text-xs leading-relaxed text-muted-foreground sm:text-[0.85rem]">
+        {desc}
+      </p>
+    </>
+  );
+  if (external) {
+    return (
+      <a
+        href={href}
+        target="_blank"
+        rel="noreferrer noopener"
+        className={cls}
+      >
+        {content}
+      </a>
+    );
+  }
+  return (
+    <Link href={href} className={cls}>
+      {content}
+    </Link>
   );
 }

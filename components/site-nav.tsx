@@ -6,18 +6,19 @@ interface NavLink {
   label: string;
   /** Si true, mostramos un dot rojo discreto a la derecha del label. */
   dot?: boolean;
-  /** Si true, resaltamos el link con color V2 (acento fuchsia). */
-  v2?: boolean;
+  /** Si true, lo destacamos con tono atenuado (por ejemplo, archivo legacy). */
+  muted?: boolean;
+  /** Si true, abre en pestaña nueva (links externos). */
+  external?: boolean;
 }
 
 const links: NavLink[] = [
   { href: "/", label: "Inicio" },
+  { href: "/personajes", label: "El clan" },
+  { href: "/episodios/1", label: "Episodios" },
   { href: "/lore", label: "Lore" },
-  { href: "/personajes", label: "Personajes" },
-  { href: "/episodio-1", label: "Episodio 1" },
-  { href: "/estilo", label: "Estilo" },
-  { href: "/v2", label: "V2", v2: true },
   { href: "/cambios", label: "Cambios", dot: true },
+  { href: "/legacy/v2", label: "Archivo", muted: true },
 ];
 
 interface SiteNavProps {
@@ -25,8 +26,8 @@ interface SiteNavProps {
 }
 
 /**
- * Navegación top fija. Server component. Sin estado activo por ahora —
- * se puede sumar `usePathname` en una v2 si aldot lo pide.
+ * Navegación top fija. Server component. Sin estado activo por ahora.
+ * Estructura Quest 2: Inicio / El clan / Episodios / Lore / Cambios / Archivo.
  */
 export function SiteNav({ className }: SiteNavProps) {
   return (
@@ -36,22 +37,21 @@ export function SiteNav({ className }: SiteNavProps) {
         className,
       )}
     >
-      <div className="mx-auto flex h-14 max-w-5xl items-center justify-between gap-4 px-4">
-        <Link
-          href="/"
-          className="text-base font-semibold tracking-tight"
-        >
+      <div className="mx-auto flex h-14 max-w-6xl items-center justify-between gap-4 px-4">
+        <Link href="/" className="text-base font-semibold tracking-tight">
           Pax
         </Link>
-        <nav className="flex items-center gap-1 sm:gap-3 text-sm">
+        <nav className="flex items-center gap-0.5 overflow-x-auto sm:gap-2 text-sm">
           {links.map((link) => (
             <Link
               key={link.href}
               href={link.href}
+              target={link.external ? "_blank" : undefined}
+              rel={link.external ? "noreferrer" : undefined}
               className={cn(
-                "relative inline-flex items-center gap-1.5 rounded-md px-2 py-1 transition-colors",
-                link.v2
-                  ? "border border-fuchsia-500/40 bg-fuchsia-500/10 text-fuchsia-200 hover:bg-fuchsia-500/20"
+                "relative inline-flex items-center gap-1.5 whitespace-nowrap rounded-md px-2 py-1 transition-colors",
+                link.muted
+                  ? "text-muted-foreground/70 hover:bg-accent hover:text-foreground"
                   : "text-muted-foreground hover:bg-accent hover:text-foreground",
               )}
             >

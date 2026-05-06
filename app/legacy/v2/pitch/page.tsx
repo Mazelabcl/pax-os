@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { readMarkdown, extractToc } from "@/lib/markdown";
 import { getLastUpdated } from "@/lib/git";
 import { MarkdownRenderer } from "@/components/markdown-renderer";
@@ -7,41 +8,49 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 
 export const metadata = {
-  title: "Proceso — Pax V2",
+  title: "Pitch — Pax V2",
   description:
-    "Cómo llegamos a la v2. Diez capítulos sobre cómo el feedback de Pipez reescribió el universo Pax.",
+    "Pax en 2 minutos: la versión accesible del universo. Si nunca leíste nada de Pax, empezá acá.",
 };
 
-const PLACEHOLDER = `# Cómo llegamos aquí
+const PLACEHOLDER = `# Pax — la mini-serie en 2 minutos
 
-> El narrador todavía está escribiendo este capítulo.
-
-Próximamente: la narrativa del proceso de la v1 a la v2 — el feedback de
-Pipez, las decisiones de cast, lore y guion, y cómo se cerraron los scores.
+> Próximamente: el pitch accesible para entrar al universo Pax sin contexto previo.
 `;
 
-export default async function ProcesoPage() {
-  const result = await readMarkdown("v2/proceso.md").catch(() => null);
+export default async function PitchPage() {
+  const result = await readMarkdown("v2/pitch.md").catch(() => null);
   const content = result?.content ?? PLACEHOLDER;
   const isPlaceholder = !result;
 
   const toc = extractToc(content, 3);
   const updated = result
-    ? await getLastUpdated("content/v2/proceso.md")
+    ? await getLastUpdated("content/v2/pitch.md")
     : null;
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-8 sm:py-12">
       <VersionToggle
         current="v2"
-        label="Proceso V2 — cómo llegamos acá."
-        toHref="/v2"
-        toLabel="Volver a /v2"
+        label="Pitch V2 — la versión accesible (archivo Quest 1)."
+        toHref="/legacy/v2"
+        toLabel="Volver a /legacy/v2"
       />
+
+      <div className="mb-4 rounded-lg border border-fuchsia-500/40 bg-fuchsia-500/10 p-3 text-sm text-fuchsia-100 sm:text-base">
+        Estás viendo la versión accesible. Si querés el lore técnico completo:{" "}
+        <Link
+          href="/legacy/v2/lore"
+          className="font-medium underline underline-offset-2 hover:opacity-80"
+        >
+          /legacy/v2/lore
+        </Link>
+        .
+      </div>
 
       <div className="mb-6 flex flex-wrap items-center gap-3">
         <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">
-          Cómo llegamos aquí
+          Pax en 2 minutos
         </h1>
         {isPlaceholder ? (
           <Badge

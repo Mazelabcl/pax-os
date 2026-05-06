@@ -26,28 +26,28 @@ interface V2Card {
 
 const cards: V2Card[] = [
   {
-    href: "/v2/lore",
+    href: "/legacy/v2/lore",
     title: "Lore v4",
     description:
       "Cosmos Pax cerrado: regla única, ushnus, runners y la red de seis naciones subterráneas. Versión post-crítica, score 87.2/100.",
     score: "87.2",
   },
   {
-    href: "/v2/personajes",
+    href: "/legacy/v2/personajes",
     title: "Personajes — Itzel",
     description:
       "Itzel Pat Canul, adolescente maya yucateca, finalista como protagonista del piloto. Más 3 candidatos secundarios para próximos episodios.",
     score: "87.25",
   },
   {
-    href: "/v2/episodio-1",
+    href: "/legacy/v2/episodio-1",
     title: "Episodio 1 v2",
     description:
       "Guion R2 con cold open Apu, match-cut a Yucatán y el primer pulso de empatía de la generación. GO al storyboard.",
     score: "88.25",
   },
   {
-    href: "/v2/proceso",
+    href: "/legacy/v2/proceso",
     title: "Cómo llegamos aquí",
     description:
       "La narrativa del proceso: del feedback de Pipez a la v2. Diez capítulos sobre cómo se reescribió el universo.",
@@ -98,18 +98,18 @@ export default function V2Home() {
         </div>
       </header>
 
-      {/* Hero — la piedra apagándose: firma visual del IP, cold open del piloto */}
+      {/* Hero — portada heroica del clan original (legacy quest 1) */}
       <figure className="mb-10 overflow-hidden rounded-xl border border-fuchsia-500/30 shadow-2xl">
         <Image
-          src="/images/anchors/img-01-piedra-apagandose.png"
-          alt="La kuya cediendo bajo los Andes — cold open del piloto"
+          src="/images/portadas/portada2.png"
+          alt="Tribu Pax — poster heroico (archivo Quest 1)"
           width={1536}
           height={1024}
           priority
           className="h-auto w-full"
         />
         <figcaption className="bg-fuchsia-500/5 px-4 py-2 text-xs italic text-muted-foreground sm:text-sm">
-          La kuya cediendo bajo los Andes — primera imagen del IP.
+          Tribu Pax — poster heroico (archivo Quest 1).
         </figcaption>
       </figure>
 
@@ -162,7 +162,7 @@ export default function V2Home() {
           size="lg"
           className="bg-fuchsia-500 text-white hover:bg-fuchsia-400"
         >
-          <Link href="/v2/pitch">Leer pitch completo (2 min) →</Link>
+          <Link href="/legacy/v2/pitch">Leer pitch completo (2 min) →</Link>
         </Button>
       </section>
 
@@ -172,7 +172,7 @@ export default function V2Home() {
         </h2>
         <div className="grid gap-4 sm:grid-cols-2">
           <Link
-            href="/v2/pitch"
+            href="/legacy/v2/pitch"
             className="group focus:outline-none sm:col-span-2"
           >
             <Card className="h-full border-fuchsia-500/50 bg-fuchsia-500/5 transition-colors group-hover:border-fuchsia-500/80">
