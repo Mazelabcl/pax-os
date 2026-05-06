@@ -1,40 +1,20 @@
 {
   "main": {
-    "id": "2764c666468798fb",
+    "id": "6077a246172ec8e3",
     "type": "split",
     "children": [
       {
-        "id": "1a78ee3ab899fb6c",
+        "id": "f4aba21acd1df832",
         "type": "tabs",
         "children": [
           {
-            "id": "3f95ef8d9abd2e8e",
+            "id": "4fb5937811f10bc7",
             "type": "leaf",
             "state": {
-              "type": "markdown",
-              "state": {
-                "file": "episodios-12-outline.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "episodios-12-outline"
-            }
-          }
-        ]
-      },
-      {
-        "id": "be4547def53a3b66",
-        "type": "tabs",
-        "children": [
-          {
-            "id": "3ed67a5e8e0e67b9",
-            "type": "leaf",
-            "state": {
-              "type": "empty",
+              "type": "graph",
               "state": {},
-              "icon": "lucide-file",
-              "title": "Nueva pestaña"
+              "icon": "lucide-git-fork",
+              "title": "Vista gráfica"
             }
           }
         ]
@@ -43,15 +23,15 @@
     "direction": "vertical"
   },
   "left": {
-    "id": "3c8cfffcdb3d747b",
+    "id": "772afacf43c0db1a",
     "type": "split",
     "children": [
       {
-        "id": "c5ba688d6f0676e4",
+        "id": "d893636d96e59c42",
         "type": "tabs",
         "children": [
           {
-            "id": "cdb820a2645797e9",
+            "id": "314181d080fa6721",
             "type": "leaf",
             "state": {
               "type": "file-explorer",
@@ -64,7 +44,7 @@
             }
           },
           {
-            "id": "90d115de2836ae09",
+            "id": "090fb936a660e995",
             "type": "leaf",
             "state": {
               "type": "search",
@@ -81,7 +61,7 @@
             }
           },
           {
-            "id": "799e98c711d69709",
+            "id": "50871cfcbb3304bb",
             "type": "leaf",
             "state": {
               "type": "bookmarks",
@@ -97,15 +77,15 @@
     "width": 300
   },
   "right": {
-    "id": "8333c1d37afa84d0",
+    "id": "75ce1f6612ac8b69",
     "type": "split",
     "children": [
       {
-        "id": "40fe1e40a0f97991",
+        "id": "d36b189c0e56cbb1",
         "type": "tabs",
         "children": [
           {
-            "id": "e50cecc5acc2577c",
+            "id": "1c1a40a66bb961a4",
             "type": "leaf",
             "state": {
               "type": "backlink",
@@ -123,7 +103,7 @@
             }
           },
           {
-            "id": "a2bc5e45bfecd739",
+            "id": "2a9b7cf64977ee76",
             "type": "leaf",
             "state": {
               "type": "outgoing-link",
@@ -136,7 +116,7 @@
             }
           },
           {
-            "id": "6e5b727c37b2c978",
+            "id": "4f4bf56700c62924",
             "type": "leaf",
             "state": {
               "type": "tag",
@@ -151,7 +131,7 @@
             }
           },
           {
-            "id": "22ea8f1d0432707f",
+            "id": "10873755aa872a75",
             "type": "leaf",
             "state": {
               "type": "all-properties",
@@ -165,7 +145,7 @@
             }
           },
           {
-            "id": "f1751c97e25fdda7",
+            "id": "1d34c2b60407d17e",
             "type": "leaf",
             "state": {
               "type": "outline",
@@ -187,7 +167,6 @@
   },
   "left-ribbon": {
     "hiddenItems": {
-      "publish:Publicar cambios...": false,
       "switcher:Abrir selector rápido": false,
       "graph:Abrir vista gráfica": false,
       "canvas:Crear nuevo lienzo": false,
@@ -197,20 +176,11 @@
       "bases:Crear nueva base": false
     }
   },
-  "active": "3f95ef8d9abd2e8e",
+  "active": "4fb5937811f10bc7",
   "lastOpenFiles": [
-    "principles.md",
-    "personajes/mariela.md",
-    "Sin título.base",
-    "Sin nombre",
-    "Sin título.canvas",
-    "publish.css",
-    "Bienvenido.md",
-    "Sin título 2.base",
-    "Sin título 3.base",
-    "Sin título 4.base",
-    "Sin título 5.base",
-    "Sin título 1.base",
-    "cree un enlace.md"
+    "pax/Sin nombre",
+    "content/episodios-12-outline.md.tmp.32276.1778033843762",
+    "process-log/13c-12-episodios-r2-architect.md",
+    "process-log/13c-12-episodios-r2-architect.md.tmp.32276.1778033826880"
   ]
 }
