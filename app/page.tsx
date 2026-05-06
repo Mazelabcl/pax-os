@@ -48,10 +48,21 @@ export default async function Home() {
     personajes.find((p) => p.slug === slug),
   ).filter((p): p is NonNullable<typeof p> => Boolean(p));
 
-  // Capítulos con thumbnail disponible (1, 2). Resto = solo texto.
+  // Thumbnail por capitulo. Caps 1-2 usan hero companion (legacy plano);
+  // caps 3-12 usan el shot 01 dentro de su subcarpeta cap-N/.
   const capThumbs: Record<number, string> = {
     1: "/images/storyboards/cap-1-hook-crystal-dimming.png",
     2: "/images/storyboards/cap-2-fresco-close-up.png",
+    3: "/images/storyboards/cap-3/cap-3-shot-01-manhole-eye-peek.png",
+    4: "/images/storyboards/cap-4/cap-4-shot-01-balcony-class-pov.png",
+    5: "/images/storyboards/cap-5/cap-5-shot-01-onyx-pokes-head.png",
+    6: "/images/storyboards/cap-6/cap-6-shot-01-new-crystal-born.png",
+    7: "/images/storyboards/cap-7/cap-7-shot-01-hand-marker-symbol.png",
+    8: "/images/storyboards/cap-8/cap-8-shot-01-temple-crystal-cracks.png",
+    9: "/images/storyboards/cap-9/cap-9-shot-01-wiz-opens-hand-spark.png",
+    10: "/images/storyboards/cap-10/cap-10-shot-01-clan-emerges-row.png",
+    11: "/images/storyboards/cap-11/cap-11-shot-01-sami-paints-new-stroke.png",
+    12: "/images/storyboards/cap-12/cap-12-shot-01-wiz-hands-on-big-crystal.png",
   };
 
   return (
@@ -330,6 +341,53 @@ export default async function Home() {
       )}
 
       {/* ===================================================================
+          4.6 EL CEREBRO VIVO — Obsidian Publish embebido
+          =================================================================== */}
+      <section className="border-t border-border/50 bg-gradient-to-b from-background via-fuchsia-950/5 to-background">
+        <div className="mx-auto max-w-5xl px-4 py-16 sm:py-24">
+          <div className="mb-8 max-w-2xl">
+            <Badge variant="outline" className="mb-3 text-xs">
+              El proceso
+            </Badge>
+            <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl md:text-4xl">
+              El cerebro vivo del proyecto
+            </h2>
+            <p className="mt-4 text-base leading-relaxed text-muted-foreground sm:text-lg">
+              Pax tambien es un grafo de notas. Cada decision, lore, ficha de
+              personaje y leccion vive en un vault publico de Obsidian que
+              muestra como se conecta todo. No es la version pulida — es el
+              cerebro del proyecto trabajando en tiempo real.
+            </p>
+          </div>
+
+          <div className="overflow-hidden rounded-xl border border-border/60 bg-zinc-900/40 shadow-2xl">
+            <iframe
+              src="https://publish.obsidian.md/pax"
+              title="Cerebro Pax — Obsidian Publish"
+              className="h-[480px] w-full sm:h-[600px]"
+              loading="lazy"
+              allow="fullscreen"
+            />
+          </div>
+
+          <div className="mt-4 flex flex-wrap items-center gap-4 text-sm">
+            <a
+              href="https://publish.obsidian.md/pax"
+              target="_blank"
+              rel="noreferrer noopener"
+              className="font-medium text-fuchsia-200 transition-colors hover:text-fuchsia-100"
+            >
+              Abrir en pestana nueva ↗
+            </a>
+            <span className="text-xs text-muted-foreground">
+              Si el iframe no carga, el vault sigue disponible en el link de
+              arriba.
+            </span>
+          </div>
+        </div>
+      </section>
+
+      {/* ===================================================================
           5. LA HISTORIA — 12 EPISODIOS
           =================================================================== */}
       <section className="border-t border-border/50">
@@ -351,8 +409,9 @@ export default async function Home() {
           <ol className="flex flex-col gap-3">
             {episodios.map((ep) => {
               const thumb = capThumbs[ep.numero];
-              const hasDetail = ep.numero === 1 || ep.numero === 2;
-              const href = hasDetail ? `/episodios/${ep.numero}` : "/lore";
+              // Todos los caps tienen detalle visual (1-12 con storyboards).
+              const hasDetail = true;
+              const href = `/episodios/${ep.numero}`;
               return (
                 <li key={ep.numero}>
                   <Link

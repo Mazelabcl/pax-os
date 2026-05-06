@@ -15,11 +15,13 @@ interface PageProps {
   params: Promise<{ id: string }>;
 }
 
-// Solo cap 1 y 2 tienen storyboards canon. El resto, fallback al outline.
-const CAPS_CON_DETALLE = [1, 2] as const;
+// Caps con storyboard completo (PNG + companion .md). Fallback a outline si falta.
+const CAPS_CON_DETALLE = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] as const;
+// Total caps generados como rutas estaticas (todos los del outline).
+const CAPS_SSG = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] as const;
 
 export async function generateStaticParams() {
-  return CAPS_CON_DETALLE.map((n) => ({ id: String(n) }));
+  return CAPS_SSG.map((n) => ({ id: String(n) }));
 }
 
 export async function generateMetadata({ params }: PageProps) {
