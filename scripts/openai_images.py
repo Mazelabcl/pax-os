@@ -21,8 +21,9 @@ Requisitos:
 """
 
 import os
+import asyncio
 import base64
-from openai import OpenAI
+from openai import OpenAI, AsyncOpenAI
 
 
 # ---------------------------------------------------------------------------
@@ -129,6 +130,78 @@ def edit_image(
     with open(output_path, "wb") as f:
         f.write(base64.b64decode(image_base64))
     return output_path
+
+
+# ---------------------------------------------------------------------------
+# Async batch — paralelismo masivo via asyncio.gather + Semaphore
+# ---------------------------------------------------------------------------
+async def edit_image_async(
+    client_async: AsyncOpenAI,
+    prompt: str,
+    input_image_paths,
+    output_path: str,
+    size: str = "1024x1024",
+    quality: str = "medium",
+) -> str:
+    """Async version of edit_image. Mantiene la misma firma logica."""
+    if isinstance(input_image_paths, str):
+        input_image_paths = [input_image_paths]
+
+    files = [open(p, "rb") for p in input_image_paths]
+    try:
+        result = await client_async.images.edit(
+            model=MODEL,
+            image=files if len(files) > 1 else files[0],
+            prompt=prompt,
+            size=size,
+            quality=quality,
+        )
+    finally:
+        for f in files:
+            f.close()
+
+    image_base64 = result.data[0].b64_json
+    with open(output_path, "wb") as f:
+        f.write(base64.b64decode(image_base64))
+    return output_path
+
+
+async def generate_batch_async(jobs, max_concurrent: int = 8):
+    """
+    Ejecuta N jobs de edit_image en paralelo con limite de concurrencia.
+
+    Args:
+        jobs: lista de dicts con keys:
+            - prompt (str)
+            - input_image_paths (list[str])
+            - output_path (str)
+            - size (str, opcional)
+            - quality (str, opcional)
+        max_concurrent: limite simultaneo (default 8 para evitar rate limit).
+
+    Returns:
+        Lista paralela a jobs con el output_path o la Exception capturada
+        (return_exceptions=True para no romper el batch ante 1 error).
+    """
+    client_async = AsyncOpenAI(api_key=os.environ["OPENAI_API_KEY"])
+    sem = asyncio.Semaphore(max_concurrent)
+
+    async def with_sem(job):
+        async with sem:
+            return await edit_image_async(
+                client_async=client_async,
+                prompt=job["prompt"],
+                input_image_paths=job["input_image_paths"],
+                output_path=job["output_path"],
+                size=job.get("size", "1024x1024"),
+                quality=job.get("quality", "medium"),
+            )
+
+    results = await asyncio.gather(
+        *[with_sem(j) for j in jobs],
+        return_exceptions=True,
+    )
+    return results
 
 
 if __name__ == "__main__":

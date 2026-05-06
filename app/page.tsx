@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { listPersonajeSummaries } from "@/lib/personajes";
 import { listEpisodiosOutline } from "@/lib/episodios";
+import { getRecentCommits, type RecentCommit } from "@/lib/git";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 
@@ -37,9 +38,10 @@ const CLAN_TAGLINE: Record<(typeof CLAN_CORE_SLUGS)[number], string> = {
 };
 
 export default async function Home() {
-  const [personajes, episodios] = await Promise.all([
+  const [personajes, episodios, commits] = await Promise.all([
     listPersonajeSummaries(),
     listEpisodiosOutline(),
+    getRecentCommits(15),
   ]);
 
   const clan = CLAN_CORE_SLUGS.map((slug) =>
@@ -274,6 +276,60 @@ export default async function Home() {
       </section>
 
       {/* ===================================================================
+          4.5 ACTOS DE LA TRIBU
+          =================================================================== */}
+      {commits.length > 0 && (
+        <section className="border-t border-border/50">
+          <div className="mx-auto max-w-6xl px-4 py-16 sm:py-24">
+            <div className="mb-10 max-w-2xl">
+              <Badge variant="outline" className="mb-3 text-xs">
+                Novedades
+              </Badge>
+              <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl md:text-4xl">
+                Actos de la tribu
+              </h2>
+              <p className="mt-4 text-base leading-relaxed text-muted-foreground sm:text-lg">
+                Cada gesto humano que mejora el sistema queda registrado acá.
+                Esto no es un changelog técnico — es energía cargando los
+                cristales.
+              </p>
+            </div>
+
+            <ul
+              className="flex snap-x snap-mandatory gap-4 overflow-x-auto pb-3 sm:grid sm:snap-none sm:grid-cols-2 sm:gap-4 sm:overflow-visible sm:pb-0"
+              aria-label="Últimos actos de la tribu"
+            >
+              {commits.map((c) => (
+                <li
+                  key={c.hash}
+                  className="min-w-[85%] shrink-0 snap-start sm:min-w-0 sm:shrink"
+                >
+                  <ActoCard commit={c} />
+                </li>
+              ))}
+            </ul>
+
+            <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm">
+              <a
+                href="https://github.com/Mazelabcl/pax-os"
+                target="_blank"
+                rel="noreferrer noopener"
+                className="font-medium text-fuchsia-200 transition-colors hover:text-fuchsia-100"
+              >
+                Repo público en GitHub ↗
+              </a>
+              <Link
+                href="/cambios"
+                className="font-medium text-fuchsia-200 transition-colors hover:text-fuchsia-100"
+              >
+                Ver changelog completo →
+              </Link>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* ===================================================================
           5. LA HISTORIA — 12 EPISODIOS
           =================================================================== */}
       <section className="border-t border-border/50">
@@ -406,6 +462,67 @@ export default async function Home() {
 // =============================================================================
 // Subcomponentes
 // =============================================================================
+
+function ActoCard({ commit }: { commit: RecentCommit }) {
+  // Glyph + color por tipo de commit. Usamos caracteres unicode finos en lugar
+  // de SVGs/emojis para mantener el tono Pax (basalt + jade + amber).
+  const glyph =
+    commit.kind === "feat" ? "⊕" : commit.kind === "fix" ? "⌬" : "·";
+  const glyphCls =
+    commit.kind === "feat"
+      ? "text-emerald-300"
+      : commit.kind === "fix"
+        ? "text-amber-300"
+        : "text-muted-foreground";
+  const labelCls =
+    commit.kind === "feat"
+      ? "border-emerald-500/40 text-emerald-200"
+      : commit.kind === "fix"
+        ? "border-amber-500/40 text-amber-200"
+        : "border-border/60 text-muted-foreground";
+  const label =
+    commit.kind === "feat"
+      ? "Aporte"
+      : commit.kind === "fix"
+        ? "Reparación"
+        : "Mantención";
+
+  return (
+    <article className="flex h-full flex-col gap-3 rounded-xl border border-border/60 bg-card/50 p-5 transition-colors hover:border-fuchsia-500/40 hover:bg-fuchsia-500/5">
+      <header className="flex items-center justify-between gap-3">
+        <span
+          className={
+            "inline-flex items-center gap-2 font-mono text-xs " + glyphCls
+          }
+          aria-hidden
+        >
+          <span className="text-base leading-none">{glyph}</span>
+          <span>{commit.hash}</span>
+        </span>
+        <Badge
+          variant="outline"
+          className={
+            "text-[10px] font-normal uppercase tracking-wider " + labelCls
+          }
+        >
+          {label}
+        </Badge>
+      </header>
+
+      <h3 className="text-base font-semibold tracking-tight text-foreground sm:text-lg">
+        {commit.title}
+      </h3>
+
+      <p className="text-sm leading-relaxed text-muted-foreground">
+        {commit.narrative}
+      </p>
+
+      <footer className="mt-auto pt-2 text-xs text-muted-foreground/80">
+        {commit.relative}
+      </footer>
+    </article>
+  );
+}
 
 function ComoCard({
   numero,
