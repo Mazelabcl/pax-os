@@ -49,6 +49,8 @@ export interface EpisodioDetalle extends EpisodioOutline {
   shots: StoryboardShot[];
   /** Imagen "hero" recomendada para el episodio (primera shot disponible). */
   heroImage: string | null;
+  /** Página cómic compilada (cap-N-comic-page.png) si existe. */
+  comicPage: string | null;
 }
 
 // =============================================================================
@@ -78,6 +80,7 @@ export async function getEpisodioDetalle(
     shots.find((s) => s.shotNumber === null)?.image ?? // companion hero
     shots[0]?.image ??
     null;
+  const comicPage = await findComicPage(numero);
 
   return {
     ...ep,
@@ -86,6 +89,7 @@ export async function getEpisodioDetalle(
     cliffhanger,
     shots,
     heroImage,
+    comicPage,
   };
 }
 
@@ -210,42 +214,80 @@ const STORYBOARDS_DIR = path.join(
 import { promises as fs } from "node:fs";
 
 /**
- * Lista los shots disponibles para un capítulo. Lee tanto los .png en
- * `public/images/storyboards/` como los .md companions en `content/storyboards/`
- * para sacar metadatos.
+ * Lista los shots disponibles para un capítulo. Lee los .png en
+ * `public/images/storyboards/cap-N/` (subcarpeta canon) y .md companions
+ * en `content/storyboards/cap-N/` para sacar metadatos.
  *
- * Ordenamiento: primero los `cap-N-shot-XX-...` por número de shot,
- * después los companion "hero" sin número (cap-N-hook-..., cap-N-clan-council, etc.).
+ * Fallback: si la subcarpeta `cap-N/` no existe, lee del dir plano viejo.
+ *
+ * Ordenamiento estricto: por número de shot ascendente. Los companions sin
+ * número (hero, comic-page) van al final.
  */
 export async function listStoryboardShots(
   cap: number,
 ): Promise<StoryboardShot[]> {
-  const dir = path.join(PUBLIC_DIR, "images", "storyboards");
-  let entries: string[] = [];
+  const subdir = path.join(PUBLIC_DIR, "images", "storyboards", `cap-${cap}`);
+  const flatdir = path.join(PUBLIC_DIR, "images", "storyboards");
+  const prefix = `cap-${cap}-`;
+
+  type Entry = { file: string; image: string; mdDir: string };
+  const found: Entry[] = [];
+
+  // 1) Preferimos la subcarpeta cap-N/ (canon nuevo).
   try {
-    entries = await fs.readdir(dir);
+    const entries = await fs.readdir(subdir);
+    const subMdDir = path.join(STORYBOARDS_DIR, `cap-${cap}`);
+    for (const f of entries) {
+      if (!f.toLowerCase().endsWith(".png")) continue;
+      if (!f.startsWith(prefix)) continue;
+      // Excluir comic-page del listado de shots.
+      if (/-comic-page\.png$/i.test(f)) continue;
+      found.push({
+        file: f,
+        image: `/images/storyboards/cap-${cap}/${f}`,
+        mdDir: subMdDir,
+      });
+    }
   } catch {
-    return [];
+    // sin subcarpeta — fallback al dir plano abajo.
   }
 
-  const prefix = `cap-${cap}-`;
-  const png = entries
-    .filter((f) => f.toLowerCase().endsWith(".png") && f.startsWith(prefix))
-    .sort();
+  // 2) Fallback / merge: dir plano (legacy hero companions sueltos).
+  //    Solo agregamos los que no estén ya en la subcarpeta y no sean comic-page.
+  try {
+    const flatEntries = await fs.readdir(flatdir);
+    const known = new Set(found.map((e) => e.file));
+    for (const f of flatEntries) {
+      if (!f.toLowerCase().endsWith(".png")) continue;
+      if (!f.startsWith(prefix)) continue;
+      if (/-comic-page\.png$/i.test(f)) continue;
+      if (known.has(f)) continue;
+      // Si ya tenemos shots numerados de la subcarpeta, ignoramos los
+      // hero antiguos del dir plano (no son source of truth).
+      if (found.length > 0 && /^cap-\d+-shot-\d+-/.test(f)) {
+        // imposible — ya estaría en known. defensivo.
+        continue;
+      }
+      found.push({
+        file: f,
+        image: `/images/storyboards/${f}`,
+        mdDir: STORYBOARDS_DIR,
+      });
+    }
+  } catch {
+    // ignorar
+  }
 
   const shots: StoryboardShot[] = [];
-  for (const file of png) {
-    const slug = file.replace(/\.png$/i, "");
-    const image = `/images/storyboards/${file}`;
-    const meta = await readShotMeta(slug);
-
-    // shotNumber: cap-N-shot-XX-...
+  for (const entry of found) {
+    const slug = entry.file.replace(/\.png$/i, "");
+    const meta = await readShotMeta(slug, entry.mdDir);
     const shotMatch = /^cap-\d+-shot-(\d+)-/.exec(slug);
     const shotNumber = shotMatch ? parseInt(shotMatch[1], 10) : null;
 
     shots.push({
       slug,
-      image,
+      image: entry.image,
       shotNumber,
       personajes: meta.personajes,
       plano: meta.plano,
@@ -255,7 +297,7 @@ export async function listStoryboardShots(
     });
   }
 
-  // Orden: shots numerados primero por número, luego companions sin número.
+  // Orden: shots numerados ascendente, después companions sin número alfabético.
   shots.sort((a, b) => {
     if (a.shotNumber !== null && b.shotNumber !== null) {
       return a.shotNumber - b.shotNumber;
@@ -268,6 +310,34 @@ export async function listStoryboardShots(
   return shots;
 }
 
+/**
+ * Devuelve el path público de la página cómic compilada del cap, si existe.
+ * Busca primero en `public/images/storyboards/cap-N/cap-N-comic-page.png`
+ * y luego en el dir plano legado.
+ */
+async function findComicPage(cap: number): Promise<string | null> {
+  const subPath = path.join(
+    PUBLIC_DIR,
+    "images",
+    "storyboards",
+    `cap-${cap}`,
+    `cap-${cap}-comic-page.png`,
+  );
+  if (existsSync(subPath)) {
+    return `/images/storyboards/cap-${cap}/cap-${cap}-comic-page.png`;
+  }
+  const flatPath = path.join(
+    PUBLIC_DIR,
+    "images",
+    "storyboards",
+    `cap-${cap}-comic-page.png`,
+  );
+  if (existsSync(flatPath)) {
+    return `/images/storyboards/cap-${cap}-comic-page.png`;
+  }
+  return null;
+}
+
 interface ShotMeta {
   titulo: string;
   caption: string;
@@ -276,8 +346,10 @@ interface ShotMeta {
   mood: string;
 }
 
-async function readShotMeta(slug: string): Promise<ShotMeta> {
-  const mdPath = path.join(STORYBOARDS_DIR, `${slug}.md`);
+async function readShotMeta(
+  slug: string,
+  mdDir: string = STORYBOARDS_DIR,
+): Promise<ShotMeta> {
   const fallback: ShotMeta = {
     titulo: slug,
     caption: "",
@@ -285,29 +357,43 @@ async function readShotMeta(slug: string): Promise<ShotMeta> {
     plano: "",
     mood: "",
   };
-  if (!existsSync(mdPath)) return fallback;
-  try {
-    const raw = await fs.readFile(mdPath, "utf8");
-    return parseShotMeta(raw, slug);
-  } catch {
-    return fallback;
+  // Buscar en el dir indicado, con fallbacks razonables.
+  const candidates = [
+    path.join(mdDir, `${slug}.md`),
+    path.join(STORYBOARDS_DIR, `${slug}.md`),
+  ];
+  for (const candidate of candidates) {
+    if (!existsSync(candidate)) continue;
+    try {
+      const raw = await fs.readFile(candidate, "utf8");
+      return parseShotMeta(raw, slug);
+    } catch {
+      // continuar con el siguiente candidato
+    }
   }
+  return fallback;
 }
 
 function parseShotMeta(raw: string, slug: string): ShotMeta {
-  // Frontmatter style (cap-1-hook-..., cap-2-fresco-...)
+  // Frontmatter style (cap-1-shot-XX-..., cap-1-hook-..., cap-2-fresco-...)
   const fm = raw.match(/^---\n([\s\S]*?)\n---/);
   let titulo = slug;
   if (fm) {
     const titleMatch = fm[1].match(/^title:\s*"?([^"\n]+)"?/m);
-    if (titleMatch) titulo = titleMatch[1].trim();
+    if (titleMatch) {
+      titulo = titleMatch[1].trim();
+    } else {
+      // shot YAML sin title: tomar el H1 que sigue al frontmatter.
+      const h1 = raw.match(/^#\s+(.+)$/m);
+      if (h1) titulo = h1[1].trim();
+    }
   } else {
     // Plain markdown (cap-2-shot-XX-..., generated by python script)
     const h1 = raw.match(/^#\s+(.+)$/m);
     if (h1) titulo = h1[1].trim();
   }
 
-  // Personajes: linea "**Personajes en frame:**" o YAML "## Personajes en frame"
+  // Personajes: línea "**Personajes en frame:**" o sección "## Personajes en frame"
   let personajes = "";
   const persLine = raw.match(/\*\*Personajes en frame:\*\*\s*(.+)/);
   if (persLine) {
@@ -325,46 +411,84 @@ function parseShotMeta(raw: string, slug: string): ShotMeta {
     }
   }
 
-  // Caption corta = beat narrativo o composición
-  const beat = raw.match(
-    /##\s+Beat narrativo[^\n]*\n+([^\n]+(?:\n[^\n#]+)?)/,
-  );
+  // Caption corta = "Accion principal" (cap-1) o primera oración tras SCENE: (cap-2).
   let caption = "";
-  if (beat) {
-    caption = beat[1].split(/\.\s/).slice(0, 1).join(". ").trim();
-    if (caption && !caption.endsWith(".")) caption += ".";
+  const accionSection = raw.match(
+    /##\s+Acci[oó]n principal\s*\n+([\s\S]*?)(?=\n##|\n---|$)/i,
+  );
+  if (accionSection) {
+    caption = firstSentence(accionSection[1]);
+  } else {
+    const beat = raw.match(
+      /##\s+Beat narrativo[^\n]*\n+([^\n]+(?:\n[^\n#]+)?)/,
+    );
+    if (beat) caption = firstSentence(beat[1]);
+  }
+  // Cap-2: extraer del SCENE dentro del prompt si todavía no tenemos caption.
+  if (!caption) {
+    const scene = raw.match(/SCENE:\s*([^\n]+)/i);
+    if (scene) caption = firstSentence(scene[1]);
   }
 
-  // Plano: extraer "lens"/"angle" desde scene description del prompt o composición
+  // Plano: cap-1 tiene "## Plano y camara" con bullets; cap-2 trae "SCENE: ...".
   let plano = "";
-  const compoSection = raw.match(
-    /##\s+Composición\s*\n+([\s\S]*?)(?=\n##|\n---|$)/,
+  const planoSection = raw.match(
+    /##\s+Plano y c[aá]mara\s*\n+([\s\S]*?)(?=\n##|\n---|$)/i,
   );
-  if (compoSection) {
-    const txt = compoSection[1].trim().split(/\.\s/)[0];
-    plano = txt.trim();
-    if (plano && !plano.endsWith(".")) plano += ".";
-  } else {
-    // Try shot files: SCENE: ... lens, angle
-    const sceneMatch = raw.match(/SCENE:\s*([^\.\n]+(?:[^\.\n]*lens[^\.\n]*)?)/i);
+  if (planoSection) {
+    // Concatena los bullets "Plano:", "Angulo:", "Lente:" en una línea legible.
+    const bullets = planoSection[1]
+      .split(/\r?\n/)
+      .map((l) => l.replace(/^[-*]\s+/, "").trim())
+      .filter(Boolean);
+    const useful = bullets.filter((b) =>
+      /^(plano|[aá]ngulo|lente|movimiento)\b/i.test(b),
+    );
+    plano = (useful.length ? useful : bullets).slice(0, 3).join(" · ");
+  }
+  if (!plano) {
+    const compoSection = raw.match(
+      /##\s+Composici[oó]n\s*\n+([\s\S]*?)(?=\n##|\n---|$)/i,
+    );
+    if (compoSection) {
+      plano = firstSentence(compoSection[1]);
+    }
+  }
+  if (!plano) {
+    // Cap-2 estilo SCENE.
+    const sceneMatch = raw.match(/SCENE:\s*([^\.\n]+\.?)/i);
     if (sceneMatch) plano = sceneMatch[1].trim();
   }
 
-  // Mood: paleta dominante o iluminación
+  // Mood: "## Tono" (cap-1), "## Paleta dominante" (alt), o fallback "Mood:".
   let mood = "";
-  const paletteSection = raw.match(
-    /##\s+Paleta dominante\s*\n+([\s\S]*?)(?=\n##|\n---|$)/,
+  const tonoSection = raw.match(
+    /##\s+Tono\s*\n+([\s\S]*?)(?=\n##|\n---|$)/i,
   );
-  if (paletteSection) {
-    mood = paletteSection[1]
-      .replace(/[#`]/g, "")
-      .split(/\.\s/)[0]
-      .trim();
-    if (mood.length > 180) mood = mood.slice(0, 177) + "...";
-  } else {
+  if (tonoSection) {
+    mood = firstSentence(tonoSection[1]);
+  }
+  if (!mood) {
+    const paletteSection = raw.match(
+      /##\s+Paleta dominante\s*\n+([\s\S]*?)(?=\n##|\n---|$)/i,
+    );
+    if (paletteSection) {
+      mood = paletteSection[1].replace(/[#`]/g, "").split(/\.\s/)[0].trim();
+    }
+  }
+  if (!mood) {
     const moodMatch = raw.match(/Mood:\s*([^.\n]+)/i);
     if (moodMatch) mood = moodMatch[1].trim();
   }
+  if (mood.length > 200) mood = mood.slice(0, 197) + "…";
 
   return { titulo, caption, personajes, plano, mood };
+}
+
+function firstSentence(block: string): string {
+  const txt = block.trim().replace(/\s+/g, " ");
+  if (!txt) return "";
+  const m = txt.match(/^(.+?[\.!?])(?:\s|$)/);
+  const out = m ? m[1] : txt;
+  return out.length > 240 ? out.slice(0, 237) + "…" : out;
 }

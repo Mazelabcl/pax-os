@@ -52,13 +52,14 @@ export default async function EpisodioDetallePage({ params }: PageProps) {
   const previo = outline.find((e) => e.numero === numero - 1);
   const siguiente = outline.find((e) => e.numero === numero + 1);
 
-  // Hero shot: primer companion sin shotNumber, fallback al primer shot numerado.
+  // Hero: si hay companion sin shotNumber lo usamos; si no, primer shot numerado.
   const heroShot =
     detalle.shots.find((s) => s.shotNumber === null) ?? detalle.shots[0];
-  const restoShots = detalle.shots.filter((s) => s !== heroShot);
 
-  // Distribuir beats con shots intercalados (1 shot cada ~1-2 beats).
-  const beatsConShots = interleaveBeatsAndShots(detalle.beats, restoShots);
+  // Storyboard secuencial: SOLO shots numerados, en orden estricto 01, 02, 03...
+  const shotsOrdenados = detalle.shots
+    .filter((s) => s.shotNumber !== null)
+    .sort((a, b) => (a.shotNumber ?? 0) - (b.shotNumber ?? 0));
 
   return (
     <div className="flex flex-col">
@@ -130,31 +131,49 @@ export default async function EpisodioDetallePage({ params }: PageProps) {
       )}
 
       {/* =====================================================================
-          BEATS + STORYBOARDS INTERCALADOS
+          STORYBOARD SECUENCIAL — orden estricto por número de shot.
+          Una imagen por fila. Caption con plano/composición.
           ===================================================================== */}
-      {tieneDetalle && beatsConShots.length > 0 && (
+      {tieneDetalle && shotsOrdenados.length > 0 && (
         <section className="mx-auto w-full max-w-3xl px-4 py-12 sm:py-16">
-          <h2 className="mb-6 text-xl font-semibold tracking-tight sm:text-2xl">
-            Cómo va el episodio
-          </h2>
-          <div className="flex flex-col gap-8">
-            {beatsConShots.map((item, i) => {
-              if (item.kind === "beat") {
-                return (
-                  <p
-                    key={`beat-${i}`}
-                    className="text-base leading-relaxed text-foreground/90 sm:text-lg"
-                  >
-                    {item.text}
-                  </p>
-                );
-              }
-              return <ShotFigure key={item.shot.slug} shot={item.shot} />;
-            })}
+          <div className="mb-6 flex items-baseline justify-between gap-4">
+            <h2 className="text-xl font-semibold tracking-tight sm:text-2xl">
+              Storyboard
+            </h2>
+            <span className="text-xs uppercase tracking-wider text-muted-foreground">
+              {shotsOrdenados.length} shots · orden secuencial
+            </span>
+          </div>
+          <div className="flex flex-col gap-10">
+            {shotsOrdenados.map((shot) => (
+              <ShotFigure key={shot.slug} shot={shot} />
+            ))}
           </div>
         </section>
       )}
 
+      {/* =====================================================================
+          BEATS NARRATIVOS — texto limpio, sin imágenes intercaladas.
+          ===================================================================== */}
+      {tieneDetalle && detalle.beats.length > 0 && (
+        <section className="mx-auto w-full max-w-3xl px-4 pb-12 sm:pb-16">
+          <h2 className="mb-6 text-xl font-semibold tracking-tight sm:text-2xl">
+            Beats narrativos
+          </h2>
+          <ul className="flex flex-col gap-4">
+            {detalle.beats.map((b, i) => (
+              <li
+                key={i}
+                className="text-base leading-relaxed text-foreground/90 sm:text-lg"
+              >
+                {b}
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
+      {/* Caps sin storyboard: solo outline. */}
       {!tieneDetalle && detalle.beats.length > 0 && (
         <section className="mx-auto w-full max-w-3xl px-4 py-12 sm:py-16">
           <div className="mb-4 rounded-lg border border-border/50 bg-muted/30 p-4 text-sm text-muted-foreground">
@@ -178,12 +197,12 @@ export default async function EpisodioDetallePage({ params }: PageProps) {
       )}
 
       {/* =====================================================================
-          DETALLES TÉCNICOS
+          TABLA TÉCNICA
           ===================================================================== */}
-      {tieneDetalle && detalle.shots.length > 0 && (
+      {tieneDetalle && shotsOrdenados.length > 0 && (
         <section className="mx-auto w-full max-w-5xl px-4 py-12 sm:py-16">
           <h2 className="mb-6 text-xl font-semibold tracking-tight sm:text-2xl">
-            Detalles técnicos
+            Tabla técnica
           </h2>
           <div className="overflow-x-auto rounded-xl border border-border/60">
             <table className="w-full min-w-[640px] divide-y divide-border/60 text-left text-sm">
@@ -204,7 +223,7 @@ export default async function EpisodioDetallePage({ params }: PageProps) {
                 </tr>
               </thead>
               <tbody className="divide-y divide-border/60">
-                {detalle.shots.map((s) => (
+                {shotsOrdenados.map((s) => (
                   <tr key={s.slug} className="align-top">
                     <td className="px-3 py-3 font-mono text-xs">
                       {s.shotNumber !== null
@@ -245,13 +264,37 @@ export default async function EpisodioDetallePage({ params }: PageProps) {
       )}
 
       {/* =====================================================================
-          COMIC PAGE PLACEHOLDER
+          PÁGINA CÓMIC — cierre full-width si está disponible.
           ===================================================================== */}
-      {tieneDetalle && (
+      {tieneDetalle && detalle.comicPage && (
+        <section className="mx-auto w-full max-w-4xl px-4 py-12 sm:py-16">
+          <div className="mb-4 flex items-baseline justify-between gap-4">
+            <h2 className="text-xl font-semibold tracking-tight sm:text-2xl">
+              Página cómic
+            </h2>
+            <span className="text-xs uppercase tracking-wider text-muted-foreground">
+              Compilado del cap
+            </span>
+          </div>
+          <div className="overflow-hidden rounded-xl border border-border/60 bg-muted/30 shadow-2xl">
+            <Image
+              src={detalle.comicPage}
+              alt={`Página cómic episodio ${numero}`}
+              width={2048}
+              height={2730}
+              sizes="(max-width: 768px) 100vw, 1024px"
+              className="h-auto w-full"
+            />
+          </div>
+        </section>
+      )}
+
+      {/* Caps sin comic page: placeholder discreto. */}
+      {tieneDetalle && !detalle.comicPage && (
         <section className="mx-auto w-full max-w-3xl px-4 py-12">
           <div className="rounded-xl border border-dashed border-border/60 bg-muted/20 p-6 text-center">
             <div className="mb-2 text-xs uppercase tracking-wider text-muted-foreground">
-              Comic page
+              Página cómic
             </div>
             <p className="text-sm text-muted-foreground">
               En compilación. Cuando esté lista, vivirá acá.
@@ -301,8 +344,18 @@ export default async function EpisodioDetallePage({ params }: PageProps) {
 // =============================================================================
 
 function ShotFigure({ shot }: { shot: StoryboardShot }) {
+  const shotLabel =
+    shot.shotNumber !== null
+      ? `Shot ${String(shot.shotNumber).padStart(2, "0")}`
+      : null;
+  // Caption técnica: shotLabel · plano · personajes (si los hay)
+  const techParts = [shotLabel, shot.plano].filter(Boolean) as string[];
+  const personajesLine = shot.personajes && shot.personajes.length > 0
+    ? shot.personajes
+    : null;
+
   return (
-    <figure className="flex flex-col gap-2">
+    <figure className="flex flex-col gap-3">
       <div className="overflow-hidden rounded-xl border border-border/60 bg-muted/30 shadow-2xl">
         <Image
           src={shot.image}
@@ -313,11 +366,26 @@ function ShotFigure({ shot }: { shot: StoryboardShot }) {
           className="h-auto w-full"
         />
       </div>
-      {(shot.plano || shot.mood) && (
-        <figcaption className="text-xs italic leading-relaxed text-muted-foreground sm:text-sm">
-          {[shot.plano, shot.mood].filter(Boolean).join(" · ")}
-        </figcaption>
-      )}
+      <figcaption className="flex flex-col gap-1.5">
+        {techParts.length > 0 && (
+          <span className="text-[11px] font-mono uppercase tracking-wider text-muted-foreground">
+            {techParts.join(" · ")}
+          </span>
+        )}
+        {shot.caption && (
+          <span className="text-sm leading-relaxed text-foreground/85 sm:text-base">
+            {shot.caption}
+          </span>
+        )}
+        {personajesLine && (
+          <span className="text-xs italic text-muted-foreground">
+            {personajesLine}
+          </span>
+        )}
+        {shot.mood && (
+          <span className="text-xs text-muted-foreground/80">{shot.mood}</span>
+        )}
+      </figcaption>
     </figure>
   );
 }
@@ -368,45 +436,4 @@ function NavLinkCard({
       {content}
     </Link>
   );
-}
-
-// =============================================================================
-// Helpers
-// =============================================================================
-
-type BeatItem =
-  | { kind: "beat"; text: string }
-  | { kind: "shot"; shot: StoryboardShot };
-
-/**
- * Intercala beats narrativos con shots disponibles.
- * Estrategia simple: distribuye los shots uniformemente entre los beats —
- * un shot cada `step` beats, donde step ≈ ceil(beats/shots).
- */
-function interleaveBeatsAndShots(
-  beats: string[],
-  shots: StoryboardShot[],
-): BeatItem[] {
-  if (beats.length === 0) {
-    return shots.map((s) => ({ kind: "shot", shot: s }) as BeatItem);
-  }
-  if (shots.length === 0) {
-    return beats.map((b) => ({ kind: "beat", text: b }) as BeatItem);
-  }
-
-  const step = Math.max(1, Math.ceil(beats.length / shots.length));
-  const out: BeatItem[] = [];
-  let shotIdx = 0;
-  for (let i = 0; i < beats.length; i++) {
-    out.push({ kind: "beat", text: beats[i] });
-    // Tras cada `step` beats (al final de un grupo), insertamos un shot si queda.
-    if ((i + 1) % step === 0 && shotIdx < shots.length) {
-      out.push({ kind: "shot", shot: shots[shotIdx++] });
-    }
-  }
-  // Pegar shots restantes al final.
-  while (shotIdx < shots.length) {
-    out.push({ kind: "shot", shot: shots[shotIdx++] });
-  }
-  return out;
 }
