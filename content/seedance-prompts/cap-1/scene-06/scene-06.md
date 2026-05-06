@@ -27,7 +27,7 @@ Subject: KZ, the smallest Pax cyclops of the clan, approximately one meter tall,
 
 Action: KZ steps forward slowly with quiet wonder in his single eye, lifting his right four-fingered hand toward the dim crystal stalagmite that towers beside him.
 
-Camera: Medium-close three-quarter angle, locked-off, slight low angle, 50mm normal lens.
+Camera: Medium-close three-quarter angle, locked-off, slight low angle, 50mm normal lens. Composition and pose follow @Image3 storyboard reference.
 
 Environment: A sector of the Pax central crystal chamber where a tall dim crystal stalagmite rises, reference @Image2 for crystal architecture.
 

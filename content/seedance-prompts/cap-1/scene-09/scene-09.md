@@ -27,7 +27,7 @@ Subject: Byte, adult Pax cyclops with one central eye, turquoise-teal skin, hood
 
 Action: Byte holds the holographic plate steady, a softly luminous cyan-magenta map of tunnel segments projects upward from it and rotates slowly, his single eye narrows in concentration.
 
-Camera: Medium close-up, three-quarter angle, locked-off, 50mm normal lens, shallow depth of field on the holographic glow.
+Camera: Medium close-up, three-quarter angle, locked-off, 50mm normal lens, shallow depth of field on the holographic glow. Composition and pose follow @Image3 storyboard reference.
 
 Environment: A darker corner of the Pax central crystal chamber where the holographic light reads strongest, reference @Image2 for environmental darkness.
 

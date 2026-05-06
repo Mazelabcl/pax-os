@@ -28,7 +28,7 @@ Subject: Wiz, an elder Pax cyclops with one central eye, white beard, deep purpl
 
 Action: Wiz raises his right hand toward the floating map and gestures slowly, his cloak shifting; the constellation points pulse faintly in response.
 
-Camera: Medium-wide shot, locked-off, eye-level, 35mm normal lens, deep focus.
+Camera: Medium-wide shot, locked-off, eye-level, 35mm normal lens, deep focus. Composition and pose follow @Image3 storyboard reference.
 
 Environment: Subterranean Pax central crystal chamber with stalagmites in the background, reference @Image2 for spatial context.
 

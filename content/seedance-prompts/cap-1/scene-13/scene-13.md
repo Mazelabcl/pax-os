@@ -24,7 +24,7 @@ Jiggy escala el ducto rocoso vertical. Arriba, un disco de luz sodium-orange fil
 ## Prompt copy-paste (Seedance 2)
 
 ```
-Subject: Jiggy, young adult Pax cyclops with one central eye, turquoise-teal skin, magenta leather harness with bone toggles, leather satchel, climbing a vertical rocky shaft. He holds a pale-cyan empty crystal in one four-fingered hand. Same identity as @Image1: one consistent identity. Keep harness and satchel identical to reference, no extra accessories.
+Subject: Jiggy, young adult Pax cyclops with one central eye, turquoise-teal skin, magenta leather harness with bone toggles, leather satchel, climbing a vertical rocky shaft. He holds a pale-cyan empty crystal (matching @Image3 design exactly) in one four-fingered hand. Same identity as @Image1: one consistent identity. Keep harness and satchel identical to reference, no extra accessories.
 
 Action: Jiggy braces against the rocky shaft walls and climbs slowly upward, his single eye lifting to look up at the distant disc of warm sodium-orange light filtering through a circular street manhole grate far above.
 

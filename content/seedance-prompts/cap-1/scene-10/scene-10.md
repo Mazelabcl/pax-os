@@ -27,7 +27,7 @@ Subject: Wiz, an elder Pax cyclops, approximately 2.8-head proportions, deep pur
 
 Action: Wiz slowly closes his single central eye into one curved zen line (a single eyelid, not two), inhales deeply, his hands settle on the staff, the cloak shifts barely.
 
-Camera: Medium close-up, locked-off with implied very slow push-in, eye level, 85mm telephoto for intimacy, shallow depth of field.
+Camera: Medium close-up, locked-off with implied very slow push-in, eye level, 85mm telephoto for intimacy, shallow depth of field. Composition and closed-eye pose follow @Image3 storyboard reference.
 
 Environment: Pax central crystal chamber, magenta crystal backlight glowing softly behind him, reference @Image2 for crystal background.
 

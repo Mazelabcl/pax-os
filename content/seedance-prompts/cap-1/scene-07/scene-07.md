@@ -27,7 +27,7 @@ Subject: KZ, the smallest Pax cyclops, with one central eye open in soft wonder,
 
 Action: KZ holds his palm gently still on the crystal as a small firefly-like magenta glow blooms warmly at the contact point and softly pulses, his single eye widening with quiet recognition.
 
-Camera: Close-up, locked-off with very subtle push-in implied, eye level with KZ, 50mm normal lens, shallow depth of field.
+Camera: Close-up, locked-off with very subtle push-in implied, eye level with KZ, 50mm normal lens, shallow depth of field. Composition and pose follow @Image3 storyboard reference.
 
 Environment: In front of the dim crystal of the central chamber, soft jade-magenta haze in the background, reference @Image2 for crystal facets.
 

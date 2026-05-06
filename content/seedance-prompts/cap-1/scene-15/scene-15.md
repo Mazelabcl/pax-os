@@ -23,7 +23,7 @@ Jiggy levanta la tapa de alcantarilla y asoma la cabeza. Su unico ojo turquesa e
 ## Prompt copy-paste (Seedance 2)
 
 ```
-Subject: Jiggy, young adult Pax cyclops with one central eye that is large, turquoise iris, magenta leather harness with bone toggles, leather satchel, slowly lifting a circular street manhole cover and peeking his head out into a Latin American street at night. He holds a pale-cyan empty crystal in one four-fingered hand. Same identity as @Image1: one consistent identity. Keep harness, satchel and skin tone identical to reference.
+Subject: Jiggy, young adult Pax cyclops with one central eye that is large, turquoise iris, magenta leather harness with bone toggles, leather satchel, slowly lifting a circular street manhole cover and peeking his head out into a Latin American street at night. He holds a pale-cyan empty crystal (matching @Image3 design exactly) in one four-fingered hand. Same identity as @Image1: one consistent identity. Keep harness, satchel and skin tone identical to reference.
 
 Action: Jiggy lifts the manhole cover a few inches and slowly raises his head, his single large turquoise eye widening with awe as he gazes upward at the unfamiliar street; the pale-cyan crystal in his hand catches a warm sodium-orange reflection.
 

@@ -28,7 +28,7 @@ Subject: Onyx, athletic adult Pax cyclops about 1.7 meters tall, with one centra
 
 Action: Onyx stands with calm determination, his left four-fingered hand resting on his hip and his right hand extended slightly forward in an open palm gesture of proposal, his single eye fixed forward steady.
 
-Camera: Medium shot, locked-off, slight low angle for grounded heroic read, 50mm normal lens.
+Camera: Medium shot, locked-off, slight low angle for grounded heroic read, 50mm normal lens. Composition and pose follow @Image3 storyboard reference.
 
 Environment: Pax central crystal chamber, dim magenta crystals out of focus in the background, reference @Image2 for atmosphere.
 

@@ -25,7 +25,7 @@ Jiggy corre adelantado al resto antes de que Wiz termine la frase. Cuerpo inclin
 ```
 Subject: Jiggy, young adult Pax cyclops with one central eye, turquoise-teal skin, magenta leather harness with bone toggles, leather satchel at his hip, holding a small pale-cyan empty crystal firmly in his left four-fingered hand. Same identity as @Image1: one consistent identity. Keep facial proportions, harness, and satchel identical to references. Do not add accessories not in @Image1.
 
-Action: Jiggy sprints forward with body leaning ahead, feet barely touching the ground, the pale-cyan crystal held tight in his clenched hand against his chest, his single eye fixed forward.
+Action: Jiggy sprints forward with body leaning ahead, feet barely touching the ground, the pale-cyan crystal (matching @Image3 design exactly) held tight in his clenched hand against his chest, his single eye fixed forward.
 
 Camera: Medium-wide tracking shot, push-in dynamic implied moving with him, slight low angle, 35mm wide-normal lens, motion-blurred background.
 

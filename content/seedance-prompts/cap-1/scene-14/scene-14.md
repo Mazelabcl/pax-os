@@ -27,7 +27,7 @@ Subject: An elder wrinkled four-fingered Pax hand belonging to Wiz, sliding a ti
 
 Action: The hand slowly slides the dusty-gold spark-crystal into the hidden cloak pocket, the crystal pulses once warmly as it disappears into the fabric fold, no other movement.
 
-Camera: Extreme close-up, locked-off, slight three-quarter angle on the hand, macro 100mm lens feel, very shallow depth of field.
+Camera: Extreme close-up, locked-off, slight three-quarter angle on the hand, macro 100mm lens feel, very shallow depth of field. Composition and pose follow @Image3 storyboard reference.
 
 Environment: Background of the Pax central crystal chamber softly out of focus, only velvet purple cloak texture and the hand are sharp.
 
