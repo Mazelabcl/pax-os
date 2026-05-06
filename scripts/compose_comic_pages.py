@@ -242,6 +242,341 @@ CAP_2_PANELS = [
 
 
 # ---------------------------------------------------------------------------
+# CAPS 3-12 — Comic page panels
+# Cada cap tiene exactamente 7 panels que cuentan el arc:
+# [hook, setup, catalizador, desarrollo, climax, accion, cliffhanger]
+# Filenames vienen del script gen_caps_3_to_12_async.py
+# ---------------------------------------------------------------------------
+
+CAP_3_PANELS = [
+    {"file": "cap-3-shot-01-manhole-eye-peek.png", "shot": "01", "beat": "HOOK 0:00",
+     "plano": "Extreme close-up", "angulo": "Slight low", "lente": "Macro 100mm",
+     "movimiento": "Locked-off",
+     "mood": "Ojo turquesa de Jiggy mira por la rendija de una alcantarilla. Adrenalina del primer contacto."},
+    {"file": "cap-3-shot-02-jiggy-tiny-vs-city.png", "shot": "02", "beat": "SETUP",
+     "plano": "Wide-low", "angulo": "Muy bajo", "lente": "24mm",
+     "movimiento": "Locked-off",
+     "mood": "Jiggy pequeno bajo torres y cables. Asombro y miedo justo."},
+    {"file": "cap-3-shot-03-symbol-trail-collage.png", "shot": "03", "beat": "CATALIZADOR",
+     "plano": "Medium", "angulo": "Eye-level", "lente": "35mm",
+     "movimiento": "Locked-off",
+     "mood": "El simbolo Pax repetido en stickers, servilletas, tiza. Suelto en la ciudad."},
+    {"file": "cap-3-shot-04-sami-painting-fresh.png", "shot": "04", "beat": "DESARROLLO",
+     "plano": "Medium", "angulo": "3/4", "lente": "50mm",
+     "movimiento": "Locked-off",
+     "mood": "Sami termina de pintar el simbolo. No sabe que lo es."},
+    {"file": "cap-3-shot-05-jiggy-hides-behind-dumpster.png", "shot": "05", "beat": "CLIMAX",
+     "plano": "Medium", "angulo": "Lateral", "lente": "50mm",
+     "movimiento": "Locked-off",
+     "mood": "Jiggy observa a Sami dejar un sandwich a un desconocido sin testigos."},
+    {"file": "cap-3-shot-06-crystal-first-spark.png", "shot": "06", "beat": "ACCION",
+     "plano": "Extreme close-up", "angulo": "Eye-level", "lente": "Macro 100mm",
+     "movimiento": "Locked-off",
+     "mood": "Primera chispa magenta dentro del cristal. El sistema funciona."},
+    {"file": "cap-3-shot-07-cliffhanger-wiz-pockets-spark.png", "shot": "07", "beat": "CLIFFHANGER",
+     "plano": "Medium", "angulo": "Slight low", "lente": "50mm",
+     "movimiento": "Locked-off",
+     "mood": "Wiz guarda en secreto la chispa-ancla dorada. Semilla del arc final."},
+]
+
+CAP_4_PANELS = [
+    {"file": "cap-4-shot-01-balcony-class-pov.png", "shot": "01", "beat": "HOOK 0:00",
+     "plano": "Wide", "angulo": "POV rama", "lente": "35mm",
+     "movimiento": "Locked-off",
+     "mood": "Balcon humilde con pizarra y tres ninos. Sagrado en lo ordinario."},
+    {"file": "cap-4-shot-02-byte-luxa-upside-down.png", "shot": "02", "beat": "SETUP",
+     "plano": "Medium close-up", "angulo": "Canted", "lente": "50mm",
+     "movimiento": "Locked-off",
+     "mood": "Byte y Luxa colgados de cabeza espian la clase. Comica curiosidad."},
+    {"file": "cap-4-shot-03-byte-detects-frequency.png", "shot": "03", "beat": "CATALIZADOR",
+     "plano": "Close-up", "angulo": "Lateral", "lente": "85mm",
+     "movimiento": "Locked-off",
+     "mood": "Byte detecta una frecuencia de energia ordenada. Algo aqui carga."},
+    {"file": "cap-4-shot-04-heriberto-doubt.png", "shot": "04", "beat": "DESARROLLO",
+     "plano": "Medium close-up", "angulo": "Slight low", "lente": "50mm",
+     "movimiento": "Locked-off",
+     "mood": "Don Heriberto al borde de cancelar. Cansado, sin confirmacion."},
+    {"file": "cap-4-shot-05-girl-gives-drawing.png", "shot": "05", "beat": "CLIMAX",
+     "plano": "Medium", "angulo": "Slight low", "lente": "35mm",
+     "movimiento": "Locked-off",
+     "mood": "Una nina le entrega un dibujo. El profesor se queda mirandolo."},
+    {"file": "cap-4-shot-06-byte-crystal-charges.png", "shot": "06", "beat": "ACCION",
+     "plano": "Close-up", "angulo": "Lateral", "lente": "85mm",
+     "movimiento": "Locked-off",
+     "mood": "Cristal de Byte pulsa. Ruca-clase activa, doble carga."},
+    {"file": "cap-4-shot-07-cliffhanger-ant-on-symbol.png", "shot": "07", "beat": "CLIFFHANGER",
+     "plano": "Extreme macro", "angulo": "Eye-level", "lente": "Macro 100mm",
+     "movimiento": "Locked-off",
+     "mood": "Una hormiga camina sobre el simbolo Pax dibujado en un cuaderno."},
+]
+
+CAP_5_PANELS = [
+    {"file": "cap-5-shot-01-onyx-pokes-head.png", "shot": "01", "beat": "HOOK 0:00",
+     "plano": "Medium close-up", "angulo": "Bajo", "lente": "50mm",
+     "movimiento": "Locked-off",
+     "mood": "Onyx asoma la cabeza por la alcantarilla. Pasa una bici. Comica vacilacion."},
+    {"file": "cap-5-shot-02-jiggy-onyx-walking-rich-zone.png", "shot": "02", "beat": "SETUP",
+     "plano": "Wide", "angulo": "Bajo", "lente": "24mm",
+     "movimiento": "Tracking",
+     "mood": "Jiggy y Onyx caminan en zona de oficinas. Fuera de lugar, modo recon."},
+    {"file": "cap-5-shot-03-woman-falls-bags.png", "shot": "03", "beat": "CATALIZADOR",
+     "plano": "Medium-wide", "angulo": "Slight high", "lente": "35mm",
+     "movimiento": "Locked-off",
+     "mood": "Una senora cae con las bolsas. Hombre de corbata pasa indiferente."},
+    {"file": "cap-5-shot-04-onyx-stops-jiggy.png", "shot": "04", "beat": "DESARROLLO",
+     "plano": "Medium close-up", "angulo": "Slight low", "lente": "50mm",
+     "movimiento": "Locked-off",
+     "mood": "Onyx detiene a Jiggy con la mano. Espera, mira."},
+    {"file": "cap-5-shot-05-young-helper-helps.png", "shot": "05", "beat": "CLIMAX",
+     "plano": "Medium", "angulo": "Slight low", "lente": "50mm",
+     "movimiento": "Locked-off",
+     "mood": "Un joven con poca pinta levanta las bolsas. Bondad sin espectaculo."},
+    {"file": "cap-5-shot-06-onyx-processing-silent.png", "shot": "06", "beat": "ACCION",
+     "plano": "Close-up", "angulo": "3/4 frontal", "lente": "85mm",
+     "movimiento": "Locked-off",
+     "mood": "Onyx procesa en silencio. La red no carga proporcional a recursos."},
+    {"file": "cap-5-shot-07-cliffhanger-vuelve-graffiti.png", "shot": "07", "beat": "CLIFFHANGER",
+     "plano": "Medium", "angulo": "Lateral", "lente": "50mm",
+     "movimiento": "Locked-off",
+     "mood": "Grafiti nuevo: simbolo Pax + 'vuelve' en marcador. Alguien arriba ve."},
+]
+
+CAP_6_PANELS = [
+    {"file": "cap-6-shot-01-new-crystal-born.png", "shot": "01", "beat": "HOOK 0:00",
+     "plano": "Medium close-up", "angulo": "Eye-level", "lente": "85mm",
+     "movimiento": "Locked-off",
+     "mood": "Un cristal magenta nuevo brota entre dos viejos. Tibio, latiendo."},
+    {"file": "cap-6-shot-02-wiz-discovers-new-crystal.png", "shot": "02", "beat": "SETUP",
+     "plano": "Medium close-up", "angulo": "Slight low", "lente": "50mm",
+     "movimiento": "Locked-off",
+     "mood": "Wiz descubre el cristal recien nacido. Asombro reverente."},
+    {"file": "cap-6-shot-03-mariela-laptop-night.png", "shot": "03", "beat": "CATALIZADOR",
+     "plano": "Medium", "angulo": "3/4", "lente": "50mm",
+     "movimiento": "Locked-off",
+     "mood": "Mariela sola con su laptop de noche. La pregunta que no se va."},
+    {"file": "cap-6-shot-04-mariela-types-deletes.png", "shot": "04", "beat": "DESARROLLO",
+     "plano": "Close-up", "angulo": "Slight high", "lente": "85mm",
+     "movimiento": "Locked-off",
+     "mood": "Manos sobre el teclado. Tercera version, casi lista."},
+    {"file": "cap-6-shot-05-jiggy-bilbao-ushnu.png", "shot": "05", "beat": "CLIMAX",
+     "plano": "Wide-medium", "angulo": "Bajo", "lente": "35mm",
+     "movimiento": "Locked-off",
+     "mood": "Jiggy cruza una placita con ushnu antiguo en avenida Bilbao."},
+    {"file": "cap-6-shot-06-jiggy-leaves-crystal-mariela.png", "shot": "06", "beat": "ACCION",
+     "plano": "Close-up", "angulo": "Slight high", "lente": "85mm",
+     "movimiento": "Locked-off",
+     "mood": "Jiggy deposita el cristal magenta en la palma dormida de Mariela."},
+    {"file": "cap-6-shot-07-cliffhanger-te-vimos.png", "shot": "07", "beat": "CLIFFHANGER",
+     "plano": "Medium", "angulo": "Slight low", "lente": "50mm",
+     "movimiento": "Locked-off",
+     "mood": "El grafiti ahora dice 'te vimos'. La frontera se vuelve fragil."},
+]
+
+CAP_7_PANELS = [
+    {"file": "cap-7-shot-01-hand-marker-symbol.png", "shot": "01", "beat": "HOOK 0:00",
+     "plano": "Extreme close-up", "angulo": "Eye-level", "lente": "Macro 100mm",
+     "movimiento": "Locked-off",
+     "mood": "Mano humana dibuja el simbolo en una pared del metro. 'los veo'."},
+    {"file": "cap-7-shot-02-byte-triangulates-map.png", "shot": "02", "beat": "SETUP",
+     "plano": "Medium close-up", "angulo": "3/4", "lente": "50mm",
+     "movimiento": "Locked-off",
+     "mood": "Byte triangula los grafitis en su holo-tablet. Forman un patron."},
+    {"file": "cap-7-shot-03-bakery-exterior.png", "shot": "03", "beat": "CATALIZADOR",
+     "plano": "Wide", "angulo": "Slight low", "lente": "28mm",
+     "movimiento": "Locked-off",
+     "mood": "Panaderia de barrio. El simbolo Pax discreto en la puerta."},
+    {"file": "cap-7-shot-04-sami-grandma-bread.png", "shot": "04", "beat": "DESARROLLO",
+     "plano": "Medium", "angulo": "Eye-level", "lente": "50mm",
+     "movimiento": "Locked-off",
+     "mood": "Sami y abuela envuelven pan. El simbolo viene de antes — herencia."},
+    {"file": "cap-7-shot-05-sami-bread-homeless.png", "shot": "05", "beat": "CLIMAX",
+     "plano": "Medium", "angulo": "3/4", "lente": "50mm",
+     "movimiento": "Locked-off",
+     "mood": "Sami deja pan al senor durmiendo. Sin firma, sin testigo."},
+    {"file": "cap-7-shot-06-byte-agatha-realize.png", "shot": "06", "beat": "ACCION",
+     "plano": "Medium", "angulo": "Slight low", "lente": "50mm",
+     "movimiento": "Locked-off",
+     "mood": "Byte y Agatha leen 'gracias por venir'. No los caza, los agradece."},
+    {"file": "cap-7-shot-07-cliffhanger-sami-draws-jiggy.png", "shot": "07", "beat": "CLIFFHANGER",
+     "plano": "Medium", "angulo": "3/4 espalda", "lente": "50mm",
+     "movimiento": "Locked-off",
+     "mood": "Sami pinta a Jiggy en un grafiti. Lo vio en cap 3. No olvido."},
+]
+
+CAP_8_PANELS = [
+    {"file": "cap-8-shot-01-temple-crystal-cracks.png", "shot": "01", "beat": "HOOK 0:00",
+     "plano": "Extreme close-up", "angulo": "Eye-level", "lente": "Macro 100mm",
+     "movimiento": "Locked-off",
+     "mood": "Una grieta nueva en el cristal templario. Magenta sangrando hacia afuera."},
+    {"file": "cap-8-shot-02-cavern-crystals-dim.png", "shot": "02", "beat": "SETUP",
+     "plano": "Wide", "angulo": "Crane descendente", "lente": "24mm",
+     "movimiento": "Slow descent",
+     "mood": "Media docena de cristales se apagan a la vez. Cascada."},
+    {"file": "cap-8-shot-03-clan-panic-contained.png", "shot": "03", "beat": "CATALIZADOR",
+     "plano": "Medium-wide", "angulo": "Slight low", "lente": "35mm",
+     "movimiento": "Locked-off",
+     "mood": "Clan en panico contenido. Onyx quiere subir, Agatha lo frena."},
+    {"file": "cap-8-shot-04-byte-studies-fracture.png", "shot": "04", "beat": "DESARROLLO",
+     "plano": "Close-up", "angulo": "3/4", "lente": "85mm",
+     "movimiento": "Locked-off",
+     "mood": "Byte escanea la fractura. Sobrecarga sin distribucion."},
+    {"file": "cap-8-shot-05-kz-cries-without-knowing.png", "shot": "05", "beat": "CLIMAX",
+     "plano": "Close-up", "angulo": "Slight low", "lente": "85mm",
+     "movimiento": "Locked-off",
+     "mood": "KZ llora sin saber por que. Esta cansado, no roto. Cansado."},
+    {"file": "cap-8-shot-06-wiz-recognizes-spark-mark.png", "shot": "06", "beat": "ACCION",
+     "plano": "Close-up", "angulo": "Slight low", "lente": "85mm",
+     "movimiento": "Locked-off",
+     "mood": "Wiz reconoce la marca. La grieta es el reverso de su chispa-ancla."},
+    {"file": "cap-8-shot-07-cliffhanger-wiz-confesses.png", "shot": "07", "beat": "CLIFFHANGER",
+     "plano": "Medium-wide", "angulo": "Slight low", "lente": "35mm",
+     "movimiento": "Locked-off",
+     "mood": "Wiz por primera vez vulnerable. 'Hay algo que tengo que contarles.'"},
+]
+
+CAP_9_PANELS = [
+    {"file": "cap-9-shot-01-wiz-opens-hand-spark.png", "shot": "01", "beat": "HOOK 0:00",
+     "plano": "Extreme close-up", "angulo": "Eye-level", "lente": "Macro 100mm",
+     "movimiento": "Locked-off",
+     "mood": "Wiz abre la mano. La chispa-ancla dorada pulsa. Confesion empieza."},
+    {"file": "cap-9-shot-02-flashback-pax-humans-hands-united.png", "shot": "02", "beat": "SETUP",
+     "plano": "Medium-wide", "angulo": "Slight low", "lente": "35mm",
+     "movimiento": "Locked-off",
+     "mood": "Flashback sepia: Pax y humanos con las manos juntas sobre un cristal."},
+    {"file": "cap-9-shot-03-young-wiz-pockets-spark.png", "shot": "03", "beat": "CATALIZADOR",
+     "plano": "Medium close-up", "angulo": "3/4", "lente": "50mm",
+     "movimiento": "Locked-off",
+     "mood": "Wiz joven guarda la chispa-ancla. La eleccion equivocada por miedo."},
+    {"file": "cap-9-shot-04-sami-rain-symbol-fading.png", "shot": "04", "beat": "DESARROLLO",
+     "plano": "Medium close-up", "angulo": "Slight low", "lente": "50mm",
+     "movimiento": "Locked-off",
+     "mood": "Micro-corte: Sami pasa la mano sobre un grafiti que la lluvia borra."},
+    {"file": "cap-9-shot-05-mariela-looks-at-hand.png", "shot": "05", "beat": "CLIMAX",
+     "plano": "Close-up", "angulo": "Slight high", "lente": "85mm",
+     "movimiento": "Locked-off",
+     "mood": "Micro-corte: Mariela mira su mano. La chispa del cap 6 sigue pesando."},
+    {"file": "cap-9-shot-06-clan-hands-on-wiz.png", "shot": "06", "beat": "ACCION",
+     "plano": "Medium-wide", "angulo": "Eye-level", "lente": "35mm",
+     "movimiento": "Locked-off",
+     "mood": "El clan posa las manos sobre Wiz. Lo que cargo solo lo cargan juntos."},
+    {"file": "cap-9-shot-07-cliffhanger-wiz-passes-spark-jiggy.png", "shot": "07", "beat": "CLIFFHANGER",
+     "plano": "Close two-shot", "angulo": "Lateral", "lente": "85mm",
+     "movimiento": "Locked-off",
+     "mood": "Wiz le pasa la chispa-ancla a Jiggy. Esta vez no vas solo."},
+]
+
+CAP_10_PANELS = [
+    {"file": "cap-10-shot-01-clan-emerges-row.png", "shot": "01", "beat": "HOOK 0:00",
+     "plano": "Wide ensemble", "angulo": "Slight low", "lente": "24mm",
+     "movimiento": "Locked-off",
+     "mood": "Los siete Pax salen en fila por la alcantarilla. Primera vez juntos arriba."},
+    {"file": "cap-10-shot-02-clan-coral-crossing-city.png", "shot": "02", "beat": "SETUP",
+     "plano": "Wide tracking", "angulo": "Lateral", "lente": "28mm",
+     "movimiento": "Truck lateral",
+     "mood": "El clan cruza la ciudad como coral. Cada uno con su rol."},
+    {"file": "cap-10-shot-03-arrive-plaza.png", "shot": "03", "beat": "CATALIZADOR",
+     "plano": "Wide", "angulo": "Slight low", "lente": "24mm",
+     "movimiento": "Locked-off",
+     "mood": "Llegan a la placita con ushnu. Pequenos en el espacio abierto."},
+    {"file": "cap-10-shot-04-sami-painting-wall-mural.png", "shot": "04", "beat": "DESARROLLO",
+     "plano": "Medium", "angulo": "3/4 espalda", "lente": "50mm",
+     "movimiento": "Locked-off",
+     "mood": "Sami pinta un mural Pax-humano cargando juntos. Los esperaba."},
+    {"file": "cap-10-shot-05-sami-turns-sees-clan.png", "shot": "05", "beat": "CLIMAX",
+     "plano": "Close-up", "angulo": "Frontal", "lente": "85mm",
+     "movimiento": "Locked-off",
+     "mood": "Sami se da vuelta. Suelta el spray. 'Sabia que eran de verdad.'"},
+    {"file": "cap-10-shot-06-clan-faces-sami-frontal.png", "shot": "06", "beat": "ACCION",
+     "plano": "Wide-medium", "angulo": "Slight low POV Sami", "lente": "28mm",
+     "movimiento": "Locked-off",
+     "mood": "Los siete frente a Sami. Visibles sin verguenza. Doctrina rota."},
+    {"file": "cap-10-shot-07-cliffhanger-spark-fully-lit.png", "shot": "07", "beat": "CLIFFHANGER",
+     "plano": "Extreme close-up", "angulo": "Eye-level", "lente": "Macro 100mm",
+     "movimiento": "Locked-off",
+     "mood": "La chispa-ancla se enciende entera. La visibilidad era la carga."},
+]
+
+CAP_11_PANELS = [
+    {"file": "cap-11-shot-01-sami-paints-new-stroke.png", "shot": "01", "beat": "HOOK 0:00",
+     "plano": "Close-up", "angulo": "3/4", "lente": "85mm",
+     "movimiento": "Locked-off",
+     "mood": "Sami inventa un trazo nuevo al lado del simbolo. 'Tu tambien'."},
+    {"file": "cap-11-shot-02-onyx-discovers-icecream.png", "shot": "02", "beat": "SETUP",
+     "plano": "Medium close-up", "angulo": "Slight low", "lente": "50mm",
+     "movimiento": "Locked-off",
+     "mood": "Onyx descubre el helado. Asombro mas grande que el cuerpo."},
+    {"file": "cap-11-shot-03-byte-sami-design-sign.png", "shot": "03", "beat": "CATALIZADOR",
+     "plano": "Medium", "angulo": "Slight high", "lente": "50mm",
+     "movimiento": "Locked-off",
+     "mood": "Byte y Sami disenan la senal en una mesa. No marca, gesto."},
+    {"file": "cap-11-shot-04-heriberto-draws-on-board.png", "shot": "04", "beat": "DESARROLLO",
+     "plano": "Medium", "angulo": "Eye-level", "lente": "50mm",
+     "movimiento": "Locked-off",
+     "mood": "Heriberto dibuja el trazo en su pizarra. Tres ninos lo copian."},
+    {"file": "cap-11-shot-05-mariela-draws-note-monitor.png", "shot": "05", "beat": "CLIMAX",
+     "plano": "Close-up", "angulo": "Slight high", "lente": "85mm",
+     "movimiento": "Locked-off",
+     "mood": "Mariela dibuja el trazo en una nota junto al monitor. La senal viaja."},
+    {"file": "cap-11-shot-06-cavern-crystals-cascade.png", "shot": "06", "beat": "ACCION",
+     "plano": "Wide", "angulo": "Crane ascendente", "lente": "24mm",
+     "movimiento": "Slow rise",
+     "mood": "Cristales encendiendose en cadena. La red se alimenta sola."},
+    {"file": "cap-11-shot-07-cliffhanger-wiz-jiggy-smile.png", "shot": "07", "beat": "CLIFFHANGER",
+     "plano": "Medium two-shot", "angulo": "Lateral", "lente": "50mm",
+     "movimiento": "Locked-off",
+     "mood": "Wiz y Jiggy sonrien sin hablar. El gran cristal vibra. Manana se activa."},
+]
+
+CAP_12_PANELS = [
+    {"file": "cap-12-shot-01-wiz-hands-on-big-crystal.png", "shot": "01", "beat": "HOOK 0:00",
+     "plano": "Medium", "angulo": "Slight low", "lente": "50mm",
+     "movimiento": "Locked-off",
+     "mood": "Wiz coloca las manos sobre el gran cristal. Ritual final."},
+    {"file": "cap-12-shot-02-clan-channels-energy.png", "shot": "02", "beat": "SETUP",
+     "plano": "Wide ensemble", "angulo": "Slight low", "lente": "28mm",
+     "movimiento": "Locked-off",
+     "mood": "Los siete canalizan la energia en circulo. Sin protagonista unico."},
+    {"file": "cap-12-shot-03-water-truck-village.png", "shot": "03", "beat": "CATALIZADOR",
+     "plano": "Wide", "angulo": "Slight low", "lente": "35mm",
+     "movimiento": "Locked-off",
+     "mood": "Camion de agua llega a un pueblo. Pequeno milagro concreto."},
+    {"file": "cap-12-shot-04-mariela-email-accepted.png", "shot": "04", "beat": "DESARROLLO",
+     "plano": "Close-up", "angulo": "Slight high", "lente": "85mm",
+     "movimiento": "Locked-off",
+     "mood": "Mariela ve su correo aceptado. Alegria privada."},
+    {"file": "cap-12-shot-05-sami-paints-with-strangers.png", "shot": "05", "beat": "CLIMAX",
+     "plano": "Wide", "angulo": "Slight low", "lente": "35mm",
+     "movimiento": "Locked-off",
+     "mood": "Sami pinta con tres desconocidos. La senal se descentraliza."},
+    {"file": "cap-12-shot-06-coral-vignette-grid.png", "shot": "06", "beat": "ACCION",
+     "plano": "Composite split", "angulo": "Varios", "lente": "35mm eq",
+     "movimiento": "Locked-off",
+     "mood": "Cuatro vinetas simultaneas. Pequenos milagros en muchos lugares."},
+    {"file": "cap-12-shot-07-cliffhanger-sami-fourth-wall.png", "shot": "07", "beat": "INVITACION",
+     "plano": "Close-up", "angulo": "Frontal", "lente": "85mm",
+     "movimiento": "Locked-off",
+     "mood": "Sami mira a camara y dibuja el trazo en el aire. Tu tambien."},
+]
+
+
+# Registry para acceso por numero de cap
+CAP_REGISTRY = {
+    1:  ("La red oxidada",            CAP_1_PANELS),
+    2:  ("El templo que nadie cuido", CAP_2_PANELS),
+    3:  ("El grafiti",                CAP_3_PANELS),
+    4:  ("La clase del lunes",        CAP_4_PANELS),
+    5:  ("El que no quiso",           CAP_5_PANELS),
+    6:  ("La pregunta de Mariela",    CAP_6_PANELS),
+    7:  ("El observador",             CAP_7_PANELS),
+    8:  ("Se rompe algo",             CAP_8_PANELS),
+    9:  ("Lo que Wiz guardo",         CAP_9_PANELS),
+    10: ("Subir todos",               CAP_10_PANELS),
+    11: ("La ruca de las rucas",      CAP_11_PANELS),
+    12: ("Lo que aparece arriba",     CAP_12_PANELS),
+}
+
+
+# ---------------------------------------------------------------------------
 # Utilidades de composicion
 # ---------------------------------------------------------------------------
 
@@ -535,25 +870,57 @@ def build_page(
     print(f"OK -> {output_path}  ({PAGE_W}x{PAGE_H})")
 
 
+def build_for_cap(cap_num: int) -> str:
+    """Construye la comic page para un cap dado y devuelve el output path."""
+    if cap_num not in CAP_REGISTRY:
+        raise SystemExit(f"Cap {cap_num} no esta registrado")
+    title, panels = CAP_REGISTRY[cap_num]
+    out_path = os.path.join(STORYBOARDS_DIR, f"cap-{cap_num}-comic-page.png")
+    build_page(panels, cap_num=cap_num, cap_title=title, output_path=out_path)
+    return out_path
+
+
 def main():
+    """
+    CLI:
+        python compose_comic_pages.py                  -> compone caps 1 y 2 (default original)
+        python compose_comic_pages.py --cap 3          -> solo cap 3
+        python compose_comic_pages.py --caps 3,4,5     -> caps 3, 4, 5
+        python compose_comic_pages.py --range 3 12     -> caps 3..12
+        python compose_comic_pages.py --all            -> caps 1..12
+    """
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--cap", type=int, help="Compone solo este cap")
+    parser.add_argument("--caps", type=str, help="Lista CSV de caps (ej: 3,4,5)")
+    parser.add_argument("--range", nargs=2, type=int, metavar=("START", "END"),
+                        help="Rango inclusivo (ej: --range 3 12)")
+    parser.add_argument("--all", action="store_true", help="Caps 1..12")
+    args = parser.parse_args()
+
     if not os.path.isdir(STORYBOARDS_DIR):
         raise SystemExit(f"No encontre {STORYBOARDS_DIR}")
 
-    out_cap_1 = os.path.join(STORYBOARDS_DIR, "cap-1-comic-page.png")
-    out_cap_2 = os.path.join(STORYBOARDS_DIR, "cap-2-comic-page.png")
+    if args.all:
+        targets = list(range(1, 13))
+    elif args.range:
+        targets = list(range(args.range[0], args.range[1] + 1))
+    elif args.caps:
+        targets = [int(x.strip()) for x in args.caps.split(",")]
+    elif args.cap:
+        targets = [args.cap]
+    else:
+        # Comportamiento original — caps 1 y 2
+        targets = [1, 2]
 
-    build_page(
-        CAP_1_PANELS,
-        cap_num=1,
-        cap_title="La red oxidada",
-        output_path=out_cap_1,
-    )
-    build_page(
-        CAP_2_PANELS,
-        cap_num=2,
-        cap_title="El templo que nadie cuido",
-        output_path=out_cap_2,
-    )
+    outputs = []
+    for cap_num in targets:
+        out = build_for_cap(cap_num)
+        outputs.append(out)
+
+    print(f"\n[OK] {len(outputs)} comic pages generadas:")
+    for o in outputs:
+        print(f"  - {o}")
 
 
 if __name__ == "__main__":

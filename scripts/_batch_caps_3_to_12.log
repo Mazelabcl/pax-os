@@ -1,0 +1,9 @@
+[BATCH] 70 jobs total | concurrencia=8
+[BATCH] empezando wall-clock...
+[ERR ] cap-10-shot-03-arrive-plaza: BadRequestError: Error code: 400 - {'error': {'message': 'Your request was rejected by the safety system. If you believe this is an error, contact us at help.openai.com and include the request ID req_6e5359f8b6ec41e8b9845a452d930d33.', 'type': 'image_generation_user_error', 'param': None, 'code': 'moderation_blocked'}}
+
+[BATCH] 69/70 OK | 1 ERRORS | 314.8s wall clock
+
+[SUMMARY] 69/70 OK in 314.8s
+[SUMMARY] failures:
+  cap-10-shot-03-arrive-plaza: Error code: 400 - {'error': {'message': 'Your request was rejected by the safety system. If you believe this is an error, contact us at help.openai.com and include the request ID req_6e5359f8b6ec41e8b9845a452d930d33.', 'type': 'image_generation_user_error', 'param': None, 'code': 'moderation_blocked'}}
