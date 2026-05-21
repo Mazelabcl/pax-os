@@ -14,13 +14,13 @@ interface NavLink {
 
 const links: NavLink[] = [
   { href: "/", label: "Inicio" },
-  { href: "/personajes", label: "El clan" },
-  { href: "/episodios/1", label: "Episodios" },
-  { href: "/lore", label: "Lore" },
+  // { href: "/personajes", label: "El clan" },       // ruta deshabilitada — 404
+  // { href: "/episodios/1", label: "Episodios" },    // ruta deshabilitada — 404
+  // { href: "/lore", label: "Lore" },                // ruta deshabilitada — 404
   { href: "/oraculo", label: "Oráculo", dot: true },
-  { href: "/cambios", label: "Cambios" },
+  // { href: "/cambios", label: "Cambios" },          // ruta deshabilitada — 404
   { href: "/docs", label: "Docs" },
-  { href: "/legacy/v2", label: "Archivo", muted: true },
+  // { href: "/legacy/v2", label: "Archivo", muted: true }, // ruta deshabilitada — 404
 ];
 
 interface SiteNavProps {

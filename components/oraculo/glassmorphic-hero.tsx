@@ -37,14 +37,9 @@ export function GlassmorphicHero({ onCtaClick }: GlassmorphicHeroProps) {
       {/* Fonts + animations */}
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500&display=swap');
-        @font-face {
-          font-family: 'Didot';
-          src: url('https://db.onlinewebfonts.com/c/251039e6849ad977a8bfc40b564dce89?family=Didot') format('woff2');
-          font-weight: normal;
-          font-style: normal;
-        }
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600&display=swap');
 
-        .oraculo-serif { font-family: 'Didot', 'Didot LT STD', 'GFS Didot', Georgia, serif; }
+        .oraculo-serif { font-family: 'Cormorant Garamond', 'GFS Didot', Georgia, serif; }
         .oraculo-sans  { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; }
 
         /* Botón glow naranja-coral exacto del brief */

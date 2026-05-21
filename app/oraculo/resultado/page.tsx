@@ -128,7 +128,7 @@ export default function OraculoResultadoPage() {
     return (
       <div className="min-h-screen bg-black text-white flex flex-col items-center justify-center gap-6 px-6">
         <style>{`
-          .r-serif { font-family: 'Didot', 'GFS Didot', Georgia, serif; }
+          .r-serif { font-family: 'Cormorant Garamond', 'GFS Didot', Georgia, serif; }
           .r-sans  { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; }
         `}</style>
         <p className="r-serif text-2xl font-light text-[#aaa]" style={{ fontStyle: "italic" }}>
@@ -155,12 +155,8 @@ export default function OraculoResultadoPage() {
 
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500&display=swap');
-        @font-face {
-          font-family: 'Didot';
-          src: url('https://db.onlinewebfonts.com/c/251039e6849ad977a8bfc40b564dce89?family=Didot') format('woff2');
-          font-weight: normal; font-style: normal;
-        }
-        .r-serif { font-family: 'Didot', 'GFS Didot', Georgia, serif; }
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600&display=swap');
+        .r-serif { font-family: 'Cormorant Garamond', 'GFS Didot', Georgia, serif; }
         .r-sans  { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; }
 
         @keyframes cristal-glow {
@@ -195,11 +191,24 @@ export default function OraculoResultadoPage() {
           border-color: rgba(180,63,255,0.25) !important;
         }
 
+        /* Tipografía body mejorada — lectura larga: mayor contraste y tamaño */
+        .r-sans.text-sm,
+        .r-sans.text-base {
+          font-size: 1.0625rem !important;   /* 17px */
+          line-height: 1.75 !important;
+          font-weight: 400 !important;
+          letter-spacing: 0.01em;
+          color: #d4d4d4 !important;
+        }
+        .r-sans.text-xs {
+          color: #c0c0c0 !important;
+        }
+
         /* Markdown dentro del bloque pax */
-        .pax-md h2 { font-family: 'Didot','GFS Didot',Georgia,serif; font-style:italic; font-size:1.2rem; font-weight:300; color:#d4aaff; margin-bottom:0.5rem; margin-top:1rem; }
-        .pax-md h3 { font-family: 'Inter',sans-serif; font-size:0.7rem; text-transform:uppercase; letter-spacing:0.15em; color:#555; font-weight:300; margin-bottom:0.5rem; margin-top:1rem; }
-        .pax-md p  { font-family: 'Inter',sans-serif; font-size:0.875rem; color:#aaa; font-weight:300; line-height:1.6; margin-bottom:0.5rem; }
-        .pax-md strong { color:#d4aaff; font-weight:400; }
+        .pax-md h2 { font-family: 'Cormorant Garamond','GFS Didot',Georgia,serif; font-style:italic; font-size:1.35rem; font-weight:400; color:#e8d8ff; margin-bottom:0.5rem; margin-top:1rem; }
+        .pax-md h3 { font-family: 'Inter',sans-serif; font-size:0.7rem; text-transform:uppercase; letter-spacing:0.15em; color:#666; font-weight:300; margin-bottom:0.5rem; margin-top:1rem; }
+        .pax-md p  { font-family: 'Inter',sans-serif; font-size:1.0625rem; color:#d4d4d4; font-weight:400; line-height:1.75; margin-bottom:0.5rem; letter-spacing:0.01em; }
+        .pax-md strong { color:#e8d8ff; font-weight:400; }
         .pax-md em { font-style:italic; }
       `}</style>
 

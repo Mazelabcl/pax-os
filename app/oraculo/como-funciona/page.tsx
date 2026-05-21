@@ -19,14 +19,12 @@ export default function ComoFuncionaPage() {
       {/* ── STYLES ── */}
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500&display=swap');
-        @font-face {
-          font-family: 'Didot';
-          src: url('https://db.onlinewebfonts.com/c/251039e6849ad977a8bfc40b564dce89?family=Didot') format('woff2');
-          font-weight: normal;
-          font-style: normal;
-        }
-        .cf-serif { font-family: 'Didot', 'GFS Didot', Georgia, serif; }
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600&display=swap');
+        .cf-serif { font-family: 'Cormorant Garamond', 'GFS Didot', Georgia, serif; }
         .cf-sans  { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; }
+
+        /* Body text mejorado — contraste y tamaño para lectura larga */
+        .cf-sans.text-sm { font-size: 1.0625rem !important; line-height: 1.75 !important; font-weight: 400 !important; color: #d4d4d4 !important; letter-spacing: 0.01em; }
 
         /* Noise overlay */
         .cf-noise {
@@ -439,7 +437,7 @@ function NarrativeCard({
         {/* Título */}
         <h2
           className="text-lg font-light text-white leading-snug"
-          style={{ fontFamily: "'GFS Didot', Georgia, serif", fontStyle: "italic" }}
+          style={{ fontFamily: "'Cormorant Garamond', 'GFS Didot', Georgia, serif", fontStyle: "italic" }}
         >
           {title}
         </h2>

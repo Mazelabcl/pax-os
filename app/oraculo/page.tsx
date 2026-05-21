@@ -124,6 +124,8 @@ export default function OraculoPage() {
 
       {/* ── Sección 0 — Ritual de los místicos (pre-hero full-viewport) ── */}
       <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600&display=swap');
+
         @keyframes ken-burns-ritual {
           0%   { transform: scale(1) translate(0%, 0%); }
           100% { transform: scale(1.08) translate(-2%, -1%); }
@@ -139,6 +141,15 @@ export default function OraculoPage() {
         .ritual-h1      { animation: ritual-fade-in 0.9s ease-out 0.4s both; }
         .ritual-sub     { animation: ritual-fade-in 0.9s ease-out 0.6s both; }
         .ritual-cta     { animation: ritual-fade-in 0.9s ease-out 0.8s both; }
+
+        /* Tipografía body — mejor contraste en sección form */
+        #oraculo-form p.oraculo-form-body {
+          font-size: 17px;
+          line-height: 1.75;
+          font-weight: 400;
+          color: #c0c0c0;
+          letter-spacing: 0.01em;
+        }
 
         @keyframes ritual-cta-glow {
           0%,100% {
@@ -212,7 +223,7 @@ export default function OraculoPage() {
           <h1
             className="ritual-h1 font-light text-white leading-tight"
             style={{
-              fontFamily: "'Didot', 'GFS Didot', Georgia, serif",
+              fontFamily: "'Cormorant Garamond', 'GFS Didot', Georgia, serif",
               fontStyle: "italic",
               fontSize: "clamp(2.8rem, 8vw, 5rem)",
               lineHeight: 1.1,
@@ -239,7 +250,7 @@ export default function OraculoPage() {
             className="ritual-cta ritual-btn mt-2 px-10 py-4 rounded-full text-sm font-light text-white tracking-wide flex items-center gap-2"
             style={{ fontFamily: "Inter, sans-serif" }}
             onClick={() => {
-              document.getElementById("oraculo-form")?.scrollIntoView({ behavior: "smooth", block: "start" });
+              document.getElementById("oraculo-hero")?.scrollIntoView({ behavior: "smooth", block: "start" });
             }}
           >
             <span
@@ -269,8 +280,10 @@ export default function OraculoPage() {
         </div>
       </section>
 
-      {/* ── Sección 1 — Hero glassmorphic v2 ── */}
-      <GlassmorphicHero />
+      {/* ── Sección 1 — Hero glassmorphic v2 (con el video) ── */}
+      <div id="oraculo-hero">
+        <GlassmorphicHero />
+      </div>
 
       {/* Sección 2 — Formulario glassmorphic */}
       <section
@@ -318,11 +331,11 @@ export default function OraculoPage() {
           </div>
           <h2
             className="text-2xl font-light text-white leading-snug"
-            style={{ fontFamily: "'GFS Didot', Georgia, serif", fontStyle: "italic" }}
+            style={{ fontFamily: "'Cormorant Garamond', 'GFS Didot', Georgia, serif", fontStyle: "italic" }}
           >
             Cuéntame cuándo llegaste.
           </h2>
-          <p className="text-sm text-[#666] font-light leading-relaxed" style={{ fontFamily: "Inter, sans-serif" }}>
+          <p className="oraculo-form-body" style={{ fontFamily: "Inter, sans-serif" }}>
             Tu fecha, hora y lugar de nacimiento le dicen a los tres sistemas (maya, astral y Pax)
             de qué tipo de energía estás hecho. Cuanto más exactos, más profunda la lectura.
           </p>
@@ -508,7 +521,7 @@ export default function OraculoPage() {
             <div className="flex flex-col items-center gap-2 text-center">
               <p
                 className="text-xl font-light text-white"
-                style={{ fontFamily: "'GFS Didot', Georgia, serif", fontStyle: "italic" }}
+                style={{ fontFamily: "'Cormorant Garamond', 'GFS Didot', Georgia, serif", fontStyle: "italic" }}
               >
                 Los abuelos pax están leyendo tu carta...
               </p>

@@ -22,8 +22,9 @@ import { calcularTzolkin, type TzolkinResult } from "@/lib/tzolkin";
 import { calcularCartaAstral, type AstralResult } from "@/lib/astrology";
 
 export const runtime = "nodejs";
-// Vercel Hobby plan: max 10s. Pro: hasta 60s. Lo dejamos en 30 para margen.
-export const maxDuration = 30;
+// Vercel Hobby plan: hasta 60s opt-in. LLM call promedia 15-20s + astral 3-5s.
+// Lo subimos a 60 para evitar 502 timeout.
+export const maxDuration = 60;
 
 // ----------------------------------------------------------------------------
 // Constantes

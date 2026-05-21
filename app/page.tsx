@@ -10,13 +10,8 @@ export default function HomePage() {
     <main className="min-h-screen bg-black text-white flex flex-col items-center justify-center px-6 text-center">
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500&display=swap');
-        @font-face {
-          font-family: 'Didot';
-          src: url('https://db.onlinewebfonts.com/c/251039e6849ad977a8bfc40b564dce89?family=Didot') format('woff2');
-          font-weight: normal;
-          font-style: normal;
-        }
-        .home-serif { font-family: 'Didot', 'GFS Didot', Georgia, serif; }
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600&display=swap');
+        .home-serif { font-family: 'Cormorant Garamond', 'GFS Didot', Georgia, serif; }
         .home-sans { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; }
 
         @keyframes anchor-pulse {
