@@ -1,14 +1,15 @@
 "use client";
 
 /**
- * /oraculo v3 — Entrada principal del Oráculo Pax.
+ * /oraculo v4 — Entrada principal del Oráculo Pax.
  *
- * Cambios v3:
- *  - Loading state premium tras submit (2.8s mínimo) con cristal pulsando
- *    y mensajes rotativos tipo "Calculando tu nahual maya..."
- *  - Auto-scroll al loading state al hacer submit
- *  - Tras loading, redirect a /oraculo/resultado (lectura completa)
- *  - Eliminada la carta corta inline
+ * Cambios v4:
+ *  - Form hace POST real a /api/oraculo/lectura
+ *  - Loading state real mientras el backend procesa (no timeout fijo)
+ *  - Mensajes rotativos cada 1.5s durante el POST
+ *  - Si response.ok: guarda data en sessionStorage + redirect a /oraculo/resultado
+ *  - Si falla: muestra error inline con botón retry
+ *  - Si tarda >20s: avisa pero no aborta
  */
 
 import { useState, useEffect, useRef } from "react";
@@ -27,8 +28,8 @@ interface FormData {
 const LOADING_STEPS = [
   "Calculando tu nahual maya...",
   "Trazando tu carta astral...",
-  "Conectando con tu arquetipo de servicio...",
-  "Leyendo los patrones del cielo...",
+  "Conectando con el arquetipo...",
+  "Tejiendo tu lectura...",
   "Los abuelos pax están escuchando...",
 ];
 
@@ -44,6 +45,8 @@ export default function OraculoPage() {
   const [loading, setLoading] = useState(false);
   const [loadingStep, setLoadingStep] = useState(0);
   const [formVisible, setFormVisible] = useState(true);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [slowWarning, setSlowWarning] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -52,40 +55,69 @@ export default function OraculoPage() {
   const isFormValid =
     form.fechaNacimiento.trim() !== "" && form.lugarNacimiento.trim() !== "";
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!isFormValid) return;
+    if (!isFormValid || loading) return;
+
+    setErrorMsg(null);
+    setSlowWarning(false);
 
     // 1. Fade out el form
     setFormVisible(false);
 
-    // 2. Después de 300ms mostrar loading y hacer scroll
+    // 2. Pequeña pausa de transicion, luego mostrar loading
+    await new Promise<void>((resolve) => setTimeout(resolve, 300));
+    setLoading(true);
+
+    // Scroll al loading state
     setTimeout(() => {
-      setLoading(true);
-      // Scroll al loading state
-      setTimeout(() => {
-        loadingRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
-      }, 100);
-    }, 300);
+      loadingRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+    }, 100);
+
+    // Aviso de demora si el backend tarda mas de 20s (no abortar)
+    const slowTimer = setTimeout(() => setSlowWarning(true), 20000);
+
+    try {
+      const res = await fetch("/api/oraculo/lectura", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          fecha: form.fechaNacimiento,
+          hora: form.horaNacimiento || undefined,
+          lugar: form.lugarNacimiento,
+        }),
+      });
+
+      clearTimeout(slowTimer);
+
+      const json = await res.json();
+
+      if (!res.ok || !json.ok) {
+        throw new Error(json.error ?? "Error desconocido del servidor.");
+      }
+
+      // Guardar en sessionStorage y redirigir
+      sessionStorage.setItem("pax-oraculo-lectura", JSON.stringify(json.data));
+      router.push("/oraculo/resultado");
+    } catch (err: unknown) {
+      clearTimeout(slowTimer);
+      setLoading(false);
+      setFormVisible(true);
+      setSlowWarning(false);
+      const message =
+        err instanceof Error ? err.message : "Hubo un problema leyendo tu carta. Inténtalo de nuevo.";
+      setErrorMsg(message);
+    }
   };
 
-  // Rotar los mensajes de loading cada 700ms
+  // Rotar los mensajes de loading cada 1.5s
   useEffect(() => {
     if (!loading) return;
     const interval = setInterval(() => {
       setLoadingStep((prev) => (prev + 1) % LOADING_STEPS.length);
-    }, 700);
+    }, 1500);
     return () => clearInterval(interval);
   }, [loading]);
-
-  // Redirigir a /resultado después de 2.8s de loading
-  useEffect(() => {
-    if (!loading) return;
-    const timer = setTimeout(() => {
-      router.push("/oraculo/resultado");
-    }, 2800);
-    return () => clearTimeout(timer);
-  }, [loading, router]);
 
   return (
     <div className="bg-black min-h-screen text-white">
@@ -421,6 +453,29 @@ export default function OraculoPage() {
           {/* Divisor */}
           <div className="h-px" style={{ background: "rgba(180,63,255,0.1)" }} />
 
+          {/* Error inline */}
+          {errorMsg && (
+            <div
+              className="rounded-md px-4 py-3 flex flex-col gap-2"
+              style={{
+                background: "rgba(239,68,68,0.06)",
+                border: "1px solid rgba(239,68,68,0.25)",
+              }}
+            >
+              <p className="text-xs text-[#f87171] font-light" style={{ fontFamily: "Inter, sans-serif" }}>
+                {errorMsg}
+              </p>
+              <button
+                type="button"
+                onClick={() => setErrorMsg(null)}
+                className="text-xs text-[#555] hover:text-[#999] font-light transition-colors duration-200 text-left"
+                style={{ fontFamily: "Inter, sans-serif" }}
+              >
+                Cerrar aviso e intentar de nuevo →
+              </button>
+            </div>
+          )}
+
           {/* CTA */}
           <button
             type="submit"
@@ -465,9 +520,18 @@ export default function OraculoPage() {
               >
                 {LOADING_STEPS[loadingStep]}
               </p>
+              {/* Aviso de demora (>20s) */}
+              {slowWarning && (
+                <p
+                  className="text-xs font-light animate-in fade-in duration-500 mt-2"
+                  style={{ fontFamily: "Inter, sans-serif", color: "#666", maxWidth: "260px", textAlign: "center" }}
+                >
+                  Esto se está tardando más de lo esperado. Por favor espera...
+                </p>
+              )}
             </div>
 
-            {/* Barra de progreso sutil */}
+            {/* Barra de progreso sutil — loop infinito mientras espera al backend */}
             <div
               className="w-32 h-px overflow-hidden"
               style={{ background: "rgba(180,63,255,0.1)" }}
@@ -476,16 +540,15 @@ export default function OraculoPage() {
                 className="h-full"
                 style={{
                   background: "linear-gradient(to right, transparent, #B43FFF, transparent)",
-                  animation: "loading-bar 2.8s ease-in-out forwards",
+                  animation: "loading-bar-loop 2s ease-in-out infinite",
                 }}
               />
             </div>
 
             <style>{`
-              @keyframes loading-bar {
-                0%   { width: 0%; margin-left: 0%; }
-                50%  { width: 60%; margin-left: 20%; }
-                100% { width: 100%; margin-left: 0%; }
+              @keyframes loading-bar-loop {
+                0%   { transform: translateX(-100%); width: 60%; }
+                100% { transform: translateX(200%); width: 60%; }
               }
             `}</style>
           </div>
