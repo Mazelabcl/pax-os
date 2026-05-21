@@ -103,7 +103,7 @@ export default function HomePage() {
       <Link
         href="/docs"
         className="home-sans mt-12 text-xs uppercase tracking-widest opacity-50 hover:opacity-100 transition-opacity"
-        style={{ color: "#7a7a7a" }}
+        style={{ color: "#bbbbbb" }}
       >
         Docs del proyecto →
       </Link>

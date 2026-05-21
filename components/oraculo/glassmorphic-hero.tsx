@@ -399,13 +399,13 @@ export function GlassmorphicHero({ onCtaClick }: GlassmorphicHeroProps) {
                 alignItems: "center",
                 gap: "8px",
                 fontSize: "11px",
-                color: "#555",
+                color: "#aaa",
                 fontWeight: 300,
                 flexWrap: "wrap",
               }}
             >
               <span>pax-os</span>
-              <span style={{ color: "#444", opacity: 0.8 }}>|</span>
+              <span style={{ color: "#888", opacity: 0.8 }}>|</span>
               {[
                 { label: "maya", color: "#C084FC" },
                 { label: "astral", color: "#67E8F9" },
@@ -413,7 +413,7 @@ export function GlassmorphicHero({ onCtaClick }: GlassmorphicHeroProps) {
                 { label: "gesto", color: "#FCD34D" },
               ].map(({ label, color }, i) => (
                 <span key={label} style={{ display: "flex", alignItems: "center", gap: "4px" }}>
-                  {i > 0 && <span style={{ color: "#333", opacity: 0.6 }}>✦</span>}
+                  {i > 0 && <span style={{ color: "#888", opacity: 0.8 }}>✦</span>}
                   <span style={{ color }}>{label}</span>
                 </span>
               ))}

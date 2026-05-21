@@ -63,7 +63,7 @@ const NOMINATIM_URL = "https://nominatim.openstreetmap.org/search";
 const ASTRO_PLANETS_URL = "https://json.freeastrologyapi.com/western/planets";
 const ASTRO_HOUSES_URL = "https://json.freeastrologyapi.com/western/houses";
 
-const FETCH_TIMEOUT_MS = 10_000;
+const FETCH_TIMEOUT_MS = 6_000;
 
 // Diccionario ingles -> espanol para signos zodiacales.
 const SIGNO_ES: Record<string, string> = {

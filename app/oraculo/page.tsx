@@ -273,7 +273,7 @@ export default function OraculoPage() {
                 background: "linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0.5))",
               }}
             />
-            <p className="text-[9px] tracking-[0.2em] uppercase" style={{ fontFamily: "Inter, sans-serif", color: "#888" }}>
+            <p className="text-[9px] tracking-[0.2em] uppercase" style={{ fontFamily: "Inter, sans-serif", color: "#aaa" }}>
               bajar
             </p>
           </div>
@@ -323,7 +323,7 @@ export default function OraculoPage() {
           <div className="flex items-center gap-2 mb-1">
             <CristalAnchorSmall />
             <p
-              className="text-xs tracking-[0.18em] uppercase text-[#555]"
+              className="text-xs tracking-[0.18em] uppercase text-[#a3a3a3]"
               style={{ fontFamily: "Inter, sans-serif", fontWeight: 300 }}
             >
               El punto de partida
@@ -398,7 +398,7 @@ export default function OraculoPage() {
             >
               <span style={{ color: "#67E8F9", opacity: 0.7, fontSize: "9px" }}>●</span>
               Hora de nacimiento{" "}
-              <span className="text-[#444] normal-case not-italic font-light" style={{ fontSize: "10px" }}>
+              <span className="text-[#aaa] normal-case not-italic font-light" style={{ fontSize: "10px" }}>
                 (opcional — mejora la lectura astral)
               </span>
             </label>
@@ -458,7 +458,7 @@ export default function OraculoPage() {
                 e.currentTarget.style.boxShadow = "none";
               }}
             />
-            <p className="text-xs text-[#444] font-light" style={{ fontFamily: "Inter, sans-serif" }}>
+            <p className="text-xs text-[#aaa] font-light" style={{ fontFamily: "Inter, sans-serif" }}>
               Ciudad + país. Necesario para calcular tu ascendente con precisión.
             </p>
           </div>
@@ -481,7 +481,7 @@ export default function OraculoPage() {
               <button
                 type="button"
                 onClick={() => setErrorMsg(null)}
-                className="text-xs text-[#555] hover:text-[#999] font-light transition-colors duration-200 text-left"
+                className="text-xs text-[#aaa] hover:text-[#ddd] font-light transition-colors duration-200 text-left"
                 style={{ fontFamily: "Inter, sans-serif" }}
               >
                 Cerrar aviso e intentar de nuevo →
@@ -528,7 +528,7 @@ export default function OraculoPage() {
               {/* Mensaje rotativo */}
               <p
                 key={loadingStep}
-                className="text-xs text-[#555] font-light animate-in fade-in duration-300"
+                className="text-xs text-[#aaa] font-light animate-in fade-in duration-300"
                 style={{ fontFamily: "Inter, sans-serif", letterSpacing: "0.08em" }}
               >
                 {LOADING_STEPS[loadingStep]}
@@ -537,7 +537,7 @@ export default function OraculoPage() {
               {slowWarning && (
                 <p
                   className="text-xs font-light animate-in fade-in duration-500 mt-2"
-                  style={{ fontFamily: "Inter, sans-serif", color: "#666", maxWidth: "260px", textAlign: "center" }}
+                  style={{ fontFamily: "Inter, sans-serif", color: "#aaa", maxWidth: "260px", textAlign: "center" }}
                 >
                   Esto se está tardando más de lo esperado. Por favor espera...
                 </p>
@@ -570,17 +570,17 @@ export default function OraculoPage() {
 
       {/* Footer */}
       <footer className="border-t py-10 px-6 text-center flex flex-col gap-3" style={{ borderColor: "#111" }}>
-        <p className="text-xs text-[#444] font-light tracking-wide" style={{ fontFamily: "Inter, sans-serif" }}>
+        <p className="text-xs text-[#aaa] font-light tracking-wide" style={{ fontFamily: "Inter, sans-serif" }}>
           Aquí abajo escuchamos cuándo naciste arriba. Ahora vamos a escuchar para qué.
         </p>
-        <div className="flex items-center justify-center gap-4 text-xs text-[#555]" style={{ fontFamily: "Inter, sans-serif" }}>
+        <div className="flex items-center justify-center gap-4 text-xs text-[#bbb]" style={{ fontFamily: "Inter, sans-serif" }}>
           <Link
             href="/oraculo/como-funciona"
             className="hover:text-[#B43FFF] transition-colors duration-200"
           >
             Cómo funciona el oráculo
           </Link>
-          <span className="text-[#333]">✦</span>
+          <span className="text-[#666]">✦</span>
           <span>pay what you can — 100% se dona</span>
         </div>
       </footer>

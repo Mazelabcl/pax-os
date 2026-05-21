@@ -112,7 +112,7 @@ export default function ComoFuncionaPage() {
           >
             Cómo leo tu carta.
           </h1>
-          <p className="cf-sans text-sm text-[#888] font-light leading-relaxed">
+          <p className="cf-sans text-sm text-[#d4d4d4] font-light leading-relaxed">
             Cada lectura fusiona tres sistemas de conocimiento humano con el arquetipo Pax.
             <br />Aquí te muestro cada capa.
           </p>
@@ -138,11 +138,11 @@ export default function ComoFuncionaPage() {
             </svg>
           }
         >
-          <p className="cf-sans text-sm text-[#999] font-light leading-relaxed">
+          <p className="cf-sans text-sm text-[#d4d4d4] font-light leading-relaxed">
             El <strong className="text-[#C084FC] font-normal">Tzolkin</strong> es el calendario sagrado maya de 260 días.
             Cada día tiene un <em>nahual</em> (arquetipo energético, como Ix el Jaguar o Imix la Cocodrila) y un <em>tono</em> (número del 1 al 13 que define la intensidad y propósito).
           </p>
-          <p className="cf-sans text-sm text-[#999] font-light leading-relaxed">
+          <p className="cf-sans text-sm text-[#d4d4d4] font-light leading-relaxed">
             La combinación nahual + tono del día en que naciste define tu energía de base. No es predicción —
             es un lenguaje de patrones que los mayas destilaron en siglos de observación. Yo lo uso para
             identificar <strong className="text-white font-normal">de qué tipo de energía está hecho tu gesto de servicio</strong>.
@@ -176,12 +176,12 @@ export default function ComoFuncionaPage() {
             </svg>
           }
         >
-          <p className="cf-sans text-sm text-[#999] font-light leading-relaxed">
+          <p className="cf-sans text-sm text-[#d4d4d4] font-light leading-relaxed">
             Tu <strong className="text-[#67E8F9] font-normal">sol</strong> es la energía que expresas.
             Tu <strong className="text-[#67E8F9] font-normal">luna</strong> es la energía que necesitas.
             Tu <strong className="text-[#67E8F9] font-normal">ascendente</strong> es la energía que el mundo percibe en ti.
           </p>
-          <p className="cf-sans text-sm text-[#999] font-light leading-relaxed">
+          <p className="cf-sans text-sm text-[#d4d4d4] font-light leading-relaxed">
             Para calcular el ascendente real necesito fecha + hora + lugar exactos — de ahí la importancia de los tres campos.
             Uso efemérides astronómicas reales, no estimaciones. La carta natal completa tiene 10 planetas y 12 casas;
             yo extraigo los <strong className="text-white font-normal">3 datos que más impactan tu arquetipo de servicio</strong>.
@@ -211,16 +211,16 @@ export default function ComoFuncionaPage() {
             </svg>
           }
         >
-          <p className="cf-sans text-sm text-[#999] font-light leading-relaxed">
+          <p className="cf-sans text-sm text-[#d4d4d4] font-light leading-relaxed">
             Aquí viene la capa Pax. Tomo el nahual + los signos astrales y los paso por el filtro del universo Pax:
             <em> ¿qué tipo de gesto de servicio describe esta combinación?</em>
           </p>
-          <p className="cf-sans text-sm text-[#999] font-light leading-relaxed">
+          <p className="cf-sans text-sm text-[#d4d4d4] font-light leading-relaxed">
             El resultado es tu <strong className="text-[#B43FFF] font-normal">arquetipo de servicio</strong> —
             la forma específica en que tu energía natural encaja con una necesidad del mundo.
             No es identidad. Es <strong className="text-white font-normal">vocación de ofrenda</strong>.
           </p>
-          <p className="cf-sans text-sm text-[#999] font-light leading-relaxed">
+          <p className="cf-sans text-sm text-[#d4d4d4] font-light leading-relaxed">
             Tu <strong className="text-[#B43FFF] font-normal">cristal-eco</strong> tiene el color que
             mezcla el tono maya con el elemento astral dominante. Ese cristal nace apagado en la Cámara
             que Escucha Arriba — y se enciende cuando completas el ciclo.
@@ -244,7 +244,7 @@ export default function ComoFuncionaPage() {
             </svg>
           }
         >
-          <p className="cf-sans text-sm text-[#999] font-light leading-relaxed">
+          <p className="cf-sans text-sm text-[#d4d4d4] font-light leading-relaxed">
             Un <strong className="text-[#FCD34D] font-normal">Gesto</strong> es cualquier acto creativo
             que genera impacto o dinero, donde el dinero se dona 100%.
             El Oráculo Pax es un Gesto.
@@ -257,17 +257,17 @@ export default function ComoFuncionaPage() {
           >
             {[
               { text: "Tu lectura completa", indent: 0, color: "#FCD34D" },
-              { text: "↓", indent: 1, color: "#555" },
-              { text: "Pay what you can (acto libre)", indent: 1, color: "#999" },
-              { text: "↓", indent: 2, color: "#555" },
+              { text: "↓", indent: 1, color: "#888" },
+              { text: "Pay what you can (acto libre)", indent: 1, color: "#d4d4d4" },
+              { text: "↓", indent: 2, color: "#888" },
               { text: "Cristal-eco se enciende en la Cámara", indent: 2, color: "#B43FFF" },
-              { text: "↓", indent: 3, color: "#555" },
-              { text: "Cristal-anchor del Uray Pacha recibe carga", indent: 3, color: "#999" },
-              { text: "↓", indent: 4, color: "#555" },
+              { text: "↓", indent: 3, color: "#888" },
+              { text: "Cristal-anchor del Uray Pacha recibe carga", indent: 3, color: "#d4d4d4" },
+              { text: "↓", indent: 4, color: "#888" },
               { text: "100% del dinero llega a fundación real", indent: 4, color: "#ffffff" },
-              { text: "↓", indent: 5, color: "#555" },
-              { text: "Impacto real en superficie", indent: 5, color: "#999" },
-              { text: "↓", indent: 6, color: "#555" },
+              { text: "↓", indent: 5, color: "#888" },
+              { text: "Impacto real en superficie", indent: 5, color: "#d4d4d4" },
+              { text: "↓", indent: 6, color: "#888" },
               { text: "Nuevos gestos de bondad → nuevas agujas vibran", indent: 6, color: "#34D399" },
             ].map(({ text, indent, color }, i) => (
               <div key={i} style={{ paddingLeft: `${indent * 16}px`, color }}>
@@ -276,7 +276,7 @@ export default function ComoFuncionaPage() {
             ))}
           </div>
 
-          <p className="cf-sans text-sm text-[#999] font-light leading-relaxed">
+          <p className="cf-sans text-sm text-[#d4d4d4] font-light leading-relaxed">
             La mitología y la economía son la misma cosa. El visitante no está donando <em>además de</em> recibir
             una lectura — el acto de pagar <strong className="text-white font-normal">es</strong> lo que completa
             la lectura en la diegesis.
@@ -300,13 +300,13 @@ export default function ComoFuncionaPage() {
             </svg>
           }
         >
-          <p className="cf-sans text-sm text-[#999] font-light leading-relaxed">
+          <p className="cf-sans text-sm text-[#d4d4d4] font-light leading-relaxed">
             Los <strong className="text-[#EC4899] font-normal">abuelos pax</strong> son los ancianos del clan,
             los que llevan siglos escuchando los cristales y traduciendo lo que vibran en lecturas.
             No guardan la memoria del clan (eso es Wiz) — guardan la memoria del cielo:
             la vocación de cada humano, el patrón que traen desde que nacieron.
           </p>
-          <p className="cf-sans text-sm text-[#999] font-light leading-relaxed">
+          <p className="cf-sans text-sm text-[#d4d4d4] font-light leading-relaxed">
             A los abuelos los asisten <strong className="text-white font-normal">Iris</strong> (joven cartógrafa de
             constelaciones — traduce las agujas vibrantes a un mapa legible) y{" "}
             <strong className="text-white font-normal">Baba</strong> (Pax ancestral que sostiene la conexión
@@ -325,7 +325,7 @@ export default function ComoFuncionaPage() {
       {/* ── CTA FINAL ── */}
       <div className="max-w-3xl mx-auto px-6 pb-20 flex flex-col items-center gap-6 text-center">
         <div className="h-px w-full" style={{ background: "rgba(180,63,255,0.1)" }} />
-        <p className="cf-serif text-lg text-[#aaa] font-light" style={{ fontStyle: "italic" }}>
+        <p className="cf-serif text-lg text-[#d4d4d4] font-light" style={{ fontStyle: "italic" }}>
           ¿Lista tu pregunta?
         </p>
         <Link
@@ -346,7 +346,7 @@ export default function ComoFuncionaPage() {
           />
           Ir al oráculo
         </Link>
-        <p className="cf-sans text-xs text-[#333] font-light" style={{ fontFamily: "Inter, sans-serif" }}>
+        <p className="cf-sans text-xs text-[#aaa] font-light" style={{ fontFamily: "Inter, sans-serif" }}>
           pay what you can — 100% se dona
         </p>
       </div>

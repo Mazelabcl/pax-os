@@ -131,7 +131,7 @@ export default function OraculoResultadoPage() {
           .r-serif { font-family: 'Cormorant Garamond', 'GFS Didot', Georgia, serif; }
           .r-sans  { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; }
         `}</style>
-        <p className="r-serif text-2xl font-light text-[#aaa]" style={{ fontStyle: "italic" }}>
+        <p className="r-serif text-2xl font-light text-[#d4d4d4]" style={{ fontStyle: "italic" }}>
           Esta página requiere que tires una carta primero.
         </p>
         <Link
@@ -206,7 +206,7 @@ export default function OraculoResultadoPage() {
 
         /* Markdown dentro del bloque pax */
         .pax-md h2 { font-family: 'Cormorant Garamond','GFS Didot',Georgia,serif; font-style:italic; font-size:1.35rem; font-weight:400; color:#e8d8ff; margin-bottom:0.5rem; margin-top:1rem; }
-        .pax-md h3 { font-family: 'Inter',sans-serif; font-size:0.7rem; text-transform:uppercase; letter-spacing:0.15em; color:#666; font-weight:300; margin-bottom:0.5rem; margin-top:1rem; }
+        .pax-md h3 { font-family: 'Inter',sans-serif; font-size:0.7rem; text-transform:uppercase; letter-spacing:0.15em; color:#a3a3a3; font-weight:300; margin-bottom:0.5rem; margin-top:1rem; }
         .pax-md p  { font-family: 'Inter',sans-serif; font-size:1.0625rem; color:#d4d4d4; font-weight:400; line-height:1.75; margin-bottom:0.5rem; letter-spacing:0.01em; }
         .pax-md strong { color:#e8d8ff; font-weight:400; }
         .pax-md em { font-style:italic; }
@@ -216,7 +216,7 @@ export default function OraculoResultadoPage() {
       <nav className="px-6 py-5 flex items-center justify-between border-b" style={{ borderColor: "#111" }}>
         <Link
           href="/oraculo"
-          className="text-xs text-[#555] hover:text-[#B43FFF] transition-colors duration-200 font-light flex items-center gap-2 r-sans"
+          className="text-xs text-[#aaa] hover:text-[#B43FFF] transition-colors duration-200 font-light flex items-center gap-2 r-sans"
         >
           ← Nueva lectura
         </Link>
@@ -229,7 +229,7 @@ export default function OraculoResultadoPage() {
               filter: "drop-shadow(0 0 3px rgba(180,63,255,0.7))",
             }}
           />
-          <span className="text-xs text-[#444] font-light tracking-widest uppercase r-sans">
+          <span className="text-xs text-[#bbb] font-light tracking-widest uppercase r-sans">
             Oráculo Pax
           </span>
         </div>
@@ -268,9 +268,9 @@ export default function OraculoResultadoPage() {
                   <p className="r-sans text-xs tracking-[0.2em] uppercase text-[#B43FFF] font-light mb-1">
                     Lectura de los abuelos pax
                   </p>
-                  <p className="r-sans text-[10px] text-[#444] font-light">{fechaDisplay}</p>
+                  <p className="r-sans text-[10px] text-[#aaa] font-light">{fechaDisplay}</p>
                 </div>
-                <p className="r-sans text-[10px] font-mono text-[#333] tracking-wider">{edition_serial}</p>
+                <p className="r-sans text-[10px] font-mono text-[#888] tracking-wider">{edition_serial}</p>
               </div>
 
               <div className="flex flex-col gap-3">
@@ -311,7 +311,7 @@ export default function OraculoResultadoPage() {
               </div>
 
               <div>
-                <p className="r-sans text-xs text-[#555] font-light">
+                <p className="r-sans text-xs text-[#aaa] font-light">
                   {inputs.lugar ?? ""}
                   {inputs.lugar && inputs.fecha ? " · " : ""}
                   {inputs.fecha}
@@ -388,11 +388,11 @@ export default function OraculoResultadoPage() {
                   }}
                 />
                 <div className="flex flex-col gap-1">
-                  <p className="r-sans text-xs uppercase tracking-wider text-[#555] font-light">Tu cristal personal</p>
+                  <p className="r-sans text-xs uppercase tracking-wider text-[#a3a3a3] font-light">Tu cristal personal</p>
                   <p className="r-sans text-sm text-white font-light">{arquetipo_pax.nombre}</p>
                   <div className="flex items-center gap-2">
                     <div style={{ width: "10px", height: "10px", borderRadius: "2px", background: color, opacity: 0.5 }} />
-                    <span className="r-sans text-xs font-mono text-[#555]">{color}</span>
+                    <span className="r-sans text-xs font-mono text-[#aaa]">{color}</span>
                   </div>
                 </div>
               </div>
@@ -409,7 +409,7 @@ export default function OraculoResultadoPage() {
                 className="rounded-md p-4"
                 style={{ background: `${color}0f`, border: `1px solid ${color}33` }}
               >
-                <p className="r-sans text-sm text-[#aaa] font-light leading-relaxed">
+                <p className="r-sans text-sm text-[#d4d4d4] font-light leading-relaxed">
                   {arquetipo_pax.descripcion}
                 </p>
               </div>
@@ -485,10 +485,10 @@ export default function OraculoResultadoPage() {
               <DataBlock label="Tono" value={String(tono.numero)} sub={tono.nombre} color="#C084FC" />
             </div>
 
-            <p className="r-sans text-sm text-[#999] font-light leading-relaxed">
+            <p className="r-sans text-sm text-[#d4d4d4] font-light leading-relaxed">
               {lectura.maya_block.nahual_text}
             </p>
-            <p className="r-sans text-sm text-[#999] font-light leading-relaxed">
+            <p className="r-sans text-sm text-[#d4d4d4] font-light leading-relaxed">
               {lectura.maya_block.tono_text}
             </p>
 
@@ -496,7 +496,7 @@ export default function OraculoResultadoPage() {
               className="rounded-md p-4"
               style={{ background: "rgba(192,132,252,0.06)", border: "1px solid rgba(192,132,252,0.15)" }}
             >
-              <p className="r-sans text-xs tracking-[0.15em] uppercase font-light mb-2" style={{ color: "#555" }}>
+              <p className="r-sans text-xs tracking-[0.15em] uppercase font-light mb-2" style={{ color: "#a3a3a3" }}>
                 El cruce — Maya confirma a Pax
               </p>
               <p className="r-sans text-sm text-[#bbb] font-light leading-relaxed">
@@ -551,13 +551,13 @@ export default function OraculoResultadoPage() {
                   <DataBlock label="Casa dominante" value={`${astral.luna.casa}`} sub="Casa dominante" color="#67E8F9" />
                 </div>
 
-                <p className="r-sans text-sm text-[#999] font-light leading-relaxed">
+                <p className="r-sans text-sm text-[#d4d4d4] font-light leading-relaxed">
                   {lectura.astral_block.sol_text}
                 </p>
-                <p className="r-sans text-sm text-[#999] font-light leading-relaxed">
+                <p className="r-sans text-sm text-[#d4d4d4] font-light leading-relaxed">
                   {lectura.astral_block.luna_text}
                 </p>
-                <p className="r-sans text-sm text-[#999] font-light leading-relaxed">
+                <p className="r-sans text-sm text-[#d4d4d4] font-light leading-relaxed">
                   {lectura.astral_block.asc_text}
                 </p>
 
@@ -565,7 +565,7 @@ export default function OraculoResultadoPage() {
                   className="rounded-md p-4"
                   style={{ background: "rgba(103,232,249,0.05)", border: "1px solid rgba(103,232,249,0.12)" }}
                 >
-                  <p className="r-sans text-xs tracking-[0.15em] uppercase font-light mb-2" style={{ color: "#555" }}>
+                  <p className="r-sans text-xs tracking-[0.15em] uppercase font-light mb-2" style={{ color: "#a3a3a3" }}>
                     El cruce — Astral confirma a Pax y a Maya
                   </p>
                   <p className="r-sans text-sm text-[#bbb] font-light leading-relaxed">
@@ -613,14 +613,14 @@ export default function OraculoResultadoPage() {
               </p>
             </div>
 
-            <p className="r-sans text-xs text-[#555] font-light leading-relaxed">
+            <p className="r-sans text-xs text-[#c0c0c0] font-light leading-relaxed">
               No tiene que ser perfecto. No tiene que resultar bien. Solo tiene que ser honesto.
               Un Gesto pequeño y real pesa más que cien gestos pensados y no hechos.
             </p>
 
             <label className="flex items-center gap-3 cursor-pointer mt-1" style={{ userSelect: "none" }}>
               <input type="checkbox" className="w-4 h-4 cursor-pointer" style={{ accentColor: "#FCD34D" }} />
-              <span className="r-sans text-sm text-[#666] font-light">
+              <span className="r-sans text-sm text-[#c0c0c0] font-light">
                 Marcar cuando complete el Gesto de esta semana
               </span>
             </label>
@@ -665,13 +665,13 @@ export default function OraculoResultadoPage() {
               <div className="p-6 flex flex-col gap-4 -mt-12 md:mt-0 relative z-10">
                 <div className="flex items-center gap-2">
                   <span style={{ color: "#FCD34D", opacity: 0.4, fontSize: "10px" }}>≈</span>
-                  <p className="r-sans text-[10px] tracking-[0.2em] uppercase font-light" style={{ color: "#555" }}>
+                  <p className="r-sans text-[10px] tracking-[0.2em] uppercase font-light" style={{ color: "#a3a3a3" }}>
                     Los abuelos pax cierran
                   </p>
                 </div>
                 <blockquote
                   className="r-serif text-sm font-light leading-relaxed italic"
-                  style={{ color: "#aaa", borderLeft: "2px solid rgba(252,211,77,0.2)", paddingLeft: "14px" }}
+                  style={{ color: "#d4d4d4", borderLeft: "2px solid rgba(252,211,77,0.2)", paddingLeft: "14px" }}
                 >
                   {lectura.cierre.split("\n").map((line, i) => (
                     <span key={i}>
@@ -720,10 +720,10 @@ export default function OraculoResultadoPage() {
           `}</style>
 
           <div className="text-center flex flex-col gap-2">
-            <p className="r-serif text-base font-light text-[#888]" style={{ fontStyle: "italic" }}>
+            <p className="r-serif text-base font-light text-[#d4d4d4]" style={{ fontStyle: "italic" }}>
               Tu cristal personal está apagado.
             </p>
-            <p className="r-sans text-xs text-[#555] font-light leading-relaxed">
+            <p className="r-sans text-xs text-[#aaa] font-light leading-relaxed">
               Completar el ciclo enciende tu cristal en el universo Pax.
               El dinero llega al 100% a una fundación real — sin monto mínimo.
             </p>
@@ -757,7 +757,7 @@ export default function OraculoResultadoPage() {
             </span>
           </button>
 
-          <p className="r-sans text-center text-[10px] text-[#333] font-light">
+          <p className="r-sans text-center text-[10px] text-[#888] font-light">
             Sin monto mínimo · el cristal enciende igual · impacto real
           </p>
         </div>
@@ -765,7 +765,7 @@ export default function OraculoResultadoPage() {
         <div className="text-center pb-4">
           <Link
             href="/oraculo/como-funciona"
-            className="r-sans text-xs text-[#444] hover:text-[#B43FFF] transition-colors duration-200 font-light"
+            className="r-sans text-xs text-[#aaa] hover:text-[#B43FFF] transition-colors duration-200 font-light"
           >
             Cómo se construyó esta lectura →
           </Link>
@@ -773,7 +773,7 @@ export default function OraculoResultadoPage() {
 
         {/* Edition serial en footer */}
         <div className="text-center pb-8">
-          <p className="r-sans text-[10px] font-mono text-[#2a2a2a] tracking-widest">
+          <p className="r-sans text-[10px] font-mono text-[#666] tracking-widest">
             {edition_serial}
           </p>
         </div>
@@ -830,9 +830,9 @@ function DataBlock({ label, value, sub, color }: DataBlockProps) {
       className="rounded-md p-3 flex flex-col gap-1"
       style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.04)" }}
     >
-      <p className="r-sans text-[10px] uppercase tracking-wider font-light" style={{ color: "#555" }}>{label}</p>
+      <p className="r-sans text-[10px] uppercase tracking-wider font-light" style={{ color: "#a3a3a3" }}>{label}</p>
       <p className="r-serif text-lg font-light" style={{ color }}>{value}</p>
-      <p className="r-sans text-[10px] font-light" style={{ color: "#555" }}>{sub}</p>
+      <p className="r-sans text-[10px] font-light" style={{ color: "#a3a3a3" }}>{sub}</p>
     </div>
   );
 }
@@ -849,7 +849,7 @@ function MiniSistemaRow({ color, label, value }: { color: string; label: string;
       >
         {label}
       </span>
-      <span style={{ color: "#888", fontWeight: 300 }}>{value}</span>
+      <span style={{ color: "#d4d4d4", fontWeight: 300 }}>{value}</span>
     </div>
   );
 }
@@ -872,7 +872,7 @@ function TribuCard({ title, description, accentColor }: TribuCardProps) {
       <p className="r-sans text-xs font-light" style={{ color: accentColor, letterSpacing: "0.04em" }}>
         {title}
       </p>
-      <p className="r-sans text-xs text-[#666] font-light leading-relaxed">
+      <p className="r-sans text-xs text-[#c0c0c0] font-light leading-relaxed">
         {description}
       </p>
     </div>

@@ -95,7 +95,7 @@ export function SistemasRow({ size = "sm", className = "" }: SistemasRowProps) {
           }}
         >
           {i > 0 && (
-            <span style={{ color: "#333", fontSize: "9px", margin: "0 2px" }}>✦</span>
+            <span style={{ color: "#666", fontSize: "9px", margin: "0 2px" }}>✦</span>
           )}
           <span style={{ color }}>{icon}</span>
           <span style={{ textTransform: "uppercase", color, opacity: 0.9 }}>{label}</span>
