@@ -17,7 +17,9 @@ const links: NavLink[] = [
   { href: "/personajes", label: "El clan" },
   { href: "/episodios/1", label: "Episodios" },
   { href: "/lore", label: "Lore" },
-  { href: "/cambios", label: "Cambios", dot: true },
+  { href: "/oraculo", label: "Oráculo", dot: true },
+  { href: "/cambios", label: "Cambios" },
+  { href: "/docs", label: "Docs" },
   { href: "/legacy/v2", label: "Archivo", muted: true },
 ];
 

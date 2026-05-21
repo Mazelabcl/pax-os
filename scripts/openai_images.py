@@ -27,20 +27,36 @@ from openai import OpenAI, AsyncOpenAI
 
 
 # ---------------------------------------------------------------------------
-# Carga de .env.local sin python-dotenv (parser manual)
+# Mimetype helper — el SDK de OpenAI no infiere content-type del nombre
+# cuando se le pasa solo un file handle. Para .webp termina enviando
+# application/octet-stream y la API lo rechaza. Construimos tuples
+# (filename, fileobj, mimetype) explicitos para cada input.
+# ---------------------------------------------------------------------------
+def _mime_for(path: str) -> str:
+    ext = os.path.splitext(path)[1].lower()
+    return {
+        ".png": "image/png",
+        ".jpg": "image/jpeg",
+        ".jpeg": "image/jpeg",
+        ".webp": "image/webp",
+    }.get(ext, "image/png")
+
+
+# ---------------------------------------------------------------------------
+# Carga de .env y .env.local sin python-dotenv (parser manual).
+# Precedencia Next.js: .env primero (defaults), .env.local sobrescribe.
 # ---------------------------------------------------------------------------
 def _load_env():
-    env_path = os.path.join(
-        os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
-        ".env.local",
-    )
-    if os.path.exists(env_path):
-        with open(env_path, encoding="utf-8") as f:
-            for line in f:
-                line = line.strip()
-                if line and not line.startswith("#") and "=" in line:
-                    k, v = line.split("=", 1)
-                    os.environ[k.strip()] = v.strip()
+    repo_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    for filename in (".env", ".env.local"):  # .env.local gana por orden
+        env_path = os.path.join(repo_root, filename)
+        if os.path.exists(env_path):
+            with open(env_path, encoding="utf-8") as f:
+                for line in f:
+                    line = line.strip()
+                    if line and not line.startswith("#") and "=" in line:
+                        k, v = line.split("=", 1)
+                        os.environ[k.strip()] = v.strip()
 
 
 _load_env()
@@ -113,18 +129,23 @@ def edit_image(
     if isinstance(input_image_paths, str):
         input_image_paths = [input_image_paths]
 
-    files = [open(p, "rb") for p in input_image_paths]
+    file_handles = []
+    file_tuples = []
+    for p in input_image_paths:
+        fh = open(p, "rb")
+        file_handles.append(fh)
+        file_tuples.append((os.path.basename(p), fh, _mime_for(p)))
     try:
         result = client.images.edit(
             model=MODEL,
-            image=files if len(files) > 1 else files[0],
+            image=file_tuples if len(file_tuples) > 1 else file_tuples[0],
             prompt=prompt,
             size=size,
             quality=quality,
         )
     finally:
-        for f in files:
-            f.close()
+        for fh in file_handles:
+            fh.close()
 
     image_base64 = result.data[0].b64_json
     with open(output_path, "wb") as f:
@@ -147,18 +168,23 @@ async def edit_image_async(
     if isinstance(input_image_paths, str):
         input_image_paths = [input_image_paths]
 
-    files = [open(p, "rb") for p in input_image_paths]
+    file_handles = []
+    file_tuples = []
+    for p in input_image_paths:
+        fh = open(p, "rb")
+        file_handles.append(fh)
+        file_tuples.append((os.path.basename(p), fh, _mime_for(p)))
     try:
         result = await client_async.images.edit(
             model=MODEL,
-            image=files if len(files) > 1 else files[0],
+            image=file_tuples if len(file_tuples) > 1 else file_tuples[0],
             prompt=prompt,
             size=size,
             quality=quality,
         )
     finally:
-        for f in files:
-            f.close()
+        for fh in file_handles:
+            fh.close()
 
     image_base64 = result.data[0].b64_json
     with open(output_path, "wb") as f:

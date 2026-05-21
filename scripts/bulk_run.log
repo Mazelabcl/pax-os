@@ -1,0 +1,124 @@
+Total jobs: 18 simples + 18 completas = 36
+
+======================================================================
+FASE 1 — SIMPLES: 18 pending, 0 skipped (already exist)
+======================================================================
+  [START] kz/v1-simple
+  [START] kz/v2-simple
+  [START] kz/v3-simple
+  [START] luxa/v1-simple
+  [OK] kz/v1-simple - 145.1s - 1676KB
+  [START] luxa/v2-simple
+  [OK] kz/v2-simple - 146.8s - 1846KB
+  [START] luxa/v3-simple
+  [OK] kz/v3-simple - 147.2s - 1910KB
+  [START] agatha/v1-simple
+  [OK] luxa/v1-simple - 153.9s - 1984KB
+  [START] agatha/v2-simple
+  [OK] luxa/v2-simple - 144.5s - 1749KB
+  [START] agatha/v3-simple
+  [OK] agatha/v1-simple - 143.1s - 1837KB
+  [START] byte/v1-simple
+  [OK] luxa/v3-simple - 143.8s - 2038KB
+  [START] byte/v2-simple
+  [OK] agatha/v2-simple - 155.4s - 1945KB
+  [START] byte/v3-simple
+  [OK] byte/v2-simple - 142.8s - 1808KB
+  [START] onyx/v1-simple
+  [OK] agatha/v3-simple - 147.6s - 2057KB
+  [START] onyx/v2-simple
+  [OK] byte/v1-simple - 151.8s - 1911KB
+  [START] onyx/v3-simple
+  [OK] byte/v3-simple - 144.0s - 2009KB
+  [START] wiz/v1-simple
+  [OK] onyx/v2-simple - 153.4s - 2073KB
+  [START] wiz/v2-simple
+  [OK] onyx/v3-simple - 151.3s - 2217KB
+  [START] wiz/v3-simple
+  [OK] onyx/v1-simple - 163.6s - 2156KB
+  [OK] wiz/v1-simple - 145.1s - 2029KB
+  [OK] wiz/v2-simple - 114.5s - 2053KB
+  [OK] wiz/v3-simple - 144.2s - 2065KB
+
+======================================================================
+FASE 2 — COMPLETAS: 18 pending, 0 skipped (already exist)
+======================================================================
+  [START] kz/v1-full
+  [START] kz/v2-full
+  [START] kz/v3-full
+  [START] luxa/v1-full
+  [OK] kz/v3-full - 158.1s - 1739KB
+  [START] luxa/v2-full
+  [OK] luxa/v1-full - 163.3s - 1780KB
+  [START] luxa/v3-full
+  [OK] kz/v1-full - 163.6s - 1751KB
+  [START] agatha/v1-full
+  [OK] kz/v2-full - 166.5s - 1720KB
+  [START] agatha/v2-full
+  [OK] agatha/v1-full - 162.5s - 1897KB
+  [START] agatha/v3-full
+  [OK] luxa/v3-full - 165.5s - 1840KB
+  [START] byte/v1-full
+  [OK] agatha/v2-full - 162.6s - 1686KB
+  [START] byte/v2-full
+  [OK] luxa/v2-full - 172.6s - 1749KB
+  [START] byte/v3-full
+  [OK] agatha/v3-full - 153.0s - 1857KB
+  [START] onyx/v1-full
+  [OK] byte/v1-full - 152.2s - 1798KB
+  [START] onyx/v2-full
+  [OK] byte/v2-full - 156.6s - 1654KB
+  [START] onyx/v3-full
+  [OK] byte/v3-full - 157.8s - 1827KB
+  [START] wiz/v1-full
+  [OK] onyx/v2-full - 160.4s - 1835KB
+  [START] wiz/v2-full
+  [OK] onyx/v3-full - 155.7s - 1914KB
+  [START] wiz/v3-full
+  [OK] wiz/v1-full - 159.9s - 1986KB
+  [OK] onyx/v1-full - 177.1s - 1857KB
+  [OK] wiz/v2-full - 149.9s - 1760KB
+  [OK] wiz/v3-full - 164.6s - 2127KB
+
+======================================================================
+RESUMEN FINAL
+======================================================================
+  OK   content/canon-v2/kz/v1-fix-actual/simple.png (1701 KB)
+  OK   content/canon-v2/kz/v1-fix-actual/completa.png (1849 KB)
+  OK   content/canon-v2/kz/v2-jiggy-base/simple.png (1735 KB)
+  OK   content/canon-v2/kz/v2-jiggy-base/completa.png (1637 KB)
+  OK   content/canon-v2/kz/v3-from-scratch/simple.png (1877 KB)
+  OK   content/canon-v2/kz/v3-from-scratch/completa.png (1752 KB)
+  OK   content/canon-v2/luxa/v1-fix-actual/simple.png (1960 KB)
+  OK   content/canon-v2/luxa/v1-fix-actual/completa.png (1726 KB)
+  OK   content/canon-v2/luxa/v2-jiggy-base/simple.png (1785 KB)
+  OK   content/canon-v2/luxa/v2-jiggy-base/completa.png (1677 KB)
+  OK   content/canon-v2/luxa/v3-from-scratch/simple.png (1902 KB)
+  OK   content/canon-v2/luxa/v3-from-scratch/completa.png (1848 KB)
+  OK   content/canon-v2/agatha/v1-fix-actual/simple.png (1807 KB)
+  OK   content/canon-v2/agatha/v1-fix-actual/completa.png (1811 KB)
+  OK   content/canon-v2/agatha/v2-jiggy-base/simple.png (1792 KB)
+  OK   content/canon-v2/agatha/v2-jiggy-base/completa.png (1659 KB)
+  OK   content/canon-v2/agatha/v3-from-scratch/simple.png (2037 KB)
+  OK   content/canon-v2/agatha/v3-from-scratch/completa.png (1720 KB)
+  OK   content/canon-v2/byte/v1-fix-actual/simple.png (1904 KB)
+  OK   content/canon-v2/byte/v1-fix-actual/completa.png (1816 KB)
+  OK   content/canon-v2/byte/v2-jiggy-base/simple.png (1702 KB)
+  OK   content/canon-v2/byte/v2-jiggy-base/completa.png (1648 KB)
+  OK   content/canon-v2/byte/v3-from-scratch/simple.png (1971 KB)
+  OK   content/canon-v2/byte/v3-from-scratch/completa.png (1781 KB)
+  OK   content/canon-v2/onyx/v1-fix-actual/simple.png (2150 KB)
+  OK   content/canon-v2/onyx/v1-fix-actual/completa.png (1923 KB)
+  OK   content/canon-v2/onyx/v2-jiggy-base/simple.png (1997 KB)
+  OK   content/canon-v2/onyx/v2-jiggy-base/completa.png (1844 KB)
+  OK   content/canon-v2/onyx/v3-from-scratch/simple.png (2017 KB)
+  OK   content/canon-v2/onyx/v3-from-scratch/completa.png (1863 KB)
+  OK   content/canon-v2/wiz/v1-fix-actual/simple.png (2194 KB)
+  OK   content/canon-v2/wiz/v1-fix-actual/completa.png (2116 KB)
+  OK   content/canon-v2/wiz/v2-jiggy-base/simple.png (1956 KB)
+  OK   content/canon-v2/wiz/v2-jiggy-base/completa.png (1760 KB)
+  OK   content/canon-v2/wiz/v3-from-scratch/simple.png (2076 KB)
+  OK   content/canon-v2/wiz/v3-from-scratch/completa.png (2127 KB)
+
+Total OK: 36/36
+Tiempo total: 25.7 min

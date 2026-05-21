@@ -130,3 +130,70 @@
     @apply font-sans;
   }
 }
+
+/* ─── Ken Burns global (usado en glassmorphic-hero y como-funciona) ─── */
+@keyframes ken-burns {
+  0%   { transform: scale(1.0) translate(0px, 0px); }
+  33%  { transform: scale(1.06) translate(-8px, -5px); }
+  66%  { transform: scale(1.12) translate(6px, -7px); }
+  100% { transform: scale(1.0) translate(0px, 0px); }
+}
+
+.animate-ken-burns {
+  animation: ken-burns 11s ease-in-out infinite;
+  transform-origin: center center;
+}
+
+/* ─── Oráculo — tipografía Pax ─── */
+/* h1 de página: Didot grande, sin serif agresivo */
+.pax-h1 {
+  font-family: 'Didot', 'GFS Didot', Georgia, serif;
+  font-weight: 400;
+  letter-spacing: -1px;
+  font-style: italic;
+}
+
+/* h2 secciones: Didot italic liviano */
+.pax-h2 {
+  font-family: 'Didot', 'GFS Didot', Georgia, serif;
+  font-weight: 400;
+  letter-spacing: -0.5px;
+  font-style: italic;
+}
+
+/* body lectura: Inter ultralight, tracking abierto */
+.pax-body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 300;
+  letter-spacing: 0.02em;
+  line-height: 1.7;
+}
+
+/* labels técnicos: estilo monospace con small caps simuladas */
+.pax-label {
+  font-family: 'Inter', monospace;
+  font-size: 10px;
+  font-weight: 300;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+}
+
+/* mensaje principal de la lectura: Didot italic jade */
+.pax-reading {
+  font-family: 'Didot', 'GFS Didot', Georgia, serif;
+  font-style: italic;
+  font-weight: 400;
+  line-height: 1.65;
+  color: #a8e0d0;  /* jade-soft */
+}
+
+/* breadcrumb ambient Pax */
+.pax-breadcrumb {
+  font-family: 'Didot', 'GFS Didot', Georgia, serif;
+  font-size: 11px;
+  letter-spacing: 0.35em;
+  font-style: italic;
+  opacity: 0.3;
+  color: #B43FFF;
+  user-select: none;
+}

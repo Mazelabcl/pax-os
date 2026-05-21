@@ -1,0 +1,55 @@
+======================================================================
+FASE 1: SIMPLES (10 jobs max — 5 chars x 2 variations)
+======================================================================
+  Dispatching 10 jobs in parallel (Semaphore=4)...
+    [OK] tik/v-con-ref/simple - 144.7s - 1772KB
+    [OK] tik/v-sin-ref/simple - 135.4s - 1874KB
+    [OK] vex/v-con-ref/simple - 155.0s - 2122KB
+    [OK] vex/v-sin-ref/simple - 143.4s - 2189KB
+    [OK] mira/v-con-ref/simple - 143.7s - 2204KB
+    [OK] mira/v-sin-ref/simple - 140.6s - 2297KB
+    [OK] zin/v-con-ref/simple - 106.2s - 1761KB
+    [OK] zin/v-sin-ref/simple - 147.7s - 2082KB
+    [OK] koa/v-con-ref/simple - 143.3s - 1864KB
+    [OK] koa/v-sin-ref/simple - 144.2s - 2147KB
+
+======================================================================
+FASE 2: COMPLETAS (10 jobs max — 5 chars x 2 variations)
+======================================================================
+  Dispatching 10 jobs in parallel (Semaphore=4)...
+    [OK] tik/v-con-ref/completa - 153.7s - 1730KB
+    [OK] tik/v-sin-ref/completa - 160.2s - 2031KB
+    [OK] vex/v-con-ref/completa - 158.5s - 1870KB
+    [OK] vex/v-sin-ref/completa - 165.7s - 1918KB
+    [OK] mira/v-con-ref/completa - 185.3s - 1929KB
+    [OK] mira/v-sin-ref/completa - 158.5s - 2036KB
+    [OK] zin/v-con-ref/completa - 155.5s - 1767KB
+    [OK] zin/v-sin-ref/completa - 161.8s - 1741KB
+    [OK] koa/v-con-ref/completa - 161.3s - 1678KB
+    [OK] koa/v-sin-ref/completa - 177.8s - 1867KB
+
+======================================================================
+FINAL SUMMARY
+======================================================================
+  OK    content/canon-v2/secundarios/tik/v-con-ref/simple.png  (1772 KB)
+  OK    content/canon-v2/secundarios/tik/v-con-ref/completa.png  (1715 KB)
+  OK    content/canon-v2/secundarios/tik/v-sin-ref/simple.png  (1915 KB)
+  OK    content/canon-v2/secundarios/tik/v-sin-ref/completa.png  (1948 KB)
+  OK    content/canon-v2/secundarios/vex/v-con-ref/simple.png  (2071 KB)
+  OK    content/canon-v2/secundarios/vex/v-con-ref/completa.png  (1970 KB)
+  OK    content/canon-v2/secundarios/vex/v-sin-ref/simple.png  (2204 KB)
+  OK    content/canon-v2/secundarios/vex/v-sin-ref/completa.png  (2012 KB)
+  OK    content/canon-v2/secundarios/mira/v-con-ref/simple.png  (2125 KB)
+  OK    content/canon-v2/secundarios/mira/v-con-ref/completa.png  (1820 KB)
+  OK    content/canon-v2/secundarios/mira/v-sin-ref/simple.png  (2226 KB)
+  OK    content/canon-v2/secundarios/mira/v-sin-ref/completa.png  (2024 KB)
+  OK    content/canon-v2/secundarios/zin/v-con-ref/simple.png  (1778 KB)
+  OK    content/canon-v2/secundarios/zin/v-con-ref/completa.png  (1720 KB)
+  OK    content/canon-v2/secundarios/zin/v-sin-ref/simple.png  (1900 KB)
+  OK    content/canon-v2/secundarios/zin/v-sin-ref/completa.png  (1774 KB)
+  OK    content/canon-v2/secundarios/koa/v-con-ref/simple.png  (1888 KB)
+  OK    content/canon-v2/secundarios/koa/v-con-ref/completa.png  (1678 KB)
+  OK    content/canon-v2/secundarios/koa/v-sin-ref/simple.png  (2020 KB)
+  OK    content/canon-v2/secundarios/koa/v-sin-ref/completa.png  (1867 KB)
+
+TOTAL: 20/20 OK, 0/20 FAIL
