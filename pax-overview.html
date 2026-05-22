@@ -1,0 +1,1084 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pax — overview del proyecto</title>
+<style>
+  :root {
+    --jade: #00C896;
+    --amber: #F59E0B;
+    --magenta: #E91E63;
+    --basalt: #0F0F18;
+    --basalt-2: #161622;
+    --basalt-3: #1E1E2E;
+    --text: #E8E8F0;
+    --text-2: #9090A8;
+    --border: #2A2A3A;
+    --jade-glow: rgba(0, 200, 150, 0.25);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    background: var(--basalt);
+    color: var(--text);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 24px;
+  }
+
+  /* HERO */
+  .hero {
+    padding: 64px 24px 48px;
+    background: radial-gradient(ellipse at top, rgba(0,200,150,0.08), transparent 60%),
+                radial-gradient(ellipse at bottom right, rgba(233,30,99,0.06), transparent 60%);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .hero h1 {
+    font-family: Georgia, serif;
+    font-size: clamp(48px, 9vw, 96px);
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--jade), var(--amber), var(--magenta));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    line-height: 1;
+    margin-bottom: 12px;
+    letter-spacing: -2px;
+  }
+
+  .hero .subtitle {
+    color: var(--text-2);
+    font-size: 18px;
+    margin-bottom: 32px;
+  }
+
+  .kpis {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px 32px;
+    font-size: 15px;
+    color: var(--text);
+  }
+
+  .kpis .kpi { display: inline-flex; gap: 10px; align-items: baseline; }
+  .kpis .kpi .num { color: var(--jade); font-weight: 700; font-size: 22px; }
+
+  /* SECTIONS */
+  section { padding: 64px 0 32px; border-bottom: 1px solid var(--border); }
+
+  h2 {
+    font-family: Georgia, serif;
+    font-size: clamp(28px, 4vw, 40px);
+    margin-bottom: 12px;
+    font-weight: 700;
+  }
+
+  h2 .em { color: var(--jade); }
+  h2 .em-a { color: var(--amber); }
+  h2 .em-m { color: var(--magenta); }
+
+  h3 { font-size: 20px; margin-bottom: 12px; font-weight: 600; }
+
+  .lead { color: var(--text-2); font-size: 17px; margin-bottom: 28px; max-width: 800px; }
+
+  p { margin-bottom: 14px; }
+
+  blockquote {
+    border-left: 3px solid var(--jade);
+    padding: 8px 0 8px 20px;
+    margin: 24px 0;
+    color: var(--text);
+    font-style: italic;
+    font-size: 18px;
+  }
+
+  blockquote cite {
+    display: block;
+    color: var(--text-2);
+    font-size: 14px;
+    font-style: normal;
+    margin-top: 8px;
+  }
+
+  /* LAYERS — 3 cards (idea, universo, gestos) */
+  .layers {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 16px;
+    margin-top: 28px;
+  }
+
+  .layer {
+    border: 1px solid var(--border);
+    background: var(--basalt-2);
+    border-radius: 12px;
+    padding: 24px;
+    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+  }
+
+  .layer:hover {
+    transform: translateY(-2px);
+    border-color: var(--jade);
+    box-shadow: 0 6px 24px var(--jade-glow);
+  }
+
+  .layer .ico { font-size: 32px; margin-bottom: 12px; }
+  .layer h3 { color: var(--jade); }
+  .layer .layer-2 h3 { color: var(--amber); }
+  .layer p { color: var(--text-2); font-size: 15px; margin-bottom: 0; }
+
+  .layer-1 h3 { color: var(--jade); }
+  .layer-2 h3 { color: var(--amber); }
+  .layer-3 h3 { color: var(--magenta); }
+
+  /* GENIALIDAD */
+  .genius {
+    background: linear-gradient(135deg, rgba(0,200,150,0.08), rgba(233,30,99,0.08));
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 40px;
+    margin-top: 24px;
+  }
+
+  .genius-grid {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 24px;
+    align-items: center;
+  }
+
+  .genius-side {
+    text-align: center;
+    padding: 16px;
+  }
+
+  .genius-side .label {
+    color: var(--text-2);
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 12px;
+  }
+
+  .genius-side .formula {
+    font-size: 22px;
+    font-weight: 600;
+    line-height: 1.4;
+  }
+
+  .genius-side .formula .key { font-family: Georgia, serif; }
+
+  .genius-side.lore .formula .key { color: var(--jade); }
+  .genius-side.biz .formula .key { color: var(--magenta); }
+
+  .genius-equals {
+    font-size: 40px;
+    color: var(--amber);
+    font-weight: 700;
+  }
+
+  .genius-foot {
+    text-align: center;
+    margin-top: 24px;
+    color: var(--text);
+    font-size: 16px;
+  }
+
+  /* HISTORIA */
+  .historia p { font-size: 16px; color: var(--text); max-width: 820px; }
+  .historia p strong { color: var(--jade); }
+  .historia p em { color: var(--amber); font-style: normal; font-weight: 600; }
+
+  /* CHARS — grid */
+  .chars-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 16px;
+    margin-top: 24px;
+  }
+
+  .char {
+    background: var(--basalt-2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+  }
+
+  .char:hover {
+    transform: translateY(-3px);
+    border-color: var(--jade);
+    box-shadow: 0 8px 30px var(--jade-glow);
+  }
+
+  .char-img-wrap {
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    background: linear-gradient(135deg, var(--basalt-2), var(--basalt-3));
+    position: relative;
+  }
+
+  .char-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    display: block;
+  }
+
+  .char-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: Georgia, serif;
+    font-size: 80px;
+    color: var(--text-2);
+    background: linear-gradient(135deg, #2A2A3A, #1A1A28);
+    position: relative;
+  }
+
+  .char-placeholder::after {
+    content: "sin PNG canónico aún";
+    position: absolute;
+    bottom: 10px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    color: var(--text-2);
+    font-family: system-ui;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    opacity: 0.7;
+  }
+
+  .char-info {
+    padding: 14px 16px;
+  }
+
+  .char-name {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .char-name .badge {
+    font-size: 10px;
+    background: var(--magenta);
+    color: white;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .char-role {
+    font-size: 13px;
+    color: var(--text-2);
+    line-height: 1.4;
+  }
+
+  /* Jiggy destacado */
+  .char.hero-char {
+    grid-column: span 2;
+    grid-row: span 2;
+    border: 2px solid var(--magenta);
+    box-shadow: 0 0 30px rgba(233,30,99,0.15);
+  }
+
+  .char.hero-char .char-info {
+    padding: 20px;
+  }
+
+  .char.hero-char .char-name {
+    font-size: 28px;
+    font-family: Georgia, serif;
+  }
+
+  .char.hero-char .char-role {
+    font-size: 15px;
+  }
+
+  /* details (expansión) */
+  .char details {
+    border-top: 1px solid var(--border);
+    padding: 0;
+  }
+
+  .char details summary {
+    padding: 10px 16px;
+    cursor: pointer;
+    font-size: 13px;
+    color: var(--jade);
+    list-style: none;
+    user-select: none;
+  }
+
+  .char details summary::-webkit-details-marker { display: none; }
+
+  .char details summary::after {
+    content: " ↓ ver más";
+  }
+
+  .char details[open] summary::after {
+    content: " ↑ ocultar";
+  }
+
+  .char details .more {
+    padding: 0 16px 16px;
+    font-size: 13px;
+    color: var(--text-2);
+    line-height: 1.6;
+  }
+
+  .char details .more p { margin-bottom: 8px; }
+  .char details .more strong { color: var(--text); }
+
+  /* GESTOS */
+  .gestos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+    margin-top: 24px;
+  }
+
+  .gesto-card {
+    background: var(--basalt-2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+    transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+  }
+
+  .gesto-card:hover {
+    border-color: var(--jade);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 24px var(--jade-glow);
+  }
+
+  .gesto-num {
+    font-family: Georgia, serif;
+    font-size: 48px;
+    color: var(--amber);
+    font-weight: 700;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .gesto-name {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: var(--text);
+  }
+
+  .gesto-desc {
+    color: var(--text-2);
+    font-size: 14px;
+    margin-bottom: 14px;
+  }
+
+  .gesto-status {
+    display: inline-block;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 4px 10px;
+    border-radius: 12px;
+    margin-bottom: 12px;
+    font-weight: 600;
+  }
+
+  .status-live { background: rgba(0,200,150,0.15); color: var(--jade); border: 1px solid var(--jade); }
+  .status-progress { background: rgba(245,158,11,0.15); color: var(--amber); border: 1px solid var(--amber); }
+  .status-future { background: rgba(144,144,168,0.15); color: var(--text-2); border: 1px solid var(--text-2); }
+  .status-pending { background: rgba(233,30,99,0.15); color: var(--magenta); border: 1px solid var(--magenta); }
+
+  .gesto-files {
+    font-size: 12px;
+    color: var(--text-2);
+    font-family: ui-monospace, "Cascadia Mono", Consolas, monospace;
+    background: var(--basalt);
+    padding: 8px 12px;
+    border-radius: 6px;
+    margin-bottom: 12px;
+    line-height: 1.5;
+  }
+
+  .gesto-link {
+    color: var(--jade);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+    border-bottom: 1px dotted var(--jade);
+    padding-bottom: 2px;
+  }
+
+  .gesto-link:hover { color: var(--amber); border-bottom-color: var(--amber); }
+
+  .backlog {
+    margin-top: 28px;
+    padding: 20px 24px;
+    background: var(--basalt-2);
+    border: 1px dashed var(--border);
+    border-radius: 12px;
+    color: var(--text-2);
+    font-size: 14px;
+  }
+
+  .backlog strong { color: var(--text); }
+
+  /* NAVEGACION REPO */
+  .repo-map {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 12px;
+    margin-top: 20px;
+  }
+
+  .repo-item {
+    background: var(--basalt-2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px;
+  }
+
+  .repo-item code {
+    color: var(--jade);
+    font-family: ui-monospace, "Cascadia Mono", Consolas, monospace;
+    font-size: 14px;
+    font-weight: 600;
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  .repo-item span { color: var(--text-2); font-size: 13px; line-height: 1.5; }
+
+  /* TABLA encontrar cosas */
+  .find-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background: var(--basalt-2);
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    font-size: 14px;
+  }
+
+  .find-table th, .find-table td {
+    text-align: left;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .find-table th {
+    background: var(--basalt-3);
+    color: var(--amber);
+    font-weight: 700;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .find-table tr:last-child td { border-bottom: none; }
+
+  .find-table tr:hover td { background: var(--basalt-3); }
+
+  .find-table code {
+    background: var(--basalt);
+    color: var(--jade);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: ui-monospace, "Cascadia Mono", Consolas, monospace;
+    font-size: 12px;
+  }
+
+  /* FOOTER */
+  footer {
+    padding: 40px 24px 80px;
+    text-align: center;
+    color: var(--text-2);
+    font-size: 14px;
+  }
+
+  footer a {
+    color: var(--jade);
+    text-decoration: none;
+  }
+
+  footer a:hover { color: var(--amber); }
+
+  /* MOBILE */
+  @media (max-width: 720px) {
+    .hero { padding: 40px 16px 32px; }
+    .wrap { padding: 16px; }
+    section { padding: 40px 0 20px; }
+    .genius-grid { grid-template-columns: 1fr; }
+    .genius-equals { font-size: 28px; transform: rotate(90deg); margin: 8px auto; }
+    .genius { padding: 24px; }
+    .char.hero-char { grid-column: span 1; grid-row: span 1; }
+    .char.hero-char .char-name { font-size: 22px; }
+    .kpis { flex-direction: column; gap: 8px; }
+    .find-table th, .find-table td { padding: 10px 12px; font-size: 13px; }
+  }
+
+  /* PRINT */
+  @media print {
+    body { background: white; color: black; }
+    .hero h1 { -webkit-text-fill-color: #000; color: #000; background: none; }
+    .char, .gesto-card, .layer, .repo-item, .find-table {
+      background: white;
+      border: 1px solid #ccc;
+      box-shadow: none;
+      page-break-inside: avoid;
+    }
+    .char:hover, .gesto-card:hover, .layer:hover { transform: none; box-shadow: none; }
+    section { border-bottom: 1px solid #ccc; }
+    blockquote { border-left-color: #888; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="wrap">
+    <h1>Pax</h1>
+    <p class="subtitle">Estado del proyecto al 2026-05-22</p>
+    <div class="kpis">
+      <div class="kpi"><span class="num">1</span><span>idea-meta</span></div>
+      <div class="kpi"><span class="num">1</span><span>universo narrativo</span></div>
+      <div class="kpi"><span class="num">4</span><span>gestos activos</span></div>
+      <div class="kpi"><span class="num">19</span><span>personajes canónicos</span></div>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <!-- 1. QUE ES PAX -->
+  <section id="que-es">
+    <h2>1. Qué es Pax <span class="em">— la idea-meta</span></h2>
+    <p class="lead">Pax es un proyecto que opera en tres capas conectadas. La idea, el universo que la vehiculiza y los gestos que la monetizan y donan.</p>
+
+    <blockquote>
+      Cualquier persona puede tener una idea. Esa idea puede ser acelerada por la IA o por la comunidad, y la idea es consumida por la comunidad y eso genera $, y ese $ se dona.
+      <cite>— Aldot, 2026-05-21</cite>
+    </blockquote>
+
+    <div class="layers">
+      <div class="layer layer-1">
+        <div class="ico">💡</div>
+        <h3>Idea-meta</h3>
+        <p>Ideas → IA + comunidad → consumo → $ → donación. Cualquier humano puede ser autor. La IA y la comunidad son aceleradores, no dueños. El dinero generado se dona, no se acumula.</p>
+      </div>
+      <div class="layer layer-2">
+        <div class="ico">🌌</div>
+        <h3>Universo (lore)</h3>
+        <p>Una cosmología propia que convierte el "hacer ideas que ayuden" en mitología. anuraK, Ayni, cristales, Uray Pacha, Jiggy.</p>
+      </div>
+      <div class="layer layer-3">
+        <div class="ico">🎯</div>
+        <h3>Gestos</h3>
+        <p>Manifestaciones monetizables. Cada gesto es una idea concreta que se ejecuta, se consume, genera $ y se dona. Hoy hay 4 activos.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. LA GENIALIDAD -->
+  <section id="genialidad">
+    <h2>2. La genialidad <span class="em-a">— el paralelo estructural</span></h2>
+    <p class="lead">La columna vertebral semántica del proyecto. No es coincidencia: es lo que conecta lore y negocio en una sola palabra.</p>
+
+    <div class="genius">
+      <div class="genius-grid">
+        <div class="genius-side lore">
+          <div class="label">En el lore</div>
+          <div class="formula"><span class="key">Ayni</span> = unidad de gesto</div>
+        </div>
+        <div class="genius-equals">⇋</div>
+        <div class="genius-side biz">
+          <div class="label">En el negocio</div>
+          <div class="formula"><span class="key">gesto</span> = unidad monetizable</div>
+        </div>
+      </div>
+      <div class="genius-foot">
+        Misma estructura, dos lecturas. Cualquier pitch o landing de Pax puede y debe explotar este paralelo.
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. HISTORIA -->
+  <section id="historia" class="historia">
+    <h2>3. La historia <span class="em-m">— el lore en cuatro párrafos</span></h2>
+    <p class="lead">Resumen accesible del canon. Detalle completo en <code>_lore/canon.md</code>.</p>
+
+    <p>Bajo la superficie del planeta vive una tribu de alquimistas juguetones llamados <strong>Pax</strong>. Habitan el <strong>Uray Pacha</strong> — "el mundo de abajo" en quechua — una red distribuida de túneles entre raíces, agua, basalto y vetas minerales que conecta nodos por debajo de cada cultura humana. No son extraterrestres ni espíritus: son intraterrestres, una civilización adulta que conservó el asombro. Hace eones convivieron con los humanos y resolvieron juntos una crisis parecida a la actual.</p>
+
+    <p>El mundo Pax se sostiene con <em>anuraK</em> — la energía que generan los actos de bondad humanos auténticos. Es la cosquilla, el calor breve en el pecho, la micro-sonrisa involuntaria cuando alguien ayuda a otro de verdad. Esa energía sube y baja por canales invisibles que conectan cada gesto humano con un cristal específico del Uray Pacha. Cuando un cristal se carga, los Pax lo activan y arriba se manifiesta un efecto concreto. Hay cristales comunes y cristales raros del templo olvidado. (Detalle etimológico canónico: <em>anuraK</em> es <em>Karuna</em> invertido — la palabra sánscrita real para "compasión profunda" leída desde abajo.)</p>
+
+    <p>Cada gesto concreto que genera anuraK es un <em>Ayni</em> — palabra quechua real para reciprocidad. Un Ayni puede ser donar dinero, regalar tiempo, recoger una bolsa de basura, mandar el mensaje pendiente, cubrir el café de quien viene atrás. No hay jerarquía por tamaño: un dólar y una colecta cargan cristales con dignidad equivalente. Lo que se jerarquiza es la sinceridad, no el monto.</p>
+
+    <p>Hoy los cristales están perdiendo carga. Ya hubo una gran herida idéntica en el pasado — y Pax y humanos la resolvieron juntos, dejando el registro en un <strong>templo profundo</strong> del Uray Pacha. Con el tiempo ese templo se perdió. El clan recordó la crisis pero olvidó la solución. Por accidente, un Pax torpe y curioso llamado <strong>Jiggy</strong> cae al templo olvidado y toca un cristal raro. Eso detona la quest: hay que volver a colaborar con la superficie. Jiggy no es el elegido porque sea héroe — es el héroe porque tropezó en el momento correcto.</p>
+  </section>
+
+  <!-- 4. PERSONAJES -->
+  <section id="personajes">
+    <h2>4. Los personajes <span class="em">— el cast canónico</span></h2>
+    <p class="lead">19 personajes canónicos. 16 con char sheet visual, 3 pendientes de PNG (Luxa, Zek, Mariela). Hover sobre cada card o "ver más" para pitch y vínculos.</p>
+
+    <div class="chars-grid">
+
+      <!-- JIGGY destacado -->
+      <article class="char hero-char">
+        <div class="char-img-wrap"><img class="char-img" src="_lore/personajes/jiggy.png" alt="Jiggy" loading="lazy"></div>
+        <div class="char-info">
+          <div class="char-name">Jiggy <span class="badge">protagonista</span></div>
+          <div class="char-role">Chasqui irreverente, detonante de la quest. Bart Simpson con intuición moral afinada.</div>
+        </div>
+        <details>
+          <summary>Más</summary>
+          <div class="more">
+            <p><strong>Pitch:</strong> anti-héroe juguetón. Cae al templo olvidado por accidente y trae al clan la noticia de que la solución existe y vive arriba.</p>
+            <p><strong>Personalidad:</strong> irreverente, accidente-prone, anti-héroe simpático. Oculta una intuición moral muy afinada — sabe distinguir un gesto verdadero de uno falso a kilómetros.</p>
+            <p><strong>Frase:</strong> "¿Y si lo toco?"</p>
+            <p><strong>Vínculos:</strong> mejor amigo de KZ y de Luz. Wiz valida sus hallazgos.</p>
+          </div>
+        </details>
+      </article>
+
+      <!-- WIZ -->
+      <article class="char">
+        <div class="char-img-wrap"><img class="char-img" src="_lore/personajes/wiz.png" alt="Wiz" loading="lazy"></div>
+        <div class="char-info">
+          <div class="char-name">Wiz</div>
+          <div class="char-role">Sabio custodio, mentor. Pregunta más de lo que responde.</div>
+        </div>
+        <details>
+          <summary>Más</summary>
+          <div class="more">
+            <p><strong>Pitch:</strong> el mapa. Valida o cuestiona cada hallazgo del clan; lee 50 generaciones humanas en un frame.</p>
+            <p><strong>Personalidad:</strong> sereno, paciente, guarda silencios estratégicos. Teme haber olvidado algo importante del templo antiguo.</p>
+            <p><strong>Frase:</strong> "Pregúntalo de nuevo. Pero más despacio."</p>
+            <p><strong>Vínculos:</strong> par natural de Byte. Tensión productiva con Kif (las dos sabidurías del clan).</p>
+          </div>
+        </details>
+      </article>
+
+      <!-- BYTE -->
+      <article class="char">
+        <div class="char-img-wrap"><img class="char-img" src="_lore/personajes/byte.png" alt="Byte" loading="lazy"></div>
+        <div class="char-info">
+          <div class="char-name">Byte</div>
+          <div class="char-role">Sabia tecnológica, descifradora de patrones y mecanismos.</div>
+        </div>
+        <details>
+          <summary>Más</summary>
+          <div class="more">
+            <p><strong>Pitch:</strong> resuelve enigmas. Cuando algo no se entiende, Byte se sienta, lo mira, lo prueba, lo entiende. Tech de escucha, no invasión.</p>
+            <p><strong>Personalidad:</strong> precisa, observacional, tranquila. Teme equivocarse en público; oculta una ternura que solo aparece cuando algo funciona.</p>
+            <p><strong>Frase:</strong> "Esperen. Hay un patrón."</p>
+            <p><strong>Vínculos:</strong> compañera natural de Wiz. Tensión productiva con Aura.</p>
+          </div>
+        </details>
+      </article>
+
+      <!-- KZ -->
+      <article class="char">
+        <div class="char-img-wrap"><img class="char-img" src="_lore/personajes/kz.png" alt="KZ" loading="lazy"></div>
+        <div class="char-info">
+          <div class="char-name">KZ</div>
+          <div class="char-role">Torpe-genio, corazón del grupo. Mejor amigo de Jiggy.</div>
+        </div>
+        <details>
+          <summary>Más</summary>
+          <div class="more">
+            <p><strong>Pitch:</strong> el más joven y puro. Lee a los humanos antes de que abran la boca. Torpe marca registrada, pero esa torpeza esconde genialidad emocional rara.</p>
+            <p><strong>Personalidad:</strong> intuitivo hasta dar miedo, empático sin filtro, alegre, inocente. Termómetro vivo del clan.</p>
+            <p><strong>Frase:</strong> "¿Este humano está triste o solo tiene hambre? Porque se ven igual."</p>
+            <p><strong>Vínculos:</strong> mejor amigo de Jiggy. Hermano mayor de Baba.</p>
+          </div>
+        </details>
+      </article>
+
+      <!-- ONYX -->
+      <article class="char">
+        <div class="char-img-wrap"><img class="char-img" src="_lore/personajes/onyx.png" alt="Onyx" loading="lazy"></div>
+        <div class="char-info">
+          <div class="char-name">Onyx</div>
+          <div class="char-role">Motor físico, lealtad inquebrantable.</div>
+        </div>
+        <details>
+          <summary>Más</summary>
+          <div class="more">
+            <p><strong>Pitch:</strong> energía cinética del clan. Carga lo difícil, salta primero, escala. Sin Onyx, los planes no caminan.</p>
+            <p><strong>Personalidad:</strong> entusiasta, directa, mucho cuerpo en lo que dice. Teme no llegar a tiempo.</p>
+            <p><strong>Frase:</strong> "Ya. Vamos. Después pensamos."</p>
+            <p><strong>Vínculos:</strong> aliado natural de Jiggy. Contrapunto físico de Fortis (uno empuja, el otro absorbe).</p>
+          </div>
+        </details>
+      </article>
+
+      <!-- AGATHA -->
+      <article class="char">
+        <div class="char-img-wrap"><img class="char-img" src="_lore/personajes/agatha.png" alt="Agatha" loading="lazy"></div>
+        <div class="char-info">
+          <div class="char-name">Agatha</div>
+          <div class="char-role">Ancla emocional, brújula de propósito.</div>
+        </div>
+        <details>
+          <summary>Más</summary>
+          <div class="more">
+            <p><strong>Pitch:</strong> centro gravitacional silencioso. Recuerda al clan para qué subimos y a quién venimos a encontrar.</p>
+            <p><strong>Personalidad:</strong> calmada, observadora, frases cortas que vibran. Espiritualidad como atención profunda, no como misticismo.</p>
+            <p><strong>Frase:</strong> "Esto no es urgente. Es importante. No es lo mismo."</p>
+            <p><strong>Vínculos:</strong> complementaria a Luxa (las dos cuidan en direcciones distintas) y a Iris (propósito vs estado individual).</p>
+          </div>
+        </details>
+      </article>
+
+      <!-- ALMA -->
+      <article class="char">
+        <div class="char-img-wrap"><img class="char-img" src="_lore/personajes/alma.png" alt="Alma" loading="lazy"></div>
+        <div class="char-info">
+          <div class="char-name">Alma</div>
+          <div class="char-role">Tejedora de cristales, memoria viva del anuraK.</div>
+        </div>
+        <details>
+          <summary>Más</summary>
+          <div class="more">
+            <p><strong>Pitch:</strong> no carga cristales, los escucha. Detecta si el anuraK que llega es genuino o performativo antes de que el cristal lo registre.</p>
+            <p><strong>Personalidad:</strong> calma profunda, gestos circulares, conexión directa con el pulso del anuraK.</p>
+            <p><strong>Vínculos:</strong> respeto profundo con Wiz (custodia vs escucha). Afinidad silenciosa con Agatha. Esperaba a Jiggy antes de que llegara la noticia del templo.</p>
+          </div>
+        </details>
+      </article>
+
+      <!-- AURA -->
+      <article class="char">
+        <div class="char-img-wrap"><img class="char-img" src="_lore/personajes/aura.png" alt="Aura" loading="lazy"></div>
+        <div class="char-info">
+          <div class="char-name">Aura</div>
+          <div class="char-role">Vidente del clan, lectora de energías.</div>
+        </div>
+        <details>
+          <summary>Más</summary>
+          <div class="more">
+            <p><strong>Pitch:</strong> ve el anuraK como color en el aire. Evalúa el estado de los humanos objetivo antes del contacto y evita misiones por mal timing.</p>
+            <p><strong>Personalidad:</strong> percepción pre-lingüística, delicada en apariencia pero firme en juicio. Le fascinan los humanos.</p>
+            <p><strong>Vínculos:</strong> complicidad exploratoria con Luxa. Tensión productiva con Byte (intuición vs patrones medibles).</p>
+          </div>
+        </details>
+      </article>
+
+      <!-- BABA -->
+      <article class="char">
+        <div class="char-img-wrap"><img class="char-img" src="_lore/personajes/baba.png" alt="Baba" loading="lazy"></div>
+        <div class="char-info">
+          <div class="char-name">Baba</div>
+          <div class="char-role">Cría del clan, fuente de anuraK puro.</div>
+        </div>
+        <details>
+          <summary>Más</summary>
+          <div class="more">
+            <p><strong>Pitch:</strong> la mascota viva del clan core. Sus cristales pulsan más brillantes porque su gesto tiene cero performatividad — da sin saber que da.</p>
+            <p><strong>Personalidad:</strong> ríe a carcajadas, señala todo, se mueve sin inhibición. El Ayni más puro del clan.</p>
+            <p><strong>Vínculos:</strong> KZ lo cuida como hermano mayor. Fortis lo carga literalmente. Wiz lo observa con ternura controlada.</p>
+          </div>
+        </details>
+      </article>
+
+      <!-- BRIZK -->
+      <article class="char">
+        <div class="char-img-wrap"><img class="char-img" src="_lore/personajes/brizk.png" alt="Brizk" loading="lazy"></div>
+        <div class="char-info">
+          <div class="char-name">Brizk</div>
+          <div class="char-role">Explorador-investigador, coleccionista de campo.</div>
+        </div>
+        <details>
+          <summary>Más</summary>
+          <div class="more">
+            <p><strong>Pitch:</strong> va a donde el clan no tiene mapa, y vuelve con el mapa. Documentación metódica de zonas activas de anuraK y rutas de túnel.</p>
+            <p><strong>Personalidad:</strong> orejas-sensor extra-largas, energía de descubrimiento constante, curiosidad metódica con libreta en mano.</p>
+            <p><strong>Vínculos:</strong> equipo de inteligencia con Byte (campo vs patrones). Tensión creativa con Luxa.</p>
+          </div>
+        </details>
+      </article>
+
+      <!-- CYFER -->
+      <article class="char">
+        <div class="char-img-wrap"><img class="char-img" src="_lore/personajes/cyfer.png" alt="Cyfer" loading="lazy"></div>
+        <div class="char-info">
+          <div class="char-name">Cyfer</div>
+          <div class="char-role">Descifrador histórico, lector de cristales antiguos.</div>
+        </div>
+        <details>
+          <summary>Más</summary>
+          <div class="more">
+            <p><strong>Pitch:</strong> archivista activo del Uray Pacha. Lee capas de anuraK acumulado en cristales raros como si fueran texto. Indispensable para el templo olvidado.</p>
+            <p><strong>Personalidad:</strong> decodificador nato, curioso sin ansiedad, paciente como modo natural.</p>
+            <p><strong>Vínculos:</strong> respeto técnico con Byte (presente vs registro histórico). Alianza con Kif. Historia no contada con Wiz.</p>
+          </div>
+        </details>
+      </article>
+
+      <!-- FORTIS -->
+      <article class="char">
+        <div class="char-img-wrap"><img class="char-img" src="_lore/personajes/fortis.png" alt="Fortis" loading="lazy"></div>
+        <div class="char-info">
+          <div class="char-name">Fortis</div>
+          <div class="char-role">Protector del clan, fuerza moral.</div>
+        </div>
+        <details>
+          <summary>Más</summary>
+          <div class="more">
+            <p><strong>Pitch:</strong> el escudo vivo. Carga el dolor ajeno, la decisión difícil, el silencio incómodo. Lleva un conejo de peluche y nadie se ríe.</p>
+            <p><strong>Personalidad:</strong> ternura blindada, protector instintivo. Su anuraK se carga más cuando da sin reconocimiento.</p>
+            <p><strong>Vínculos:</strong> sigue a Jiggy sin cuestionar. Carga a KZ cuando tropieza. Complementario a Agatha y contrapeso de Onyx.</p>
+          </div>
+        </details>
+      </article>
+
+      <!-- IRIS -->
+      <article class="char">
+        <div class="char-img-wrap"><img class="char-img" src="_lore/personajes/iris.png" alt="Iris" loading="lazy"></div>
+        <div class="char-info">
+          <div class="char-name">Iris</div>
+          <div class="char-role">Curandera del clan, lectora de lo que está roto.</div>
+        </div>
+        <details>
+          <summary>Más</summary>
+          <div class="more">
+            <p><strong>Pitch:</strong> detecta qué parte de una persona está fracturada antes de que colapse. Pragmática, directa: no pregunta qué te pasó, pregunta qué necesitas ahora.</p>
+            <p><strong>Personalidad:</strong> diagnóstica rápido, actúa rápido. Trenzas magenta brillantes que distraen el ojo mientras el clan trabaja.</p>
+            <p><strong>Vínculos:</strong> turno natural con Agatha. Complicidad inesperada con Luxa. Tensión no resuelta con Aura.</p>
+          </div>
+        </details>
+      </article>
+
+      <!-- KIF -->
+      <article class="char">
+        <div class="char-img-wrap"><img class="char-img" src="_lore/personajes/kif.png" alt="Kif" loading="lazy"></div>
+        <div class="char-info">
+          <div class="char-name">Kif</div>
+          <div class="char-role">Sabio del umbral, segundo sabio del Uray Pacha.</div>
+        </div>
+        <details>
+          <summary>Más</summary>
+          <div class="more">
+            <p><strong>Pitch:</strong> Wiz guarda las respuestas, Kif guarda las preguntas que nadie se animó a hacer. Lee libros que nadie terminó.</p>
+            <p><strong>Personalidad:</strong> cuestionador suave, sabiduría de borde. Acumula preguntas, no respuestas.</p>
+            <p><strong>Vínculos:</strong> tensión productiva con Wiz (no es conflicto, es check de calidad). Alianza con Byte y con Cyfer. Confianza temprana con Jiggy.</p>
+          </div>
+        </details>
+      </article>
+
+      <!-- LUDUS -->
+      <article class="char">
+        <div class="char-img-wrap"><img class="char-img" src="_lore/personajes/ludus.png" alt="Ludus" loading="lazy"></div>
+        <div class="char-info">
+          <div class="char-name">Ludus</div>
+          <div class="char-role">Narrador del clan, memoria oral.</div>
+        </div>
+        <details>
+          <summary>Más</summary>
+          <div class="more">
+            <p><strong>Pitch:</strong> juglar con propósito. Convierte cada misión exitosa y cada Ayni en relato que el clan recuerda mejor que cualquier archivo técnico.</p>
+            <p><strong>Personalidad:</strong> único con ojo ámbar (no turquesa); refleja cristales viejos. Genera anuraK indirecto amplificando gestos pasados.</p>
+            <p><strong>Vínculos:</strong> respeto particular con Wiz (escribe vs hace vivir la historia). Combo natural con Zek en celebraciones.</p>
+          </div>
+        </details>
+      </article>
+
+      <!-- LUZ -->
+      <article class="char">
+        <div class="char-img-wrap"><img class="char-img" src="_lore/personajes/luz.png" alt="Luz" loading="lazy"></div>
+        <div class="char-info">
+          <div class="char-name">Luz</div>
+          <div class="char-role">Mejor amiga de Jiggy, portadora violeta.</div>
+        </div>
+        <details>
+          <summary>Más</summary>
+          <div class="more">
+            <p><strong>Pitch:</strong> la única que sabe lo que Jiggy va a hacer antes de que él lo decida — y lo sigue igual. Práctica, directa, calma con movimiento.</p>
+            <p><strong>Personalidad:</strong> amiga de infancia absoluta, criterio propio, hogar emocional de Jiggy. Hay algo entre ellos que ninguno nombra.</p>
+            <p><strong>Vínculos:</strong> mejor amiga de Jiggy. Cuida a KZ como hermano menor. Agatha notó lo que Luz siente y solo le apretó el hombro.</p>
+          </div>
+        </details>
+      </article>
+
+      <!-- LUXA — sin PNG -->
+      <article class="char">
+        <div class="char-img-wrap"><div class="char-placeholder">L</div></div>
+        <div class="char-info">
+          <div class="char-name">Luxa</div>
+          <div class="char-role">Exploradora cómica, alegría del clan.</div>
+        </div>
+        <details>
+          <summary>Más</summary>
+          <div class="more">
+            <p><strong>Pitch:</strong> doble rol: exploradora avanzada + termorregulador emocional. Encuentra cosas raras y las narra como standup, con timing impecable.</p>
+            <p><strong>Personalidad:</strong> comic relief con corazón. Su humor no es escape, es regulación. Cuando la cosa está MUY fea, suelta una frase tierna sin chiste.</p>
+            <p><strong>Frase:</strong> "Si no nos reímos un poco, esto se vuelve un funeral, y no vinimos a un funeral."</p>
+            <p><strong>Vínculos:</strong> complicidad exploratoria con Aura. Complementaria a Agatha.</p>
+          </div>
+        </details>
+      </article>
+
+      <!-- ZEK — sin PNG -->
+      <article class="char">
+        <div class="char-img-wrap"><div class="char-placeholder">Z</div></div>
+        <div class="char-info">
+          <div class="char-name">Zek</div>
+          <div class="char-role">Ritmo del clan, boombox.</div>
+        </div>
+        <details>
+          <summary>Más</summary>
+          <div class="more">
+            <p><strong>Pitch:</strong> sincronizador lúdico. Mantiene al clan afilado y unido. Su boombox tallado en piedra-cristal sintoniza cristales en cadena.</p>
+            <p><strong>Personalidad:</strong> divertido, extrovertido, leal. Teme que el grupo se desuna; busca el tempo común.</p>
+            <p><strong>Frase:</strong> "A la cuenta de tres. Y luego escuchen."</p>
+            <p><strong>Vínculos:</strong> combo natural con Ludus en celebraciones post-misión.</p>
+          </div>
+        </details>
+      </article>
+
+      <!-- MARIELA — sin PNG -->
+      <article class="char">
+        <div class="char-img-wrap"><div class="char-placeholder">M</div></div>
+        <div class="char-info">
+          <div class="char-name">Mariela <span class="badge" style="background:var(--amber);color:var(--basalt)">humana</span></div>
+          <div class="char-role">Protagonista humana piloto (tentativa).</div>
+        </div>
+        <details>
+          <summary>Más</summary>
+          <div class="more">
+            <p><strong>Pitch:</strong> ingeniera de procesos chilena, 36 años, en Ñuñoa. Cara competente y vacía. POV humano del episodio 1.</p>
+            <p><strong>Personalidad:</strong> quiere cumplir y desaparecer. Teme haber dejado de ser interesante para sí misma.</p>
+            <p><strong>Arco:</strong> vuelve a abrir su libreta abandonada hace 6 meses y escribe "Why did I stop writing here?". Siente calorcito en la palma cuando Jiggy le deja el cristal magenta invisible. Apenas dice "...okay." y se sirve el té. Es suficiente.</p>
+          </div>
+        </details>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- 5. GESTOS -->
+  <section id="gestos">
+    <h2>5. Los gestos vigentes <span class="em-a">— 4 manifestaciones activas</span></h2>
+    <p class="lead">Cada gesto es una idea concreta que se ejecuta, se consume, genera dinero y se dona. Lo que monetiza el universo Pax.</p>
+
+    <div class="gestos-grid">
+
+      <div class="gesto-card">
+        <div class="gesto-num">01</div>
+        <div class="gesto-name">Mini-serie animada</div>
+        <span class="gesto-status status-progress">cap 1 listo, 2-12 en outline</span>
+        <div class="gesto-desc">12 episodios cortos (3-4 min cada uno) que materializan el lore en audiovisual. Pipeline: Nano Banana + Seedance 2.</div>
+        <div class="gesto-files">episodios-12-outline.md<br>storyboards/cap-N/<br>seedance-prompts/cap-1/</div>
+        <a class="gesto-link" href="gestos/01-miniserie/README.md">→ ver README</a>
+      </div>
+
+      <div class="gesto-card">
+        <div class="gesto-num">02</div>
+        <div class="gesto-name">Oráculo Pax</div>
+        <span class="gesto-status status-live">MVP en producción</span>
+        <div class="gesto-desc">Web app: ingreso de fecha → lectura personalizada que cruza Tzolkin, arquetipo Pax y carta astral. Voz "abuelos pax". Live en /oraculo.</div>
+        <div class="gesto-files">_lore.md · _research.md<br>_card-design.md · _critica-mvp.md<br>_variantes-visuales.md · visuals/</div>
+        <a class="gesto-link" href="gestos/02-oraculo/README.md">→ ver README</a>
+      </div>
+
+      <div class="gesto-card">
+        <div class="gesto-num">03</div>
+        <div class="gesto-name">Game Pax</div>
+        <span class="gesto-status status-future">framework hoy, game futuro</span>
+        <div class="gesto-desc">Repo separado (Starter Template Mazelab v3). NO es game terminado todavía — framework de agentes con councils, kickoff y multimodal-validation que reusa canon Pax.</div>
+        <div class="gesto-files">(placeholder)<br>vive en ../pax-game/</div>
+        <a class="gesto-link" href="gestos/03-game/README.md">→ ver README</a>
+      </div>
+
+      <div class="gesto-card">
+        <div class="gesto-num">04</div>
+        <div class="gesto-name">Video Background</div>
+        <span class="gesto-status status-progress">v2 entregables listos</span>
+        <div class="gesto-desc">2 videos de fondo loopeables para el sitio web. Estética Pax-Pixar. Ambient, no foreground narrativo. Multiplicador indirecto.</div>
+        <div class="gesto-files">_FINAL.md · _beat-sheet-pax-pixar.md<br>video1-deep-dive/<br>video2-gem-chase/</div>
+        <a class="gesto-link" href="gestos/04-video-bg/README.md">→ ver README</a>
+      </div>
+
+    </div>
+
+    <div class="backlog">
+      <strong>Backlog:</strong> 15 gestos candidatos con research listo, pendiente decisión de inversión de Aldot. Ver visualizador interactivo en <a class="gesto-link" href="research/gestos.html">research/gestos.html</a> o el markdown fuente en <code>research/gestos-candidatos-2026-05-21.md</code>.
+    </div>
+  </section>
+
+  <!-- 6. NAVEGAR EL REPO -->
+  <section id="navegar">
+    <h2>6. Cómo navegar el repo</h2>
+    <p class="lead">Mini-mapa de los directorios principales.</p>
+
+    <div class="repo-map">
+      <div class="repo-item"><code>_meta/</code><span>La idea-meta del proyecto: manifesto + roadmap.</span></div>
+      <div class="repo-item"><code>_lore/</code><span>El universo narrativo: canon, principios, style-guide y 22 fichas de personajes con PNGs.</span></div>
+      <div class="repo-item"><code>gestos/</code><span>Las manifestaciones monetizables. 4 gestos activos + backlog.</span></div>
+      <div class="repo-item"><code>content/</code><span>Solo lo que la webapp sirve (changelog, videos).</span></div>
+      <div class="repo-item"><code>app/, lib/, components/</code><span>Webapp Next.js — el "gesto showcase".</span></div>
+      <div class="repo-item"><code>scripts/</code><span>11 generators activos: openai_images, seedance, oraculo, canon_v2, video_bg.</span></div>
+      <div class="repo-item"><code>research/</code><span>Investigaciones vivas, incluyendo el HTML de 15 gestos candidatos.</span></div>
+      <div class="repo-item"><code>process-log/</code><span>Historia de iteraciones del proyecto (38 archivos).</span></div>
+      <div class="repo-item"><code>_archive/</code><span>Lo deprecado pero recuperable. Cada subcarpeta con su README.</span></div>
+    </div>
+  </section>
+
+  <!-- 7. ENCONTRAR COSAS -->
+  <section id="encontrar">
+    <h2>7. Encontrar cosas rápido</h2>
+    <p class="lead">Tabla de búsqueda directa: yo quiero X → busca en Y.</p>
+
+    <table class="find-table">
+      <thead><tr><th>Yo quiero...</th><th>Busca en</th></tr></thead>
+      <tbody>
+        <tr><td>Character sheet textual de un personaje</td><td><code>_lore/personajes/&lt;nombre&gt;.md</code></td></tr>
+        <tr><td>Character sheet visual (PNG)</td><td><code>_lore/personajes/&lt;nombre&gt;.png</code></td></tr>
+        <tr><td>Lore canon vigente (anuraK, Ayni, cristales)</td><td><code>_lore/canon.md</code></td></tr>
+        <tr><td>Style guide visual</td><td><code>_lore/style-guide.md</code></td></tr>
+        <tr><td>Storyboards por capítulo</td><td><code>gestos/01-miniserie/storyboards/cap-N-shot-NN-*.md</code></td></tr>
+        <tr><td>Prompts Seedance del cap 1</td><td><code>gestos/01-miniserie/seedance-prompts/cap-1/</code></td></tr>
+        <tr><td>Research de gestos rentables (visual)</td><td><code>research/gestos.html</code></td></tr>
+        <tr><td>Roadmap + TODOs pendientes</td><td><code>_meta/roadmap.md</code></td></tr>
+        <tr><td>Manifesto del proyecto (las 3 capas)</td><td><code>_meta/manifesto.md</code></td></tr>
+        <tr><td>Mapa maestro del repo</td><td><code>INDEX.md</code></td></tr>
+        <tr><td>Lo deprecado</td><td><code>_archive/</code> (cada subcarpeta con README)</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+</div>
+
+<footer>
+  <p>Generado el 2026-05-22 desde el repo <code style="color:var(--jade)">pax-os</code> · <a href="INDEX.md">Ver INDEX.md</a> · <a href="_meta/manifesto.md">manifesto.md</a> · <a href="_lore/canon.md">canon.md</a></p>
+  <p style="margin-top:8px;font-size:12px;opacity:0.7">19 personajes canónicos · 16 con PNG · 4 gestos activos · 15 candidatos en backlog</p>
+</footer>
+
+</body>
+</html>
