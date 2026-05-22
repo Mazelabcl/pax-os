@@ -130,6 +130,41 @@ Definir cuando los anteriores estén sólidos y haya tracción demostrable.
 
 ---
 
+## Pendientes post-reorg 2026-05-22
+
+Esta sección agrupa los TODOs que quedaron documentados al cierre de la reorganización mayor del repo (8 commits, fases 0-5). No están priorizados — Aldot decide cuál atacar primero.
+
+### Operativos (heredados de Fase 5)
+
+1. **🟡 Actualizar system prompt de `src/canon_validator.js` en pax-game/** (líneas 102-130). Todavía describe a Pax como "cíclopes turquesa" con paleta `#E83FC8`. No rompe paths ni sync, pero el modelo Sonnet usa esos términos en sus razones de validación. Alinear al `_lore/style-guide.md` vigente (anuraK / Ayni / Pax intraterrestres alquimistas / cristales comunes-raros). **Quick win.**
+
+2. **🟢 Resetear `pax-game/memory/canon-kpi.json`**. Tiene `fail_rate: 66.7%` de validaciones contra snapshot viejo (Quest 2 R4). Reset para que las métricas adelante reflejen el canon nuevo limpio. **5 min de trabajo.**
+
+3. **🟢 Verificar git identity local en pax-game/**. El agente Fase 5 puso `aldo@mazelab.cl` / `aldot` (igual que pax-os, solo config local). Si Aldot prefiere otro user/email para ese repo: `git config --unset user.email && git config --unset user.name` desde `pax-game/`.
+
+### Procesos y herramientas
+
+4. **🟡 Skill `pax-research-to-html`**. El patrón "tomar .md de research con scores + confidence-loop y convertir a HTML self-contained con paleta Pax + top N hero + tabla expandible + changelog timeline" es reusable. Si Aldot anticipa más research (de gestos, capítulos, personajes), vale la pena empaquetar la skill en `~/.claude/skills/pax-research-to-html/`. **~30 min de trabajo cuando tenga prioridad.**
+
+5. **🟢 Hook pre-commit "archivos M sin staged"**. En Fase 2 el agente reescribió 7 archivos de `lib/` pero solo se commitearon los renames porque mi `git add` específico no los incluyó. El build local funcionaba con archivos modificados sin commitear — caso silencioso. Vale la pena un hook `.git/hooks/pre-commit` que avise si hay archivos M no staged en el commit. **~15 min de trabajo.**
+
+### Contenido (decisiones pendientes de Aldot)
+
+6. **Storyboards huérfanos en `gestos/01-miniserie/storyboards/_huerfanos/`** (6 pares .md+.png con nombres `otros (1-6)`). Pendiente decidir por cada uno: asignar a un capítulo, descartar a `_archive/`, o mantener como semilla.
+
+7. **`content/videos/`** (~47MB de outputs Seedance, untracked). Decidir: publicar a `public/videos/` para servirlos en la webapp, dejar como assets locales, o archivar.
+
+8. **`mariela.md` sin PNG**. Memoria dice "Mariela NO comprometer hasta confirmación". Resolver: generar PNG cuando se confirme el rol, o eliminar la ficha si se descarta.
+
+9. **`luxa.md`, `zek.md` sin PNG canónico**. Tienen .md pero no imagen final en `_lore/personajes/`. Generar con `scripts/generate_canon_v2_bulk_mains.py` cuando convenga.
+
+### Estratégicos (research de gestos)
+
+10. **Decisión de inversión sobre el top 3 del research** (Patreon + Audio-drama + Verticals). Los 3 son frágiles a pausas — solo Audio-drama tiene cola pasiva en plataformas abiertas. Aldot debe decidir: comprometerse a cadencia 6 meses (trío completo) vs empezar solo por Audio-drama (resiliente). Ver `research/gestos.html`.
+
+---
+
 ## Versionado
 
 - **v0 (2026-05-05):** primer roadmap post-reset Quest 2. Escrito por aldot+Claude en conversación principal, sin agentes.
+- **v1 (2026-05-22):** agregada sección "Pendientes post-reorg" tras la reorganización mayor del repo (8 commits, fases 0-5, separación meta+lore+gestos).
