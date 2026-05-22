@@ -6,14 +6,6 @@ const nextConfig: NextConfig = {
   // Antes incluíamos content/**/* completo (141MB) y excedía el bundle limit.
   outputFileTracingIncludes: {
     "/": ["./content/**/*.md"],
-    "/lore": ["./content/**/*.md"],
-    "/personajes": ["./content/**/*.md"],
-    "/personajes/**": ["./content/**/*.md"],
-    "/episodio-1/**": ["./content/**/*.md"],
-    "/episodios/**": ["./content/**/*.md"],
-    "/cambios": ["./content/CHANGELOG.md"],
-    "/principles": ["./content/principles.md"],
-    "/roadmap": ["./content/roadmap.md"],
   },
   // Excluir explícitamente todo lo binario y pesado del tracing serverless.
   // Las imágenes viven en public/ (CDN de Vercel) — NO van al lambda.
@@ -33,7 +25,6 @@ const nextConfig: NextConfig = {
       "./content/storyboards/**/*.jpg",
       "./content/exploratory-images/**",
       "./content/test-images/**",
-      "./content/v2/**/*.png",
       "./content/video-bg-v1-archivo/**",
       "./content/video-bg-v2/**/*.png",
       "./content/canon-v2/**",
