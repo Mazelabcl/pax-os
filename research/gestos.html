@@ -1,0 +1,1125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pax — Gestos candidatos 2026</title>
+<style>
+  :root {
+    --jade: #00C896;
+    --amber: #F59E0B;
+    --basalt: #1A1A24;
+    --magenta: #E91E63;
+    --bg: #0F0F18;
+    --bg-card: #16161F;
+    --bg-card-hover: #1C1C28;
+    --border: #25253A;
+    --border-soft: #1F1F30;
+    --text: #E8E8F0;
+    --text-dim: #9090A8;
+    --text-faint: #5A5A70;
+    --red: #EF4444;
+    --yellow: #FBBF24;
+    --green: #10B981;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    line-height: 1.55;
+    font-size: 16px;
+    min-height: 100vh;
+    background-image:
+      radial-gradient(circle at 15% 10%, rgba(0,200,150,0.06), transparent 40%),
+      radial-gradient(circle at 85% 30%, rgba(233,30,99,0.05), transparent 45%),
+      radial-gradient(circle at 50% 90%, rgba(245,158,11,0.04), transparent 50%);
+  }
+
+  .wrap {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 32px 24px 64px;
+  }
+
+  /* HEADER */
+  header.hero {
+    text-align: center;
+    padding: 48px 16px 32px;
+    border-bottom: 1px solid var(--border-soft);
+    margin-bottom: 48px;
+  }
+  header.hero h1 {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(2rem, 5vw, 3.4rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    background: linear-gradient(135deg, var(--jade), var(--amber));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    margin-bottom: 12px;
+  }
+  header.hero .sub {
+    color: var(--text-dim);
+    font-size: clamp(0.95rem, 2vw, 1.1rem);
+    margin-bottom: 8px;
+  }
+  header.hero .date {
+    color: var(--text-faint);
+    font-size: 0.85rem;
+    margin-bottom: 24px;
+    letter-spacing: 0.05em;
+  }
+  .kpis {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px 18px;
+    font-size: 0.9rem;
+    color: var(--text-dim);
+  }
+  .kpi {
+    background: var(--bg-card);
+    border: 1px solid var(--border-soft);
+    padding: 8px 14px;
+    border-radius: 999px;
+  }
+  .kpi strong { color: var(--text); font-weight: 600; }
+  .kpi .delta { color: var(--amber); }
+
+  /* SECTIONS */
+  section { margin-bottom: 64px; }
+  h2.section-title {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 1.7rem;
+    margin-bottom: 8px;
+    color: var(--text);
+    letter-spacing: -0.01em;
+  }
+  .section-lead {
+    color: var(--text-dim);
+    margin-bottom: 24px;
+    font-size: 0.95rem;
+    max-width: 750px;
+  }
+
+  /* TOP 3 HERO */
+  .top3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  .top-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 24px 22px;
+    position: relative;
+    transition: transform 200ms ease, box-shadow 200ms ease, border-color 200ms ease;
+    display: flex;
+    flex-direction: column;
+  }
+  .top-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.4), 0 0 0 1px var(--border);
+    border-color: rgba(0,200,150,0.3);
+  }
+  .top-card .rank {
+    font-family: Georgia, serif;
+    font-size: 3.2rem;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--jade);
+    opacity: 0.85;
+    margin-bottom: 8px;
+  }
+  .top-card.r2 .rank { color: var(--amber); }
+  .top-card.r3 .rank { color: var(--magenta); }
+  .top-card h3 {
+    font-size: 1.15rem;
+    margin-bottom: 12px;
+    line-height: 1.3;
+  }
+  .score-row {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .score-big {
+    font-family: Georgia, serif;
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: var(--text);
+  }
+  .score-suffix {
+    color: var(--text-faint);
+    font-size: 0.85rem;
+  }
+  .badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    width: fit-content;
+  }
+  .badge.fragil { background: rgba(239,68,68,0.15); color: var(--red); border: 1px solid rgba(239,68,68,0.3); }
+  .badge.medio { background: rgba(251,191,36,0.13); color: var(--yellow); border: 1px solid rgba(251,191,36,0.3); }
+  .badge.resiliente { background: rgba(16,185,129,0.13); color: var(--green); border: 1px solid rgba(16,185,129,0.3); }
+
+  .pitch {
+    color: var(--text);
+    font-size: 0.95rem;
+    margin-bottom: 16px;
+    font-style: italic;
+    border-left: 2px solid var(--jade);
+    padding-left: 12px;
+  }
+  .top-card.r2 .pitch { border-left-color: var(--amber); }
+  .top-card.r3 .pitch { border-left-color: var(--magenta); }
+
+  .top-card h4 {
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    margin: 14px 0 8px;
+  }
+  .top-card ul {
+    list-style: none;
+    margin-bottom: 8px;
+  }
+  .top-card ul li {
+    color: var(--text-dim);
+    font-size: 0.88rem;
+    padding: 4px 0 4px 14px;
+    position: relative;
+  }
+  .top-card ul li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--jade);
+    opacity: 0.7;
+  }
+  .top-card .ref {
+    color: var(--text-dim);
+    font-size: 0.82rem;
+    margin-top: 6px;
+  }
+  .top-card .ttm {
+    margin-top: auto;
+    padding-top: 16px;
+    border-top: 1px solid var(--border-soft);
+    color: var(--text-faint);
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+  }
+  .top-card .ttm strong { color: var(--amber); font-weight: 600; }
+
+  /* TABLE / LIST OF 15 */
+  .candidates {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+  }
+  .row-head {
+    display: grid;
+    grid-template-columns: 50px 1fr 90px 90px 70px 110px 30px;
+    gap: 12px;
+    padding: 14px 20px;
+    background: rgba(0,0,0,0.25);
+    border-bottom: 1px solid var(--border);
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    font-weight: 600;
+  }
+  details.cand {
+    border-bottom: 1px solid var(--border-soft);
+    transition: background 200ms ease;
+  }
+  details.cand:last-child { border-bottom: none; }
+  details.cand[open] { background: rgba(255,255,255,0.015); }
+  details.cand summary {
+    display: grid;
+    grid-template-columns: 50px 1fr 90px 90px 70px 110px 30px;
+    gap: 12px;
+    padding: 16px 20px;
+    cursor: pointer;
+    list-style: none;
+    align-items: center;
+    transition: background 150ms ease;
+  }
+  details.cand summary::-webkit-details-marker { display: none; }
+  details.cand summary:hover { background: rgba(0,200,150,0.04); }
+  details.cand .col-rank {
+    font-family: Georgia, serif;
+    font-size: 1.05rem;
+    color: var(--text-faint);
+    font-weight: 600;
+  }
+  details.cand .col-name { color: var(--text); font-weight: 500; font-size: 0.95rem; }
+  details.cand .col-score {
+    font-family: Georgia, serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--jade);
+  }
+  details.cand .col-score-orig {
+    color: var(--text-faint);
+    font-size: 0.9rem;
+    text-decoration: line-through;
+  }
+  details.cand .col-delta {
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+  .delta-down { color: var(--red); }
+  .delta-same { color: var(--text-faint); }
+  details.cand .col-ttm { color: var(--text-dim); font-size: 0.85rem; }
+  details.cand .arrow {
+    color: var(--text-faint);
+    transition: transform 200ms ease;
+    font-size: 0.8rem;
+    text-align: center;
+  }
+  details.cand[open] .arrow { transform: rotate(90deg); color: var(--jade); }
+
+  /* DIMMED rows (score <6) */
+  details.cand.dim .col-name,
+  details.cand.dim .col-score { opacity: 0.55; }
+  details.cand.dim .col-score { color: var(--text-dim); }
+
+  /* HIGH score highlight */
+  details.cand.hot .col-score { color: var(--jade); }
+  details.cand.warm .col-score { color: var(--amber); }
+
+  .cand-detail {
+    padding: 4px 20px 24px 70px;
+    color: var(--text-dim);
+    font-size: 0.92rem;
+  }
+  .cand-detail .field {
+    margin: 14px 0;
+  }
+  .cand-detail .field b {
+    display: block;
+    color: var(--text);
+    font-size: 0.78rem;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+    color: var(--jade);
+    opacity: 0.85;
+  }
+  .cand-detail .field span { color: var(--text-dim); line-height: 1.6; }
+  .cand-detail .loop-note {
+    background: rgba(245,158,11,0.07);
+    border-left: 3px solid var(--amber);
+    padding: 10px 14px;
+    border-radius: 6px;
+    margin-top: 14px;
+  }
+  .cand-detail .loop-note b { color: var(--amber); }
+
+  /* SECTION 3 LOGIC */
+  .logic-block {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 28px;
+    position: relative;
+    overflow: hidden;
+  }
+  .logic-block::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--jade), var(--amber), var(--magenta));
+  }
+  .cascade {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 20px 0;
+    flex-wrap: wrap;
+    font-size: 0.95rem;
+  }
+  .cascade .step {
+    background: rgba(0,200,150,0.08);
+    border: 1px solid rgba(0,200,150,0.25);
+    color: var(--jade);
+    padding: 8px 16px;
+    border-radius: 999px;
+    font-weight: 600;
+  }
+  .cascade .arrow-c {
+    color: var(--text-faint);
+    font-size: 1.2rem;
+  }
+  .insight {
+    background: rgba(239,68,68,0.08);
+    border-left: 3px solid var(--red);
+    padding: 14px 18px;
+    border-radius: 6px;
+    margin: 20px 0;
+  }
+  .insight b { color: var(--red); display: block; margin-bottom: 6px; font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase; }
+  .insight p { color: var(--text); }
+  .alt-path {
+    background: rgba(0,200,150,0.06);
+    border-left: 3px solid var(--jade);
+    padding: 14px 18px;
+    border-radius: 6px;
+    margin-top: 16px;
+  }
+  .alt-path b { color: var(--jade); display: block; margin-bottom: 6px; font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase; }
+  .alt-path p { color: var(--text); }
+
+  /* CHANGELOG TIMELINE */
+  .timeline {
+    border-left: 2px solid var(--border);
+    padding-left: 28px;
+    margin-left: 12px;
+  }
+  .iter {
+    position: relative;
+    padding-bottom: 28px;
+  }
+  .iter:last-child { padding-bottom: 0; }
+  .iter::before {
+    content: "";
+    position: absolute;
+    left: -36px;
+    top: 4px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--bg);
+    border: 2px solid var(--jade);
+  }
+  .iter.final::before {
+    background: var(--jade);
+    box-shadow: 0 0 0 4px rgba(0,200,150,0.2);
+  }
+  .iter h4 {
+    color: var(--text);
+    font-size: 1rem;
+    margin-bottom: 6px;
+  }
+  .iter h4 .tag {
+    display: inline-block;
+    background: rgba(0,200,150,0.12);
+    color: var(--jade);
+    font-size: 0.7rem;
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin-right: 8px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  .iter p {
+    color: var(--text-dim);
+    font-size: 0.9rem;
+    line-height: 1.6;
+  }
+  .iter .delta-line {
+    margin-top: 6px;
+    font-size: 0.82rem;
+    color: var(--amber);
+    font-weight: 500;
+  }
+  .final-score {
+    margin-top: 28px;
+    text-align: center;
+    padding: 24px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+  }
+  .final-score .lbl { color: var(--text-faint); font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 8px; }
+  .final-score .nums {
+    font-family: Georgia, serif;
+    font-size: 1.6rem;
+  }
+  .final-score .orig { color: var(--text-faint); text-decoration: line-through; }
+  .final-score .now { color: var(--jade); font-weight: 700; }
+
+  /* DISCARDED */
+  .discarded {
+    display: grid;
+    gap: 10px;
+  }
+  .disc-item {
+    background: var(--bg-card);
+    border: 1px solid var(--border-soft);
+    border-radius: 10px;
+    padding: 14px 18px;
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .disc-item .disc-score {
+    font-family: Georgia, serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--red);
+    min-width: 38px;
+    opacity: 0.7;
+  }
+  .disc-item .disc-name {
+    color: var(--text-dim);
+    font-weight: 500;
+    min-width: 200px;
+    flex: 1;
+  }
+  .disc-item .disc-reason {
+    color: var(--text-faint);
+    font-size: 0.88rem;
+    font-style: italic;
+    flex: 2;
+    min-width: 240px;
+  }
+
+  /* FOOTER */
+  footer {
+    margin-top: 64px;
+    padding-top: 32px;
+    border-top: 1px solid var(--border-soft);
+    text-align: center;
+    color: var(--text-faint);
+    font-size: 0.85rem;
+  }
+  footer a {
+    color: var(--jade);
+    text-decoration: none;
+    border-bottom: 1px dashed rgba(0,200,150,0.3);
+  }
+  footer a:hover { border-bottom-style: solid; }
+  footer p { margin: 6px 0; }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    .top3 { grid-template-columns: 1fr; }
+    .row-head { display: none; }
+    details.cand summary {
+      grid-template-columns: 40px 1fr 70px 30px;
+      grid-template-areas:
+        "rank name score arrow"
+        "rank meta meta arrow";
+      gap: 6px 10px;
+    }
+    details.cand summary .col-rank { grid-area: rank; }
+    details.cand summary .col-name { grid-area: name; }
+    details.cand summary .col-score { grid-area: score; text-align: right; }
+    details.cand summary .col-score-orig,
+    details.cand summary .col-delta,
+    details.cand summary .col-ttm {
+      grid-area: meta;
+      display: inline-block;
+      margin-right: 12px;
+      font-size: 0.78rem;
+    }
+    details.cand summary .arrow { grid-area: arrow; }
+    details.cand summary .col-score-orig:empty,
+    details.cand summary .col-delta:empty { display: none; }
+    .cand-detail { padding-left: 20px; }
+    .cascade { flex-direction: column; align-items: stretch; }
+    .cascade .arrow-c { text-align: center; transform: rotate(90deg); }
+  }
+
+  @media (max-width: 540px) {
+    .wrap { padding: 16px 14px 48px; }
+    header.hero { padding: 24px 4px 20px; margin-bottom: 32px; }
+    section { margin-bottom: 48px; }
+    .top-card { padding: 20px 18px; }
+    .top-card .rank { font-size: 2.6rem; }
+    .logic-block { padding: 20px 18px; }
+    .timeline { padding-left: 22px; margin-left: 8px; }
+    .iter::before { left: -30px; }
+  }
+
+  /* PRINT */
+  @media print {
+    body {
+      background: white;
+      color: #111;
+      background-image: none;
+    }
+    .top-card, .candidates, .logic-block, .final-score, .disc-item, footer {
+      background: white;
+      border-color: #ccc;
+      color: #111;
+    }
+    .top-card .rank, .score-big, .col-score, .iter h4 .tag { color: #111 !important; }
+    header.hero h1 { color: #111 !important; -webkit-text-fill-color: #111; }
+    details.cand[open] .cand-detail { display: block; }
+    details.cand .arrow { display: none; }
+    .cand-detail .field b { color: #444 !important; }
+    .badge { border-width: 1px; }
+    a { color: #0a5; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <h1>Pax — Gestos candidatos 2026</h1>
+  <p class="sub">Research auditado por confidence-loop (96/100 confidence final)</p>
+  <p class="date">2026-05-21</p>
+  <div class="kpis">
+    <span class="kpi"><strong>15</strong> candidatos</span>
+    <span class="kpi">Score promedio <strong>6.93</strong> <span class="delta">→ 6.10</span></span>
+    <span class="kpi">Top 3 <strong>reordenado</strong></span>
+    <span class="kpi"><strong>5</strong> iteraciones del loop</span>
+  </div>
+</header>
+
+<main>
+
+<!-- ============ SECTION 1: TOP 3 ============ -->
+<section id="top3">
+  <h2 class="section-title">Top 3 ajustado</h2>
+  <p class="section-lead">El ranking final tras estresar los 15 candidatos contra los 5 criterios duros: ejecutable solo, monetización validada 2025-2026, reusa assets, ethos-fit, time-to-MVP &lt; 8 semanas.</p>
+
+  <div class="top3">
+
+    <article class="top-card r1">
+      <div class="rank">#1</div>
+      <h3>Patreon membership con tiers</h3>
+      <div class="score-row">
+        <span class="score-big">9.0</span>
+        <span class="score-suffix">sin cambio</span>
+      </div>
+      <span class="badge fragil">🔴 Frágil</span>
+      <p class="pitch">Comunidad paga $5-$50/mes por capítulos antes que YouTube, lore extendido, packs de wallpapers y voz directa.</p>
+      <h4>Por qué funciona</h4>
+      <ul>
+        <li>Único gesto que aprobó los 5 criterios sin ajuste</li>
+        <li>Setup técnico bajo + tiers escalan revenue por usuario</li>
+        <li>Mercado validado: Patreon $629M en podcasters 2025</li>
+      </ul>
+      <h4>Caso de referencia</h4>
+      <p class="ref">"The Program" audio-drama sci-fi llegó a 452 paid members en 2025, 74% de ingresos vía Patreon.</p>
+      <p class="ttm">Time-to-market: <strong>1-2 semanas</strong></p>
+    </article>
+
+    <article class="top-card r2">
+      <div class="rank">#2</div>
+      <h3>Audio-drama podcast con ElevenLabs</h3>
+      <div class="score-row">
+        <span class="score-big">8.5</span>
+        <span class="score-suffix">sin cambio</span>
+      </div>
+      <span class="badge medio">🟡 Medio</span>
+      <p class="pitch">Serie de audio-drama de 15-25 min narrando arcos de Jiggy y el clan, voces sintéticas por personaje, en Spotify + Apple + YouTube.</p>
+      <h4>Por qué funciona</h4>
+      <ul>
+        <li>Pipeline 1-persona limpio: guion → ElevenLabs → mix → publicar</li>
+        <li>Único del Top 3 con cola pasiva real</li>
+        <li>Los 12 capítulos outlined ya son base narrativa</li>
+      </ul>
+      <h4>Caso de referencia</h4>
+      <p class="ref">Patreon reporta $629M en podcasters 2025, 47K+ podcasts monetizados; fiction es categoría de mayor crecimiento.</p>
+      <p class="ttm">Time-to-market: <strong>3-5 semanas</strong></p>
+    </article>
+
+    <article class="top-card r3">
+      <div class="rank">#3</div>
+      <h3>Vertical micro-dramas serializados</h3>
+      <div class="score-row">
+        <span class="score-big">8.5</span>
+        <span class="score-suffix">desde 9.0</span>
+      </div>
+      <span class="badge fragil">🔴 Frágil</span>
+      <p class="pitch">Mini-episodios de 1-3 min con Jiggy y el clan en formato vertical optimizado para algoritmo móvil (TikTok Minis, Reels, Shorts).</p>
+      <h4>Por qué funciona</h4>
+      <ul>
+        <li>Recicla los video backgrounds Seedance ya generados</li>
+        <li>TikTok Minis = mercado $3B en micro-drama 2025</li>
+        <li>Cada capítulo se parte en 4-6 verticals de gancho</li>
+      </ul>
+      <h4>Caso de referencia</h4>
+      <p class="ref">ReelShort y DramaBox lideran apps de microdrama; TikTok lanzó Minis con paywall en Q4 2025.</p>
+      <p class="ttm">Time-to-market: <strong>2-4 semanas</strong></p>
+    </article>
+
+  </div>
+</section>
+
+<!-- ============ SECTION 2: LOS 15 ============ -->
+<section id="all15">
+  <h2 class="section-title">Los 15 candidatos</h2>
+  <p class="section-lead">Tabla completa ordenada por score actual descendente. Haz click en cualquier fila para ver detalle completo: pitch, fit con Pax, monetización, caso de referencia, riesgo y justificación del ajuste del loop.</p>
+
+  <div class="candidates">
+    <div class="row-head">
+      <div>Rank</div>
+      <div>Nombre</div>
+      <div>Score</div>
+      <div>Original</div>
+      <div>Δ</div>
+      <div>Time-to-MVP</div>
+      <div></div>
+    </div>
+
+    <!-- 1. Patreon (9) -->
+    <details class="cand hot">
+      <summary>
+        <div class="col-rank">01</div>
+        <div class="col-name">Patreon membership con tiers</div>
+        <div class="col-score">9.0</div>
+        <div class="col-score-orig">9.0</div>
+        <div class="col-delta delta-same">=</div>
+        <div class="col-ttm">1-2 sem</div>
+        <div class="arrow">▶</div>
+      </summary>
+      <div class="cand-detail">
+        <div class="field"><b>Pitch</b><span>Comunidad paga $5-$50/mes para acceder a capítulos antes que YouTube, lore extendido, packs de wallpapers, voz directa con creador.</span></div>
+        <div class="field"><b>Fit con Pax</b><span>Pax ya tiene la web app "Oráculo" como punto de captura + el lore largo + voz del clan. Los gestos vivos (4 hoy) son contenido natural para tiers.</span></div>
+        <div class="field"><b>Monetización</b><span>Tiers $5 / $15 / $40-50 (recomendación Patreon 2025). Los podcasts crecieron 33% YoY en Patreon ($629M en 2025), siendo la categoría top. Video creators promedian $5.49M/mes colectivos. Creators con tier alto ganan +17% más revenue.</span></div>
+        <div class="field"><b>Caso de referencia</b><span>"The Program" audio-drama sci-fi llegó a 452 paid members en 2025, 74% de ingresos vía Patreon.</span></div>
+        <div class="field"><b>Riesgo principal</b><span>Churn. Mantener tier alto exige entregable mensual perceptible. Si no, gente cancela al tercer mes.</span></div>
+        <div class="loop-note"><b>Loop:</b> sin cambio. Pasa los 5 criterios limpio. Único gesto que aprobó sin ajuste.</div>
+      </div>
+    </details>
+
+    <!-- 2. Vertical micro-dramas (8.5) -->
+    <details class="cand hot">
+      <summary>
+        <div class="col-rank">02</div>
+        <div class="col-name">Vertical micro-dramas serializados</div>
+        <div class="col-score">8.5</div>
+        <div class="col-score-orig">9.0</div>
+        <div class="col-delta delta-down">−0.5</div>
+        <div class="col-ttm">2-4 sem</div>
+        <div class="arrow">▶</div>
+      </summary>
+      <div class="cand-detail">
+        <div class="field"><b>Pitch</b><span>Mini-episodios de 1-3 min con Jiggy y el clan resolviendo gestos pequeños, formato vertical optimizado para algoritmo móvil.</span></div>
+        <div class="field"><b>Fit con Pax</b><span>Chars + world + voz + estética 3D ya existen. Cada capítulo del outline (cap 1-12) se puede particionar en 4-6 verticals. Los video backgrounds Seedance ya generados son materia prima directa.</span></div>
+        <div class="field"><b>Monetización</b><span>TikTok Minis ofrece paywall + micro-transacciones nativas (mercado $3B en 2025 solo TikTok); revenue mix con ads YouTube Shorts + brand deals + funnel a Patreon. Ticket: micro-pagos $0.50-$2 por episodio premium; ads CPM Shorts $0.5-2.</span></div>
+        <div class="field"><b>Caso de referencia</b><span>ReelShort, DramaBox lideran apps de microdrama; TikTok lanzó sección Minis en Q4 2025 con paywall integrado.</span></div>
+        <div class="field"><b>Riesgo principal</b><span>Algoritmo TikTok premia rotación constante; si bajas ritmo de publicación pierdes alcance. Requiere disciplina de publicación 3-5x/semana.</span></div>
+        <div class="loop-note"><b>Loop −0.5:</b> cadencia 3-5x/sem es exigente para 1 persona si ya hay otros gestos activos; el supuesto "ejecutable por 1 persona + colaboradores ocasionales" se tensiona.</div>
+      </div>
+    </details>
+
+    <!-- 3. Audio-drama (8.5) -->
+    <details class="cand hot">
+      <summary>
+        <div class="col-rank">03</div>
+        <div class="col-name">Audio-drama / podcast narrado del lore</div>
+        <div class="col-score">8.5</div>
+        <div class="col-score-orig">8.5</div>
+        <div class="col-delta delta-same">=</div>
+        <div class="col-ttm">3-5 sem</div>
+        <div class="arrow">▶</div>
+      </summary>
+      <div class="cand-detail">
+        <div class="field"><b>Pitch</b><span>Serie de audio-drama de 15-25 min por episodio narrando arcos de Jiggy y el clan, voces sintéticas distintas por personaje, distribuida en Spotify + Apple + YouTube.</span></div>
+        <div class="field"><b>Fit con Pax</b><span>Los 12 capítulos outlined ya son base narrativa. ElevenLabs v3 (2025) entrega expresividad con audio tags por personaje. No requiere animación → escalas más rápido que la mini-serie visual.</span></div>
+        <div class="field"><b>Monetización</b><span>Patreon (ad-free + early access) como motor principal (74% del revenue en caso "The Program"), Spotify monetiza vía pago directo a creators desde 2024, ads pre-roll en YouTube versión audio-only. Ticket promedio Patreon podcast $5-15/mes/fan.</span></div>
+        <div class="field"><b>Caso de referencia</b><span>Patreon reporta $629M en revenue de podcasters en 2025, 47K+ podcasts monetizados; fiction es categoría de fastest-growth.</span></div>
+        <div class="field"><b>Riesgo principal</b><span>Discoverability fuera de Patreon es difícil sin push externo. Requiere cross-promotion con la mini-serie YouTube.</span></div>
+        <div class="loop-note"><b>Loop:</b> sin cambio. Pasa los 5 criterios. Único del Top 3 con cola pasiva real.</div>
+      </div>
+    </details>
+
+    <!-- 4. Merch POD (7.5) -->
+    <details class="cand warm">
+      <summary>
+        <div class="col-rank">04</div>
+        <div class="col-name">Merch print-on-demand con assets del clan</div>
+        <div class="col-score">7.5</div>
+        <div class="col-score-orig">8.0</div>
+        <div class="col-delta delta-down">−0.5</div>
+        <div class="col-ttm">1-2 sem</div>
+        <div class="arrow">▶</div>
+      </summary>
+      <div class="cand-detail">
+        <div class="field"><b>Pitch</b><span>Tienda Shopify + Printful con camisetas, posters, stickers, totebags con chars Pax y simbología anuraK/Ayni/cristales.</span></div>
+        <div class="field"><b>Fit con Pax</b><span>Char sheets canónicos + paleta jade-amber-basalt-magenta son brand visual fuerte. La mini-serie y verticals construyen demanda; merch captura.</span></div>
+        <div class="field"><b>Monetización</b><span>Márgenes 30-45% sobre POD, ticket promedio $25-45 por unidad. Revenue mensual realista solo creator: $1K-5K en mes 6; $5K-20K en año 2 si el funnel se llena.</span></div>
+        <div class="field"><b>Caso de referencia</b><span>Mercado POD $12.96B en 2025 creciendo 26% YoY; integraciones directas TikTok Shop / Instagram Shop ya operativas.</span></div>
+        <div class="field"><b>Riesgo principal</b><span>Sin audiencia de base, el POD no se vende solo. Llega después del traction de la mini-serie / verticals, no antes.</span></div>
+        <div class="loop-note"><b>Loop −0.5:</b> al estresar Crit 2 "modelo validado en aislado", el gesto pierde 0.5 por no ser monetización independiente — depende de tracción previa.</div>
+      </div>
+    </details>
+
+    <!-- 5. Curso (7.5) -->
+    <details class="cand warm">
+      <summary>
+        <div class="col-rank">05</div>
+        <div class="col-name">Curso "crea tu mini-serie animada con IA"</div>
+        <div class="col-score">7.5</div>
+        <div class="col-score-orig">8.0</div>
+        <div class="col-delta delta-down">−0.5</div>
+        <div class="col-ttm">6-10 sem</div>
+        <div class="arrow">▶</div>
+      </summary>
+      <div class="cand-detail">
+        <div class="field"><b>Pitch</b><span>Masterclass de 6-10 módulos enseñando el pipeline real (Seedance, char sheets, prompting, edit) con Pax como caso de estudio.</span></div>
+        <div class="field"><b>Fit con Pax</b><span>Todo lo que ya documentaste en process-log/ y skills (pax-seedance-prompt, pax-image-gen) es 60% del curriculum. El proyecto es propaganda viva de que funciona.</span></div>
+        <div class="field"><b>Monetización</b><span>Udemy ($15-50 ticket, escala por volumen) o platform propia + Gumroad ($99-299 ticket, márgenes 90%+). Bundle con community Discord paga $19-39/mes.</span></div>
+        <div class="field"><b>Caso de referencia</b><span>Udemy listings 2025 muestran docenas de cursos "Create AI Animated Stories" con 4-5★ ratings. Notion templates solo creators generan $500-1500/mes; cursos suelen escalar 2-5x sobre eso.</span></div>
+        <div class="field"><b>Riesgo principal</b><span>Mercado saturado de cursos AI; diferenciación = "tengo proyecto real con tracción". Sin tracción visible (suscriptores YouTube, members Patreon), el curso no vende.</span></div>
+        <div class="loop-note"><b>Loop −0.5:</b> grabar/editar 6-10 hrs de video curado es trabajo serio para 1 persona; suma con la dependencia de tracción previa explícita en el reporte.</div>
+      </div>
+    </details>
+
+    <!-- 6. Lo-fi stream (7) -->
+    <details class="cand warm">
+      <summary>
+        <div class="col-rank">06</div>
+        <div class="col-name">Lo-fi / ambient stream 24/7 YouTube</div>
+        <div class="col-score">7.0</div>
+        <div class="col-score-orig">7.5</div>
+        <div class="col-delta delta-down">−0.5</div>
+        <div class="col-ttm">4-6 sem</div>
+        <div class="arrow">▶</div>
+      </summary>
+      <div class="cand-detail">
+        <div class="field"><b>Pitch</b><span>Stream 24/7 con Jiggy o un char del clan animado loop + música chill original Pax, formato Lofi Girl.</span></div>
+        <div class="field"><b>Fit con Pax</b><span>Los video backgrounds Seedance ya son loops ambientes nativos. Solo falta soundtrack original (música o licenciada a labels chill).</span></div>
+        <div class="field"><b>Monetización</b><span>Ads YouTube (Lofi Girl ~$27K/mes según vidiq), merch passthrough, Spotify revenue del soundtrack (Spotify pagó $11B en royalties en 2025; indies son 50% del total). Ads CPM $1-3; música indie streams $0.003-0.005 cada uno pero el volumen de un stream 24/7 es 10M+ views/mes.</span></div>
+        <div class="field"><b>Caso de referencia</b><span>Lofi Girl 15M+ subs en mayo 2025, ~$27K/mes solo ads YouTube.</span></div>
+        <div class="field"><b>Riesgo principal</b><span>Competencia brutal en lo-fi YouTube. Diferenciar requiere brand visual extraño + consistencia musical. Char Pax tipo Jiggy ayuda, pero hay que ser disciplinado en sonoridad.</span></div>
+        <div class="loop-note"><b>Loop −0.5:</b> 30-50 tracks ambientales cohesivos exigen curaduría musical que Aldot no tiene en skill set; Suno/Udio mitiga pero la consistencia sonora es la diferenciación, y eso requiere oído entrenado o colaborador músico.</div>
+      </div>
+    </details>
+
+    <!-- 7. Oracle deck (6.5) -->
+    <details class="cand warm">
+      <summary>
+        <div class="col-rank">07</div>
+        <div class="col-name">Oracle / tarot deck físico crowdfunded</div>
+        <div class="col-score">6.5</div>
+        <div class="col-score-orig">8.0</div>
+        <div class="col-delta delta-down">−1.5</div>
+        <div class="col-ttm">12-16 sem</div>
+        <div class="arrow">▶</div>
+      </summary>
+      <div class="cand-detail">
+        <div class="field"><b>Pitch</b><span>Deck de 60-78 cartas oraculares donde cada carta es un gesto + simbología del lore (cristales, Ayni, anuraK), arte 3D PBR Pax.</span></div>
+        <div class="field"><b>Fit con Pax</b><span>La web app "Oráculo" ya es card-reading. Materializarla en deck físico es traducción natural. La paleta jade-amber-basalt-magenta es altamente coleccionable.</span></div>
+        <div class="field"><b>Monetización</b><span>Kickstarter típico oracle deck recauda $7K-$280K (rango real 2025). Ticket promedio $35-65 por deck. Stretch goals: edición deluxe, guidebook hardcover, pins.</span></div>
+        <div class="field"><b>Caso de referencia</b><span>"The Oracle of Many Paths" (James R. Eads) recaudó $277,399 con 3,074 backers en 2025; "BOTANICA" llegó a $750K histórico.</span></div>
+        <div class="field"><b>Riesgo principal</b><span>Logística de fulfillment internacional + manufactura. Mejor con partner especializado (PledgeBox, BackerKit shipping).</span></div>
+        <div class="loop-note"><b>Loop −1.5 (bajada más grande):</b> fulfillment internacional + manufactura + campaign Kickstarter están fuera del skill set explícito de Aldot — él hace Next.js, prompts, render IA, NO maneja logística física B2C. Time-to-market 12-16 sem rompe el límite de 8 sem.</div>
+      </div>
+    </details>
+
+    <!-- 8. Webcomic (6.5) -->
+    <details class="cand warm">
+      <summary>
+        <div class="col-rank">08</div>
+        <div class="col-name">Webcomic / webtoon serializado del lore</div>
+        <div class="col-score">6.5</div>
+        <div class="col-score-orig">7.0</div>
+        <div class="col-delta delta-down">−0.5</div>
+        <div class="col-ttm">3-6 sem</div>
+        <div class="arrow">▶</div>
+      </summary>
+      <div class="cand-detail">
+        <div class="field"><b>Pitch</b><span>Comic vertical scroll publicado en Webtoon / Tapas / GlobalComix con arcos paralelos a la mini-serie animada.</span></div>
+        <div class="field"><b>Fit con Pax</b><span>Chars + world + arcos ya outlined. Comic es formato más rápido de producir por episodio que animación, y permite expandir el lore más allá de los 12 caps.</span></div>
+        <div class="field"><b>Monetización</b><span>Mayoría de revenue para indies viene de Patreon (40%+ creators ganan menos de $100 directamente en plataformas comic), pero plataformas dan discoverability. Mercado webcomic $7.4B 2024 → $10B 2030.</span></div>
+        <div class="field"><b>Caso de referencia</b><span>SuperLikes (Webtoon 2025) y subscription revenue share (GlobalComix) son monetización directa. Casos top suelen escalar vía Netflix adaptations o book deals.</span></div>
+        <div class="field"><b>Riesgo principal</b><span>Webcomic indie sin audiencia previa es difícil. Mejor lanzarlo como extensión de la mini-serie cuando ya haya algo de tracción.</span></div>
+        <div class="loop-note"><b>Loop −0.5:</b> cadencia 1 ep/semana sostenida es exigente; Crit 2 se debilita porque la monetización directa en plataformas es marginal — el revenue real vendría vía Patreon, lo cual lo convierte en dependiente del gesto 02.</div>
+      </div>
+    </details>
+
+    <!-- 9. Discord paid (6.5) -->
+    <details class="cand warm">
+      <summary>
+        <div class="col-rank">09</div>
+        <div class="col-name">Servidor Discord paid con tiers</div>
+        <div class="col-score">6.5</div>
+        <div class="col-score-orig">7.0</div>
+        <div class="col-delta delta-down">−0.5</div>
+        <div class="col-ttm">2-3 sem</div>
+        <div class="arrow">▶</div>
+      </summary>
+      <div class="cand-detail">
+        <div class="field"><b>Pitch</b><span>Discord con canales premium donde la comunidad participa en deciding-next-gestures, co-creating mini-stories, behind-the-scenes.</span></div>
+        <div class="field"><b>Fit con Pax</b><span>El ethos "comunidad acelera la idea" se materializa literalmente en Discord. Encaja con el meta-proyecto perfecto.</span></div>
+        <div class="field"><b>Monetización</b><span>Discord 90/10 split a favor del creator. Server subscriptions $5-25/mes; comunidades top hacen $2K-10K/mes con 100-500 members pagos, top $50K+/mes.</span></div>
+        <div class="field"><b>Caso de referencia</b><span>Discord lanzó Server Subscriptions globalmente en 2024-2025; recomendación industry es buildar 1000+ members free antes de monetizar.</span></div>
+        <div class="field"><b>Riesgo principal</b><span>Discord en frío sin audiencia previa es servidor fantasma. Necesita la mini-serie ya jalando tráfico antes de pedir paid tier.</span></div>
+        <div class="loop-note"><b>Loop −0.5:</b> moderación constante = trabajo emocional sostenido, alta carga para 1 persona sin equipo de mods. Crit 1 se tensiona.</div>
+      </div>
+    </details>
+
+    <!-- 10. Libro / art book (6) -->
+    <details class="cand dim">
+      <summary>
+        <div class="col-rank">10</div>
+        <div class="col-name">Libro infantil / lore book ilustrado</div>
+        <div class="col-score">6.0</div>
+        <div class="col-score-orig">7.0</div>
+        <div class="col-delta delta-down">−1.0</div>
+        <div class="col-ttm">8-12 sem</div>
+        <div class="arrow">▶</div>
+      </summary>
+      <div class="cand-detail">
+        <div class="field"><b>Pitch</b><span>Libro físico ilustrado del universo Pax — versión "intro al lore" para niños/adolescentes, versión "art book deluxe" para coleccionistas.</span></div>
+        <div class="field"><b>Fit con Pax</b><span>El lore ya está documentado en lore_final.md. Renderizar 40-60 ilustraciones con char sheets canónicos + IDENTITY LOCK es directo desde tu pipeline.</span></div>
+        <div class="field"><b>Monetización</b><span>KDP royalties 70% sobre ebooks ($2.99-4.99 ticket), físico print-on-demand 30-40% sobre $15-25. Art book deluxe vía Kickstarter $40-80 ticket, run típico de 1000-3000 backers para indie.</span></div>
+        <div class="field"><b>Caso de referencia</b><span>KDP acepta AI illustration con disclosure interno; art books crowdfunding como "The World of Frostpunk" superan $100K cuando hay fandom previo.</span></div>
+        <div class="field"><b>Riesgo principal</b><span>Discoverability en KDP es brutal; sin marketing externo, libro infantil queda sepultado. Art book Kickstarter funciona si hay fandom previo.</span></div>
+        <div class="loop-note"><b>Loop −1.0 (foco especial):</b> KDP infantil exige compliance editorial + disclosure AI + ISBN + layout, disciplinas que Aldot NO maneja. Art book deluxe Kickstarter hereda los problemas del gesto 06 — fulfillment + manufactura. Time-to-market 8-12 sem rebasa el límite. Sin fandom previo el caso Frostpunk no es replicable.</div>
+      </div>
+    </details>
+
+    <!-- 11. Spotify soundtrack (5.5) -->
+    <details class="cand dim">
+      <summary>
+        <div class="col-rank">11</div>
+        <div class="col-name">Spotify soundtrack original Pax</div>
+        <div class="col-score">5.5</div>
+        <div class="col-score-orig">6.5</div>
+        <div class="col-delta delta-down">−1.0</div>
+        <div class="col-ttm">4-8 sem</div>
+        <div class="arrow">▶</div>
+      </summary>
+      <div class="cand-detail">
+        <div class="field"><b>Pitch</b><span>EP / álbum de 8-15 tracks ambient/electronic asociados al universo Pax, distribuido vía DistroKid a Spotify+Apple+Tidal.</span></div>
+        <div class="field"><b>Fit con Pax</b><span>La mini-serie necesita música. Producirla con AI (Suno, Udio) o partner músico humano da soundtrack vendible.</span></div>
+        <div class="field"><b>Monetización</b><span>$0.003-0.005 por stream Spotify. Para llegar a $1000/mes necesitas ~250K streams/mes — viable solo si la mini-serie viraliza y track aparece como "song from X scene". Sync licensing potencial (TV, brand) si tiene calidad.</span></div>
+        <div class="field"><b>Caso de referencia</b><span>Indies son 50% del payout total Spotify 2025 ($11B); 1 de cada 10 artistas $100K+ pasaron por Fresh Finds.</span></div>
+        <div class="field"><b>Riesgo principal</b><span>Revenue lento sin viralidad previa. Mejor como complemento del stream 24/7 (gesto 06) que como gesto standalone.</span></div>
+        <div class="loop-note"><b>Loop −1.0 (foco especial):</b> calidad musical es la barrera; Suno/Udio produce pero curaduría/mezcla/mastering cohesivo es skill que Aldot no tiene. 250K streams/mes para $1K es dependencia de viralidad, no monetización validada independiente. El propio reporte reconoce que es "complemento", no standalone.</div>
+      </div>
+    </details>
+
+    <!-- 12. Asset library 3D (5) -->
+    <details class="cand dim">
+      <summary>
+        <div class="col-rank">12</div>
+        <div class="col-name">Asset library 3D Pax-style (Sketchfab/CGTrader)</div>
+        <div class="col-score">5.0</div>
+        <div class="col-score-orig">6.0</div>
+        <div class="col-delta delta-down">−1.0</div>
+        <div class="col-ttm">4-6 sem</div>
+        <div class="arrow">▶</div>
+      </summary>
+      <div class="cand-detail">
+        <div class="field"><b>Pitch</b><span>Vender packs de assets 3D inspirados en estética Pax neon-magic, NO los chars canónicos sino derivados/genéricos vendibles a otros creators.</span></div>
+        <div class="field"><b>Fit con Pax</b><span>Ya tienes pipeline para producir assets en este estilo. Es venderle a otros indie animadores el "Pax look".</span></div>
+        <div class="field"><b>Monetización</b><span>Assets indie $15-80 cada uno, packs $50-200. CGTrader y Sketchfab Store dan revenue share decente. Creator promedio en marketplaces gana $200-2000/mes, top sellers $5K-20K/mes.</span></div>
+        <div class="field"><b>Caso de referencia</b><span>Sketchfab 4M+ models, CGTrader 1.5M+ assets, niche "stylized neon magic" tiene demanda creciente con auge AI animation.</span></div>
+        <div class="field"><b>Riesgo principal</b><span>Competencia con asset packs Unity Store es brutal. Nicho muy específico ayuda; "Pax brand" no se vende si no eres reconocido.</span></div>
+        <div class="loop-note"><b>Loop −1.0:</b> rigging + retopology + UVs + docs para venta = producción 3D técnica avanzada fuera del skill set de Aldot. Crit 1 falla fuerte. Marketplace promedio $200-2000/mes no justifica el effort.</div>
+      </div>
+    </details>
+
+    <!-- 13. App móvil hábitos (5) -->
+    <details class="cand dim">
+      <summary>
+        <div class="col-rank">13</div>
+        <div class="col-name">App móvil hábitos / journaling con Jiggy</div>
+        <div class="col-score">5.0</div>
+        <div class="col-score-orig">5.5</div>
+        <div class="col-delta delta-down">−0.5</div>
+        <div class="col-ttm">16-24 sem</div>
+        <div class="arrow">▶</div>
+      </summary>
+      <div class="cand-detail">
+        <div class="field"><b>Pitch</b><span>App self-care donde Jiggy (o un char similar) crece según hábitos del usuario, formato Finch.</span></div>
+        <div class="field"><b>Fit con Pax</b><span>Chars y voz ya existen. El ethos "anuraK = magia de ayudar" alinea perfecto con self-care.</span></div>
+        <div class="field"><b>Monetización</b><span>Suscripción anual $20-30/year (Finch cobra $29.99/year). Finch tiene millions de DAU según reviews 2025-2026. ARPU típica indie $5-10/year/user.</span></div>
+        <div class="field"><b>Caso de referencia</b><span>Finch lanzado por Finch Care en 2021, generó tracción genuina por mascot binding; reviews 2026 confirman freemium funciona.</span></div>
+        <div class="field"><b>Riesgo principal</b><span>App dev es costo + tiempo grande. ROI tarde. Mejor como expansion de un brand ya consolidado, no como primer gesto monetizable.</span></div>
+        <div class="loop-note"><b>Loop −0.5:</b> requiere dev partner (no es "colaborador ocasional", es socio técnico continuo); 16-24 sem rebasa fuerte el límite de 8 sem.</div>
+      </div>
+    </details>
+
+    <!-- 14. Licensing (3.5) -->
+    <details class="cand dim">
+      <summary>
+        <div class="col-rank">14</div>
+        <div class="col-name">Licensing del lore Pax (lore-as-a-service)</div>
+        <div class="col-score">3.5</div>
+        <div class="col-score-orig">4.0</div>
+        <div class="col-delta delta-down">−0.5</div>
+        <div class="col-ttm">12+ meses</div>
+        <div class="arrow">▶</div>
+      </summary>
+      <div class="cand-detail">
+        <div class="field"><b>Pitch</b><span>Permitir a otros creators usar terminología (anuraK, Ayni) y mundo Pax bajo licencia comercial pagada.</span></div>
+        <div class="field"><b>Fit con Pax</b><span>El lore canónico es activo licenciable. Pero requiere registro IP, contratos, gestión legal.</span></div>
+        <div class="field"><b>Monetización</b><span>Licencias indie $500-5K, niche $5K-25K/año (mercado character licensing $384B en 2025). Pero requiere FAMA previa — nadie licencia lore desconocido.</span></div>
+        <div class="field"><b>Caso de referencia</b><span>Pudgy Penguins escaló de NFT a $50M revenue 2025 con licensing y plushies + Walmart/Target/Amazon. Pero Pudgy ya tenía 50B+ GIFs vistos en GIPHY antes.</span></div>
+        <div class="field"><b>Riesgo principal</b><span>Premature. No hay demanda externa por licenciar Pax todavía. Volver a este gesto en 18-24 meses si el brand crece.</span></div>
+        <div class="loop-note"><b>Loop −0.5:</b> legal + contratos + IP defensa están explícitamente fuera del skill set de Aldot. Crit 1 falla.</div>
+      </div>
+    </details>
+
+    <!-- 15. NFT (3) -->
+    <details class="cand dim">
+      <summary>
+        <div class="col-rank">15</div>
+        <div class="col-name">NFT / digital collectibles del lore</div>
+        <div class="col-score">3.0</div>
+        <div class="col-score-orig">3.0</div>
+        <div class="col-delta delta-same">=</div>
+        <div class="col-ttm">6-10 sem</div>
+        <div class="arrow">▶</div>
+      </summary>
+      <div class="cand-detail">
+        <div class="field"><b>Pitch</b><span>Collection limitada de 1000-5000 collectibles digitales (cards, char variants, gesture moments).</span></div>
+        <div class="field"><b>Fit con Pax</b><span>Chars y estética son visualmente coleccionables. Pero el caso ethos del proyecto ("dinero se dona") choca con el sector NFT, que arrastra desconfianza.</span></div>
+        <div class="field"><b>Monetización</b><span>NFT sales colapsaron 63% YoY en Q1 2025. Solo brands con masa crítica previa (Pudgy, Doodles, Milady) sobrevivieron. Ticket promedio drop indie $20-100.</span></div>
+        <div class="field"><b>Caso de referencia</b><span>Pudgy Penguins generó $50M en 2025 — pero fue con $100M+ raised previamente y un team de 30+ personas. No es modelo replicable por indie solo.</span></div>
+        <div class="field"><b>Riesgo principal</b><span>Alto riesgo reputacional. Mercado NFT 2025-2026 sigue contraído. Asociar Pax a NFT puede dañar el ethos "se dona el $".</span></div>
+        <div class="loop-note"><b>Loop:</b> sin cambio. Crit 4 ethos-fit ya estaba dimensionado.</div>
+      </div>
+    </details>
+
+  </div>
+</section>
+
+<!-- ============ SECTION 3: LÓGICA DEL TOP 3 ============ -->
+<section id="logica">
+  <h2 class="section-title">Lógica del Top 3</h2>
+  <p class="section-lead">El trío original (verticals + Patreon + audio-drama) no era retórica vacía: existe un cascade funcional que combina los tres en un funnel completo.</p>
+
+  <div class="logic-block">
+    <h3 style="margin-bottom:8px;font-size:1.1rem;">Funnel discovery → engagement → monetization</h3>
+    <p style="color:var(--text-dim);margin-bottom:4px;">Los verticals generan reach orgánico masivo en TikTok/Shorts/Reels. Ese tráfico alimenta el podcast (contenido más largo, mayor intimidad). El podcast gatea audiencia hacia Patreon, donde el revenue por usuario es 100-1000x más alto que cualquier ad.</p>
+
+    <div class="cascade">
+      <span class="step">Verticals (discovery)</span>
+      <span class="arrow-c">→</span>
+      <span class="step">Audio-drama (engagement)</span>
+      <span class="arrow-c">→</span>
+      <span class="step">Patreon (monetization)</span>
+    </div>
+
+    <div class="insight">
+      <b>Insight crítico del loop</b>
+      <p>Los 3 gestos del Top 3 son <strong>estructuralmente frágiles a pausas</strong>. Solo el audio-drama tiene cola pasiva real — su catálogo sigue acumulando streams en Spotify/YouTube aún sin actividad. Patreon churnea masivamente al 2do-3er mes sin drop perceptible. Verticals pierden el motor de discovery del algoritmo si bajas ritmo. Esta verdad incómoda no estaba en el reporte original.</p>
+    </div>
+
+    <div class="alt-path">
+      <b>Camino alternativo si no puedes sostener cadencia</b>
+      <p>Si Aldot prevé pausas (vacaciones, cambio de foco, otro proyecto), el orden óptimo se vuelve <strong>Patreon (#1) + Audio-drama (#2)</strong>, con Verticals reducido a amplificador opcional. O incluso más radical: <strong>empezar solo por audio-drama</strong> — es el único con cola pasiva, escala 1-persona, y el catálogo publicado sigue generando descubrimiento orgánico aún en silencio.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SECTION 4: CHANGELOG ============ -->
+<section id="changelog">
+  <h2 class="section-title">Changelog del confidence-loop</h2>
+  <p class="section-lead">5 iteraciones hasta convergencia. La media bajó 0.83 puntos — reflejo de que el reporte original era levemente optimista en el supuesto "1 persona + IA".</p>
+
+  <div class="timeline">
+
+    <div class="iter">
+      <h4><span class="tag">Iter 1</span>Estrés de 5 criterios sobre los 15 candidatos</h4>
+      <p>9 gestos bajaron entre 0.5 y 1.5 puntos: 01 (−0.5), 04 (−0.5), 05 (−0.5), 06 (−1.5), 07 (−0.5), 08 (−0.5), 09 (−1), 10 (−0.5), 11 (−1), 12 (−1), 13 (−0.5), 14 (−0.5). 3 gestos sin cambio: 02 (9), 03 (8.5), 15 (3). Razones dominantes: (a) skills fuera del scope de Aldot — manufactura, legal, dev móvil, producción 3D técnica, calidad musical; (b) dependencia de tracción/audiencia previa no descontada; (c) time-to-MVP &gt; 8 sem.</p>
+    </div>
+
+    <div class="iter">
+      <h4><span class="tag">Iter 2</span>Reordenamiento del Top 3</h4>
+      <p>Patreon (9) pasa a #1 en solitario. Audio-drama (8.5) y Verticals (8.5) empatan en #2-#3. El conjunto Top 3 sigue siendo Verticals + Patreon + Audio-drama, sin reemplazos. Confirmado que ningún gesto fuera del top original supera a estos tras estresar.</p>
+    </div>
+
+    <div class="iter">
+      <h4><span class="tag">Iter 3</span>Honestidad sobre la narrativa</h4>
+      <p>El trío original (discovery → engagement → monetization) NO era retórica vacía, pero el supuesto "verticals como motor de discovery" se vuelve condicional: solo funciona si Aldot mantiene cadencia 3-5x/semana, lo cual choca con el supuesto base "1 persona + IA + colaboradores ocasionales" si hay otros gestos activos en paralelo. Conclusión: trío válido, con asterisco de cadencia.</p>
+    </div>
+
+    <div class="iter">
+      <h4><span class="tag">Iter 4</span>Estrés "pausa de 2 meses"</h4>
+      <p>Patreon: FRÁGIL. Audio-drama: MEDIO (único con cola pasiva). Verticals: FRÁGIL. Esto reveló que el Top 3 es estructuralmente vulnerable si Aldot necesita pausar. Insight no presente en el reporte original.</p>
+    </div>
+
+    <div class="iter final">
+      <h4><span class="tag">Iter 5</span>Convergencia</h4>
+      <p>Ningún score se movió respecto a iteración 1. Confidence 95+ alcanzado. Stop del loop.</p>
+      <div class="delta-line">Confidence final: 96/100</div>
+    </div>
+
+  </div>
+
+  <div class="final-score">
+    <div class="lbl">Score promedio · 15 candidatos</div>
+    <div class="nums">
+      <span class="orig">6.93</span>
+      &nbsp;→&nbsp;
+      <span class="now">6.10</span>
+    </div>
+    <p style="color:var(--text-dim);font-size:0.85rem;margin-top:8px;">La media bajó 0.83 puntos: reflejo de skills o disponibilidad operativa que Aldot no tiene declarada.</p>
+  </div>
+</section>
+
+<!-- ============ SECTION 5: DESCARTADOS ============ -->
+<section id="descartados">
+  <h2 class="section-title">Candidatos prematuros</h2>
+  <p class="section-lead">Gestos con score final &lt; 6. No están muertos — vuelven a la mesa cuando el brand tenga 50K-100K members reales o cuando aldot adquiera el skill set faltante.</p>
+
+  <div class="discarded">
+
+    <div class="disc-item">
+      <div class="disc-score">5.5</div>
+      <div class="disc-name">Spotify soundtrack original Pax</div>
+      <div class="disc-reason">Calidad musical cohesiva y dependencia de viralidad lo descalifican como standalone. Mejor como complemento del lo-fi stream.</div>
+    </div>
+
+    <div class="disc-item">
+      <div class="disc-score">5.0</div>
+      <div class="disc-name">Asset library 3D en marketplaces</div>
+      <div class="disc-reason">Rigging + retopology + docs son producción 3D técnica avanzada, fuera del skill set de Aldot.</div>
+    </div>
+
+    <div class="disc-item">
+      <div class="disc-score">5.0</div>
+      <div class="disc-name">App móvil hábitos con Jiggy</div>
+      <div class="disc-reason">Requiere dev partner continuo (no colaborador ocasional) + 16-24 sem rebasa fuerte el límite.</div>
+    </div>
+
+    <div class="disc-item">
+      <div class="disc-score">3.5</div>
+      <div class="disc-name">Licensing del lore (lore-as-a-service)</div>
+      <div class="disc-reason">Legal + IP defensa fuera del skill set. Vuelve en 18-24 meses si el brand crece a 50K+ members.</div>
+    </div>
+
+    <div class="disc-item">
+      <div class="disc-score">3.0</div>
+      <div class="disc-name">NFT / digital collectibles</div>
+      <div class="disc-reason">Choca con ethos "el dinero se dona". Mercado NFT sigue contraído −63% YoY. Vuelve solo si llegases a 50K+ members con masa crítica.</div>
+    </div>
+
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <p>Generado el <strong>2026-05-21</strong> por confidence-loop sobre research base.</p>
+  <p>Fuente: <a href="gestos-candidatos-2026-05-21.md">gestos-candidatos-2026-05-21.md</a></p>
+  <p style="margin-top:14px;font-size:0.78rem;">Pax — meta-proyecto: idea → IA + comunidad → $ → donación</p>
+</footer>
+
+</div>
+</body>
+</html>
