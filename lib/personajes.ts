@@ -42,12 +42,12 @@ export interface PersonajeDetail extends PersonajeSummary {
 }
 
 /**
- * Filtra los archivos del directorio `content/personajes/` excluyendo:
+ * Filtra los archivos del directorio `_lore/personajes/` excluyendo:
  * - Los que arrancan con `_` (canon, notas internas).
  * - `mariela-prompt.md` (prompt auxiliar, no es ficha de personaje).
  */
 export async function listPersonajeSlugs(): Promise<string[]> {
-  const files = await listMarkdownFiles("personajes");
+  const files = await listMarkdownFiles("_lore/personajes");
   return files
     .filter((f) => !f.startsWith("_") && f !== "mariela-prompt.md")
     .map((f) => f.replace(/\.md$/, ""));
@@ -134,7 +134,7 @@ export async function getPersonajeSummary(
 ): Promise<PersonajeSummary | null> {
   try {
     const doc = await readMarkdown<PersonajeFrontmatter>(
-      `personajes/${slug}.md`,
+      `_lore/personajes/${slug}.md`,
     );
     const fm = doc.frontmatter ?? {};
     const name = fm.name ?? titleFromSlug(slug);
@@ -159,7 +159,7 @@ export async function getPersonajeDetail(
 ): Promise<PersonajeDetail | null> {
   try {
     const doc = await readMarkdown<PersonajeFrontmatter>(
-      `personajes/${slug}.md`,
+      `_lore/personajes/${slug}.md`,
     );
     const fm = doc.frontmatter ?? {};
     const name = fm.name ?? titleFromSlug(slug);
@@ -206,7 +206,7 @@ export async function listPersonajeSummaries(): Promise<PersonajeSummary[]> {
  * Path relativo (al cwd del repo) del archivo de personaje. Útil para `getLastUpdated`.
  */
 export function personajeFilePath(slug: string): string {
-  return path.posix.join("content", "personajes", `${slug}.md`);
+  return path.posix.join("_lore", "personajes", `${slug}.md`);
 }
 
 /**

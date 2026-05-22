@@ -17,7 +17,7 @@ Es como un "amigo tonto" pero más bien torpe. Cuando los demás todavía analiz
 
 ## Rol en el clan
 
-Corazón del grupo. Termómetro vivo del clan: si KZ está incómodo, algo está mal. Comic relief funcional pero distinto al de Luxa — KZ no busca ser chistoso, lo es por torpeza tierna. La risa que provoca es de cariño, no de timing.
+Corazón del grupo y mejor amigo de Jiggy — los dos se conocen desde siempre, se complementan: Jiggy corre adelante sin mirar, KZ tropieza pero siempre llega. Termómetro vivo del clan: si KZ está incómodo, algo está mal. Comic relief funcional pero distinto al de Luxa — KZ no busca ser chistoso, lo es por torpeza tierna. La risa que provoca es de cariño, no de timing.
 
 En misiones suele ser el primero que se acerca al humano objetivo sin darse cuenta. Su intuición lo lleva. Wiz lo deja ir — confía en él más de lo que KZ sospecha.
 

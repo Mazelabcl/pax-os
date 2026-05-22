@@ -12,6 +12,8 @@ image: /images/personajes/jiggy.png
 
 Cíclope verde turquesa juvenil, explorador y corredor (chasqui-runner) del grupo Pax. Curioso, valiente, optimista. La pose de zancada con cristal en alto transmite descubrimiento puro y energía aventurera. Es el único del grupo que se ve en movimiento dinámico constante.
 
+Travieso, irreverente, anti-héroe a su pesar — no busca ser el elegido, solo busca la próxima travesura, y por eso termina siendo el que importa. Tiene la energía de Bart Simpson: oculta una intuición moral muy afinada detrás de cara de "¿y si lo toco?". Cuando el momento importa de verdad, Jiggy lo siente antes que nadie — y actúa antes de que alguien se lo pida.
+
 ## Rol en la historia
 
 Pax chasqui-runner. Quiere entregar lo que carga sin quedarse quieto; teme el silencio. En el episodio 1 cruza el ushnu (alcantarilla en Av. Bilbao) hasta el departamento de Mariela y le deja el cristal magenta nuevo en la palma. Su arco mínimo: aprende que no toda chispa es para relevo inmediato — algunas se quedan.

@@ -160,7 +160,7 @@ const TAB_DEFS = [
 ] as const;
 
 export function tabContentPath(tab: EpisodioTab): string {
-  return `content/${tab.path}`;
+  return `_archive/content-episodio-1/${tab.path.replace(/^episodio-1\//, "")}`;
 }
 
 // =============================================================================
@@ -734,12 +734,12 @@ function parseStyleLock(styleGuideContent: string): string {
 export async function getEpisodio1(): Promise<EpisodioData> {
   const [escenasDoc, storyboardDoc, seedanceDoc, conceptArtsDoc, styleDoc, ...tabDocs] =
     await Promise.all([
-      readMarkdown("episodio-1/escenas.md"),
-      readMarkdown("episodio-1/storyboard-nano.md"),
-      readMarkdown("episodio-1/seedance-prompts.md"),
-      readMarkdown("episodio-1/concept-arts.md"),
-      readMarkdown("style-guide.md"),
-      ...TAB_DEFS.map((t) => readMarkdown(`episodio-1/${t.file}`)),
+      readMarkdown("_archive/content-episodio-1/escenas.md"),
+      readMarkdown("_archive/content-episodio-1/storyboard-nano.md"),
+      readMarkdown("_archive/content-episodio-1/seedance-prompts.md"),
+      readMarkdown("_archive/content-episodio-1/concept-arts.md"),
+      readMarkdown("_lore/style-guide.md"),
+      ...TAB_DEFS.map((t) => readMarkdown(`_archive/content-episodio-1/${t.file}`)),
     ]);
 
   const escenas = parseEscenas(escenasDoc.content);
@@ -801,14 +801,14 @@ export async function getStyleGuide(): Promise<{
   content: string;
   styleLock: string;
 }> {
-  const doc = await readMarkdown("style-guide.md");
+  const doc = await readMarkdown("_lore/style-guide.md");
   const styleLock = parseStyleLock(doc.content);
   return { content: doc.content, styleLock };
 }
 
 /** Helper standalone para landing: solo tldr. */
 export async function getEpisodio1Tldr(): Promise<string | null> {
-  const doc = await readMarkdown("episodio-1/escenas.md");
+  const doc = await readMarkdown("_archive/content-episodio-1/escenas.md");
   return extractSection(doc.content, /^##\s+TLDR\s*$/i);
 }
 

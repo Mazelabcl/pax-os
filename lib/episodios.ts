@@ -58,11 +58,11 @@ export interface EpisodioDetalle extends EpisodioOutline {
 // =============================================================================
 
 /**
- * Parsea el archivo `content/episodios-12-outline.md` y devuelve
+ * Parsea el archivo `gestos/01-miniserie/episodios-12-outline.md` y devuelve
  * los 12 episodios con título, logline, tono, locación.
  */
 export async function listEpisodiosOutline(): Promise<EpisodioOutline[]> {
-  const doc = await readMarkdown("episodios-12-outline.md");
+  const doc = await readMarkdown("gestos/01-miniserie/episodios-12-outline.md");
   return parseOutline(doc.content);
 }
 
@@ -73,7 +73,7 @@ export async function getEpisodioDetalle(
   const ep = outline.find((e) => e.numero === numero);
   if (!ep) return null;
 
-  const doc = await readMarkdown("episodios-12-outline.md");
+  const doc = await readMarkdown("gestos/01-miniserie/episodios-12-outline.md");
   const { beats, hook, cliffhanger } = parseEpisodioBody(doc.content, numero);
   const shots = await listStoryboardShots(numero);
   const heroImage =
@@ -207,7 +207,8 @@ function extractFieldBlock(text: string, re: RegExp): string | null {
 const PUBLIC_DIR = path.join(process.cwd(), "public");
 const STORYBOARDS_DIR = path.join(
   process.cwd(),
-  "content",
+  "gestos",
+  "01-miniserie",
   "storyboards",
 );
 
@@ -216,7 +217,7 @@ import { promises as fs } from "node:fs";
 /**
  * Lista los shots disponibles para un capítulo. Lee los .png en
  * `public/images/storyboards/cap-N/` (subcarpeta canon) y .md companions
- * en `content/storyboards/cap-N/` para sacar metadatos.
+ * en `gestos/01-miniserie/storyboards/cap-N/` para sacar metadatos.
  *
  * Fallback: si la subcarpeta `cap-N/` no existe, lee del dir plano viejo.
  *

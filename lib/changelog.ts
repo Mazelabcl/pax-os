@@ -16,7 +16,7 @@ export interface ChangelogEntry {
  * Los entries vienen en el orden del archivo (más reciente primero por convención).
  */
 export async function getChangelogEntries(): Promise<ChangelogEntry[]> {
-  const doc = await readMarkdown("CHANGELOG.md");
+  const doc = await readMarkdown("content/CHANGELOG.md");
   return parseChangelog(doc.content);
 }
 

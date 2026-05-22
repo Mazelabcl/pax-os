@@ -2,10 +2,16 @@ import { promises as fs } from "node:fs";
 import path from "node:path";
 import matter from "gray-matter";
 
-const CONTENT_ROOT = path.join(/* turbopackIgnore: true */ process.cwd(), "content");
+/**
+ * Raíz para resolver paths de markdown. Desde la Fase 2 de reorg apuntamos a la
+ * raíz del repo (no a `content/`) — los .md viven repartidos en `_lore/`,
+ * `gestos/`, `_meta/` y `content/CHANGELOG.md`. Los callers pasan paths con su
+ * carpeta de origen (ej. `_lore/canon.md`, `gestos/02-oraculo/_lore.md`).
+ */
+const REPO_ROOT = /* turbopackIgnore: true */ process.cwd();
 
 export interface MarkdownDoc<TFrontmatter = Record<string, unknown>> {
-  /** Path relativo al directorio `content/` (ej. `lore.md`). */
+  /** Path relativo a la raíz del repo (ej. `_lore/canon.md`). */
   relativePath: string;
   /** Path absoluto del archivo en disco. */
   absolutePath: string;
@@ -16,14 +22,15 @@ export interface MarkdownDoc<TFrontmatter = Record<string, unknown>> {
 }
 
 /**
- * Lee un archivo markdown del directorio `content/` y devuelve frontmatter + cuerpo.
- * @param relativePath path relativo a `content/` usando forward slashes (ej. `episodio-1/script.md`).
+ * Lee un archivo markdown del repo y devuelve frontmatter + cuerpo.
+ * @param relativePath path relativo a la raíz del repo usando forward slashes
+ *   (ej. `_lore/canon.md`, `gestos/01-miniserie/episodios-12-outline.md`).
  */
 export async function readMarkdown<TFrontmatter = Record<string, unknown>>(
   relativePath: string,
 ): Promise<MarkdownDoc<TFrontmatter>> {
   const normalized = relativePath.replace(/^[/\\]+/, "");
-  const absolutePath = path.join(CONTENT_ROOT, normalized);
+  const absolutePath = path.join(REPO_ROOT, normalized);
   const raw = await fs.readFile(absolutePath, "utf8");
   const parsed = matter(raw);
 
@@ -36,11 +43,12 @@ export async function readMarkdown<TFrontmatter = Record<string, unknown>>(
 }
 
 /**
- * Lista todos los `.md` en un subdirectorio de `content/` (no recursivo).
- * @param subdir subdirectorio relativo a `content/` (ej. `personajes`).
+ * Lista todos los `.md` en un subdirectorio del repo (no recursivo).
+ * @param subdir subdirectorio relativo a la raíz del repo
+ *   (ej. `_lore/personajes`).
  */
 export async function listMarkdownFiles(subdir: string): Promise<string[]> {
-  const dir = path.join(CONTENT_ROOT, subdir);
+  const dir = path.join(REPO_ROOT, subdir);
   const entries = await fs.readdir(dir, { withFileTypes: true });
   return entries
     .filter((entry) => entry.isFile() && entry.name.endsWith(".md"))
