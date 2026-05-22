@@ -50,3 +50,6 @@ process-log/
 scripts/__pycache__/
 scripts/test-apple.png
 scripts/test-gpt-image-2.png
+
+# backups locales pesados (movidos durante reorg 2026-05-21)
+_archive/backups-comprimidos/
