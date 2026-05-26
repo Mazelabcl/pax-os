@@ -6,5 +6,9 @@
     "app/api/child-story/route.ts": {
       "maxDuration": 120
     }
-  }
+  },
+  "rewrites": [
+    { "source": "/landing", "destination": "/landing/index.html" },
+    { "source": "/landing/:path*", "destination": "/landing/index.html" }
+  ]
 }
