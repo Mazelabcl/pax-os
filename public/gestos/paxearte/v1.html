@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Paxearte — Tu avatar en la Tribu Pax</title>
+<style>
+  :root {
+    --jade: #21D8B6;
+    --jade-dark: #18B79B;
+    --amber: #FFE34D;
+    --basalt: #0E0820;
+    --basalt-mid: #1A1340;
+    --magenta: #E83FC8;
+    --magenta-soft: #FF49B4;
+    --purple: #4B2E80;
+    --purple-deep: #3D2A66;
+    --cyan: #2EE0C8;
+    --violet-crystal: #8A4DD1;
+    --text: #E8E0F0;
+    --text-dim: #A090B8;
+    --card-bg: rgba(30, 18, 60, 0.85);
+    --card-border: rgba(139, 77, 209, 0.3);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: var(--basalt);
+    color: var(--text);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* --- HERO --- */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1rem;
+    position: relative;
+    background: radial-gradient(ellipse at 50% 80%, rgba(139,77,209,0.25) 0%, transparent 60%),
+                radial-gradient(ellipse at 20% 20%, rgba(33,216,182,0.12) 0%, transparent 50%),
+                var(--basalt);
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%238A4DD1' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    opacity: 0.5;
+    pointer-events: none;
+  }
+
+  .hero-badge {
+    display: inline-block;
+    padding: 0.4rem 1.2rem;
+    border: 1px solid var(--magenta);
+    border-radius: 50px;
+    color: var(--magenta);
+    font-size: 0.8rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    animation: fadeInUp 0.8s ease-out;
+  }
+
+  .hero h1 {
+    font-size: clamp(2.5rem, 8vw, 5rem);
+    font-weight: 800;
+    text-align: center;
+    line-height: 1.1;
+    margin-bottom: 1rem;
+    animation: fadeInUp 0.8s ease-out 0.1s both;
+  }
+
+  .hero h1 .accent { color: var(--jade); }
+  .hero h1 .accent2 { color: var(--magenta); }
+
+  .hero-sub {
+    font-size: clamp(1rem, 3vw, 1.3rem);
+    color: var(--text-dim);
+    text-align: center;
+    max-width: 600px;
+    margin-bottom: 2.5rem;
+    animation: fadeInUp 0.8s ease-out 0.2s both;
+  }
+
+  /* --- HERO COMPARISON --- */
+  .hero-compare {
+    display: flex;
+    gap: 1.5rem;
+    align-items: flex-end;
+    justify-content: center;
+    flex-wrap: wrap;
+    animation: fadeInUp 0.8s ease-out 0.3s both;
+    margin-bottom: 2rem;
+  }
+
+  .compare-card {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 16px;
+    overflow: hidden;
+    max-width: 280px;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .compare-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 40px rgba(139, 77, 209, 0.3);
+  }
+
+  .compare-card img {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    display: block;
+  }
+
+  .compare-label {
+    padding: 0.8rem 1rem;
+    font-weight: 700;
+    font-size: 0.95rem;
+    letter-spacing: 0.05em;
+  }
+
+  .label-full { color: var(--jade); }
+  .label-human { color: var(--magenta-soft); }
+
+  .vs-badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: var(--purple);
+    border: 2px solid var(--violet-crystal);
+    color: var(--amber);
+    font-weight: 800;
+    font-size: 0.9rem;
+    flex-shrink: 0;
+  }
+
+  /* --- SECTIONS --- */
+  section {
+    padding: 4rem 1.5rem;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .section-reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+  }
+  .section-reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  h2 {
+    font-size: clamp(1.8rem, 5vw, 2.5rem);
+    font-weight: 800;
+    margin-bottom: 1.5rem;
+    color: var(--text);
+  }
+  h2 .accent { color: var(--jade); }
+
+  .lore-text {
+    font-size: 1.05rem;
+    line-height: 1.8;
+    color: var(--text-dim);
+    max-width: 700px;
+  }
+
+  .lore-text p { margin-bottom: 1.2rem; }
+
+  .lore-text strong { color: var(--jade); font-weight: 600; }
+
+  .lore-quote {
+    border-left: 3px solid var(--magenta);
+    padding: 1rem 1.5rem;
+    margin: 1.5rem 0;
+    background: rgba(232, 63, 200, 0.08);
+    border-radius: 0 8px 8px 0;
+    font-style: italic;
+    color: var(--text);
+  }
+
+  /* --- GALLERY --- */
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+  }
+
+  .gallery-item {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 16px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .gallery-item:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 30px rgba(139, 77, 209, 0.25);
+  }
+
+  .gallery-item img {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    display: block;
+  }
+
+  .gallery-info {
+    padding: 1rem;
+  }
+
+  .gallery-tag {
+    display: inline-block;
+    padding: 0.2rem 0.7rem;
+    border-radius: 20px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+  .tag-full { background: rgba(33,216,182,0.15); color: var(--jade); }
+  .tag-human { background: rgba(255,73,180,0.15); color: var(--magenta-soft); }
+  .tag-sheet { background: rgba(138,77,209,0.2); color: var(--violet-crystal); }
+
+  .gallery-title {
+    font-weight: 700;
+    font-size: 0.95rem;
+    margin-bottom: 0.8rem;
+  }
+
+  /* --- FEEDBACK CONTROLS --- */
+  .feedback-row {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    margin-bottom: 0.5rem;
+  }
+
+  .fb-btn {
+    background: none;
+    border: 1px solid var(--card-border);
+    border-radius: 8px;
+    padding: 0.4rem 0.8rem;
+    cursor: pointer;
+    font-size: 1.1rem;
+    color: var(--text-dim);
+    transition: all 0.2s ease;
+  }
+  .fb-btn:hover { background: rgba(139, 77, 209, 0.2); }
+  .fb-btn.active-up { background: rgba(33,216,182,0.25); border-color: var(--jade); color: var(--jade); }
+  .fb-btn.active-down { background: rgba(232,63,200,0.2); border-color: var(--magenta); color: var(--magenta); }
+
+  .fb-input {
+    width: 100%;
+    background: rgba(14, 8, 32, 0.6);
+    border: 1px solid var(--card-border);
+    border-radius: 8px;
+    padding: 0.5rem 0.8rem;
+    color: var(--text);
+    font-size: 0.85rem;
+    font-family: inherit;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .fb-input::placeholder { color: rgba(160, 144, 184, 0.5); }
+  .fb-input:focus { border-color: var(--violet-crystal); }
+
+  /* --- CTA --- */
+  .cta-section {
+    text-align: center;
+    padding: 5rem 1.5rem;
+  }
+
+  .cta-btn {
+    display: inline-block;
+    padding: 1rem 2.5rem;
+    background: linear-gradient(135deg, var(--magenta), var(--violet-crystal));
+    color: white;
+    font-weight: 700;
+    font-size: 1.1rem;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 4px 20px rgba(232, 63, 200, 0.4);
+  }
+  .cta-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 30px rgba(232, 63, 200, 0.5);
+  }
+
+  .cta-sub {
+    margin-top: 1rem;
+    color: var(--text-dim);
+    font-size: 0.85rem;
+  }
+
+  /* --- FOOTER --- */
+  footer {
+    text-align: center;
+    padding: 2rem 1rem;
+    color: var(--text-dim);
+    font-size: 0.8rem;
+    border-top: 1px solid rgba(139, 77, 209, 0.15);
+  }
+
+  /* --- DIVIDER --- */
+  .crystal-divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    padding: 2rem 0;
+    color: var(--violet-crystal);
+    opacity: 0.5;
+  }
+  .crystal-divider::before,
+  .crystal-divider::after {
+    content: '';
+    height: 1px;
+    flex: 1;
+    max-width: 120px;
+    background: linear-gradient(90deg, transparent, var(--violet-crystal), transparent);
+  }
+
+  /* --- ANIMATIONS --- */
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* --- RESPONSIVE --- */
+  @media (max-width: 640px) {
+    .hero-compare { flex-direction: column; align-items: center; }
+    .vs-badge { margin: -0.5rem 0; }
+    .compare-card { max-width: 240px; }
+    .gallery-grid { grid-template-columns: 1fr; }
+    section { padding: 3rem 1rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ HERO ============ -->
+<header class="hero">
+  <span class="hero-badge">Nuevo gesto Pax</span>
+  <h1><span class="accent2">Pax</span><span class="accent">earte</span></h1>
+  <p class="hero-sub">
+    Sube tu foto. La IA te transforma en miembro de la Tribu Pax.
+    Dos estilos. Tu anuraK con cara.
+  </p>
+
+  <div class="hero-compare">
+    <div class="compare-card">
+      <img src="images/full-pax-woman-latina.png" alt="Ejemplo Full Pax">
+      <div class="compare-label label-full">Full Pax</div>
+    </div>
+    <div class="vs-badge">VS</div>
+    <div class="compare-card">
+      <img src="images/humanized-man-european.png" alt="Ejemplo Humanizado">
+      <div class="compare-label label-human">Humanizado</div>
+    </div>
+  </div>
+</header>
+
+<!-- ============ CONCEPTO + LORE ============ -->
+<section class="section-reveal">
+  <h2>Por que <span class="accent">paxearte</span></h2>
+  <div class="lore-text">
+    <p>
+      Bajo la superficie del planeta existe la Tribu Pax: alquimistas juguetones que custodian cristales
+      cargados con <strong>anuraK</strong>, la energia que generan los actos de bondad humanos.
+      Cada vez que alguien ayuda a otro de verdad, un cristal pulsa abajo. Esa cosquilla en el pecho
+      que sientes al hacer algo bueno tiene nombre: anuraK. Y tiene consecuencias.
+    </p>
+
+    <p>
+      Cuando te paxeas, no es cosmetico. Es una declaracion.
+      Estas diciendo: <em>"mi anuraK esta activo"</em>.
+      Estas poniendo cara y nombre a tu energia de ayuda.
+      En el lore Pax, cada humano que reconoce su conexion con la tribu
+      se convierte en un <strong>puente</strong> entre la superficie y el Uray Pacha,
+      el mundo subterraneo donde los cristales esperan ser cargados.
+    </p>
+
+    <div class="lore-quote">
+      "No vienen a salvar el mundo. Vienen a activarlo."
+      <br>
+      Tu version Pax es la prueba de que ya empezaste.
+    </div>
+
+    <p>
+      Dos estilos, dos niveles de compromiso.
+      <strong>Full Pax</strong> te da piel mineral jade, ojo ciclope,
+      orejas elfas y tatuajes tribales, como si hubieras nacido en el Uray Pacha.
+      <strong>Humanizado</strong> conserva tu piel real pero te viste con el outfit de la tribu:
+      bandana tribal, cristales violetas, tatuajes jade y proporciones chibi
+      que dicen "me tomo en serio lo que importa, pero no me tomo en serio a mi mismo".
+    </p>
+
+    <p>
+      Ambas versiones se generan siempre. Tu eliges cual compartir.
+      Cual poner de perfil. Cual imprimir en 3D.
+      Cual insertar como actor en la mini-serie.
+      Tu Pax, tu Ayni, tu cara.
+    </p>
+  </div>
+</section>
+
+<div class="crystal-divider">&#9830;</div>
+
+<!-- ============ GALERIA ============ -->
+<section class="section-reveal">
+  <h2>Galeria de <span class="accent">ejemplos</span></h2>
+  <p class="lore-text" style="margin-bottom: 1rem;">
+    Personas ficticias paxeadas por IA. Vota cada imagen para ayudarnos a calibrar el estilo.
+  </p>
+
+  <div class="gallery-grid">
+
+    <!-- 1. Full Pax — Mujer Latina -->
+    <div class="gallery-item">
+      <img src="images/full-pax-woman-latina.png" alt="Full Pax - Mujer Latina">
+      <div class="gallery-info">
+        <span class="gallery-tag tag-full">Full Pax</span>
+        <div class="gallery-title">Mujer latina con baston de cristal</div>
+        <div class="feedback-row">
+          <button class="fb-btn" onclick="vote(this,'up')">&#128077;</button>
+          <button class="fb-btn" onclick="vote(this,'down')">&#128078;</button>
+        </div>
+        <input class="fb-input" type="text" placeholder="Feedback (opcional)">
+      </div>
+    </div>
+
+    <!-- 2. Full Pax — Hombre Asiatico -->
+    <div class="gallery-item">
+      <img src="images/full-pax-man-asian.png" alt="Full Pax - Hombre Asiatico">
+      <div class="gallery-info">
+        <span class="gallery-tag tag-full">Full Pax</span>
+        <div class="gallery-title">Hombre asiatico con cristal en alto</div>
+        <div class="feedback-row">
+          <button class="fb-btn" onclick="vote(this,'up')">&#128077;</button>
+          <button class="fb-btn" onclick="vote(this,'down')">&#128078;</button>
+        </div>
+        <input class="fb-input" type="text" placeholder="Feedback (opcional)">
+      </div>
+    </div>
+
+    <!-- 3. Humanizado — Mujer Africana -->
+    <div class="gallery-item">
+      <img src="images/humanized-woman-african.png" alt="Humanizado - Mujer Africana">
+      <div class="gallery-info">
+        <span class="gallery-tag tag-human">Humanizado</span>
+        <div class="gallery-title">Mujer africana con outfit tribal</div>
+        <div class="feedback-row">
+          <button class="fb-btn" onclick="vote(this,'up')">&#128077;</button>
+          <button class="fb-btn" onclick="vote(this,'down')">&#128078;</button>
+        </div>
+        <input class="fb-input" type="text" placeholder="Feedback (opcional)">
+      </div>
+    </div>
+
+    <!-- 4. Humanizado — Hombre Europeo -->
+    <div class="gallery-item">
+      <img src="images/humanized-man-european.png" alt="Humanizado - Hombre Europeo">
+      <div class="gallery-info">
+        <span class="gallery-tag tag-human">Humanizado</span>
+        <div class="gallery-title">Hombre europeo pelirrojo saludando</div>
+        <div class="feedback-row">
+          <button class="fb-btn" onclick="vote(this,'up')">&#128077;</button>
+          <button class="fb-btn" onclick="vote(this,'down')">&#128078;</button>
+        </div>
+        <input class="fb-input" type="text" placeholder="Feedback (opcional)">
+      </div>
+    </div>
+
+    <!-- 5. Char Sheet — Mujer del Medio Oriente -->
+    <div class="gallery-item">
+      <img src="images/charsheet-woman-middle-eastern.png" alt="Character Sheet - Humanizado">
+      <div class="gallery-info">
+        <span class="gallery-tag tag-sheet">Character Sheet</span>
+        <div class="gallery-title">Mujer de Medio Oriente — 5 poses humanizado</div>
+        <div class="feedback-row">
+          <button class="fb-btn" onclick="vote(this,'up')">&#128077;</button>
+          <button class="fb-btn" onclick="vote(this,'down')">&#128078;</button>
+        </div>
+        <input class="fb-input" type="text" placeholder="Feedback (opcional)">
+      </div>
+    </div>
+
+    <!-- 6. Char Sheet — Nino Full Pax -->
+    <div class="gallery-item">
+      <img src="images/charsheet-full-pax-kid.png" alt="Character Sheet - Full Pax">
+      <div class="gallery-info">
+        <span class="gallery-tag tag-sheet">Character Sheet</span>
+        <div class="gallery-title">Nino Full Pax — 5 poses turquesa</div>
+        <div class="feedback-row">
+          <button class="fb-btn" onclick="vote(this,'up')">&#128077;</button>
+          <button class="fb-btn" onclick="vote(this,'down')">&#128078;</button>
+        </div>
+        <input class="fb-input" type="text" placeholder="Feedback (opcional)">
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="crystal-divider">&#9830;</div>
+
+<!-- ============ MONETIZACION FUTURA ============ -->
+<section class="section-reveal">
+  <h2>Lo que viene</h2>
+  <div class="lore-text">
+    <p>
+      Paxearte es gratuito en baja resolucion. Tres upgrades de pago en el roadmap:
+    </p>
+    <p>
+      <strong>Alta resolucion</strong> — tu Pax en calidad poster, listo para imprimir.<br>
+      <strong>Impresion 3D</strong> — tu avatar como figurita fisica, directo a tu mesa.<br>
+      <strong>Actor en la mini-serie</strong> — tu Pax aparece en un episodio real de la webserie.
+    </p>
+    <p>
+      El 100% de las ganancias de Paxearte entra al ciclo virtuoso:
+      tu compra carga un cristal. Un Ayni concreto.
+    </p>
+  </div>
+</section>
+
+<!-- ============ CTA ============ -->
+<section class="cta-section section-reveal">
+  <h2>Tu turno</h2>
+  <p class="lore-text" style="margin: 0 auto 2rem; text-align: center;">
+    Sube tu foto y descubre como te ves en la Tribu Pax.
+  </p>
+  <button class="cta-btn" onclick="alert('Proximamente: upload de foto + generacion con IA')">
+    Sube tu foto
+  </button>
+  <p class="cta-sub">Proximamente. Por ahora, vota los ejemplos de arriba.</p>
+</section>
+
+<footer>
+  Pax &mdash; Cada gesto cuenta y se ve. &mdash; 2026
+</footer>
+
+<!-- ============ JS: IntersectionObserver + vote ============ -->
+<script>
+  // Reveal on scroll
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.section-reveal').forEach(el => observer.observe(el));
+
+  // Vote buttons (visual only — no backend)
+  function vote(btn, direction) {
+    const row = btn.closest('.feedback-row');
+    const buttons = row.querySelectorAll('.fb-btn');
+    buttons.forEach(b => { b.classList.remove('active-up', 'active-down'); });
+
+    if (direction === 'up') {
+      btn.classList.add('active-up');
+    } else {
+      btn.classList.add('active-down');
+    }
+  }
+</script>
+
+</body>
+</html>
