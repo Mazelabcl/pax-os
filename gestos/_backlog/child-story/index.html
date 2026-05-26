@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pax — Regálale a tu hijo ser héroe de una tribu mágica</title>
+<style>
+  /* ── Reset & Base ── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --pax-magenta: #E83FC8;
+    --pax-cyan: #2EE0C8;
+    --pax-purple-deep: #1A1340;
+    --pax-purple-mid: #4B2E80;
+    --pax-gold: #FFE34D;
+    --pax-gold-deep: #D4A52B;
+    --pax-basalt: #0E0820;
+    --pax-jade: #21D8B6;
+    --pax-white: #F5F0FF;
+    --pax-gray: #A8A0C0;
+    --pax-card-bg: rgba(75, 46, 128, 0.25);
+    --pax-card-border: rgba(232, 63, 200, 0.2);
+  }
+
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: var(--pax-basalt);
+    color: var(--pax-white);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* ── Hero ── */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem 1.5rem;
+    background:
+      radial-gradient(ellipse at 30% 20%, rgba(232,63,200,0.15) 0%, transparent 50%),
+      radial-gradient(ellipse at 70% 80%, rgba(46,224,200,0.1) 0%, transparent 50%),
+      linear-gradient(180deg, var(--pax-basalt) 0%, var(--pax-purple-deep) 100%);
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: url('storyboard/pag5-cristal-despierta.png') center/cover no-repeat;
+    opacity: 0.12;
+    z-index: 0;
+  }
+
+  .hero > * { position: relative; z-index: 1; }
+
+  .hero-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--pax-magenta), var(--pax-purple-mid));
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 0.4rem 1.2rem;
+    border-radius: 100px;
+    margin-bottom: 1.5rem;
+  }
+
+  .hero h1 {
+    font-size: clamp(2rem, 6vw, 3.5rem);
+    font-weight: 800;
+    line-height: 1.15;
+    max-width: 700px;
+    margin-bottom: 1.2rem;
+    background: linear-gradient(135deg, var(--pax-white) 30%, var(--pax-cyan) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero p {
+    font-size: clamp(1rem, 2.5vw, 1.25rem);
+    color: var(--pax-gray);
+    max-width: 540px;
+    margin-bottom: 2rem;
+  }
+
+  .hero-cta {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--pax-magenta), #B030A0);
+    color: white;
+    font-size: 1.1rem;
+    font-weight: 700;
+    padding: 1rem 2.5rem;
+    border-radius: 12px;
+    text-decoration: none;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 24px rgba(232,63,200,0.3);
+  }
+  .hero-cta:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(232,63,200,0.5);
+  }
+
+  .hero-scroll {
+    margin-top: 2.5rem;
+    color: var(--pax-gray);
+    font-size: 0.85rem;
+    animation: bounce 2s infinite;
+  }
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(6px); }
+  }
+
+  /* ── Section shared ── */
+  section { padding: 4rem 1.5rem; }
+  .container { max-width: 900px; margin: 0 auto; }
+
+  .section-title {
+    font-size: clamp(1.5rem, 4vw, 2.2rem);
+    font-weight: 800;
+    text-align: center;
+    margin-bottom: 0.6rem;
+  }
+  .section-subtitle {
+    text-align: center;
+    color: var(--pax-gray);
+    font-size: 1rem;
+    margin-bottom: 3rem;
+  }
+
+  /* ── How it works ── */
+  .how-it-works {
+    background: linear-gradient(180deg, var(--pax-purple-deep) 0%, var(--pax-basalt) 100%);
+  }
+
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 2rem;
+  }
+
+  .step {
+    background: var(--pax-card-bg);
+    border: 1px solid var(--pax-card-border);
+    border-radius: 16px;
+    padding: 2rem 1.5rem;
+    text-align: center;
+    transition: transform 0.2s;
+  }
+  .step:hover { transform: translateY(-4px); }
+
+  .step-number {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px; height: 48px;
+    background: linear-gradient(135deg, var(--pax-magenta), var(--pax-cyan));
+    border-radius: 50%;
+    font-size: 1.3rem;
+    font-weight: 800;
+    margin-bottom: 1rem;
+  }
+
+  .step h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+
+  .step p {
+    color: var(--pax-gray);
+    font-size: 0.9rem;
+  }
+
+  /* ── Storyboard ── */
+  .storyboard-section {
+    background: var(--pax-basalt);
+  }
+
+  .page-card {
+    background: var(--pax-card-bg);
+    border: 1px solid var(--pax-card-border);
+    border-radius: 16px;
+    overflow: hidden;
+    margin-bottom: 3rem;
+    transition: transform 0.2s;
+  }
+  .page-card:hover { transform: translateY(-2px); }
+
+  .page-card img {
+    width: 100%;
+    display: block;
+    aspect-ratio: 3/2;
+    object-fit: cover;
+  }
+
+  .page-card-body {
+    padding: 1.5rem;
+  }
+
+  .page-label {
+    display: inline-block;
+    background: rgba(232,63,200,0.15);
+    color: var(--pax-magenta);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.25rem 0.75rem;
+    border-radius: 100px;
+    margin-bottom: 0.75rem;
+  }
+
+  .page-card-body h3 {
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+
+  .page-card-body p {
+    color: var(--pax-gray);
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+  }
+
+  /* ── Feedback controls ── */
+  .feedback-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .fb-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    color: var(--pax-white);
+    font-size: 0.85rem;
+    padding: 0.45rem 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s;
+  }
+  .fb-btn:hover { background: rgba(255,255,255,0.12); }
+  .fb-btn.active-up {
+    background: rgba(46,224,200,0.15);
+    border-color: var(--pax-cyan);
+    color: var(--pax-cyan);
+  }
+  .fb-btn.active-down {
+    background: rgba(232,63,200,0.15);
+    border-color: var(--pax-magenta);
+    color: var(--pax-magenta);
+  }
+
+  .fb-input {
+    flex: 1;
+    min-width: 180px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    color: var(--pax-white);
+    font-size: 0.85rem;
+    padding: 0.45rem 0.75rem;
+    border-radius: 8px;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  .fb-input::placeholder { color: rgba(255,255,255,0.3); }
+  .fb-input:focus { border-color: var(--pax-cyan); }
+
+  .fb-send {
+    background: var(--pax-purple-mid);
+    border: none;
+    color: var(--pax-white);
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .fb-send:hover { background: var(--pax-magenta); }
+
+  .fb-status {
+    font-size: 0.75rem;
+    color: var(--pax-cyan);
+    margin-top: 0.4rem;
+    min-height: 1.2em;
+  }
+
+  /* ── CTA Final ── */
+  .cta-section {
+    text-align: center;
+    padding: 5rem 1.5rem;
+    background:
+      radial-gradient(ellipse at 50% 50%, rgba(232,63,200,0.1) 0%, transparent 60%),
+      var(--pax-purple-deep);
+  }
+
+  .cta-section h2 {
+    font-size: clamp(1.5rem, 4vw, 2.2rem);
+    font-weight: 800;
+    margin-bottom: 1rem;
+    background: linear-gradient(135deg, var(--pax-gold) 0%, var(--pax-magenta) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .cta-section p {
+    color: var(--pax-gray);
+    max-width: 500px;
+    margin: 0 auto 2rem;
+  }
+
+  /* ── Footer ── */
+  footer {
+    text-align: center;
+    padding: 2rem 1.5rem;
+    color: var(--pax-gray);
+    font-size: 0.8rem;
+    border-top: 1px solid rgba(255,255,255,0.06);
+  }
+  footer a { color: var(--pax-cyan); text-decoration: none; }
+
+  /* ── Mobile tweaks ── */
+  @media (max-width: 600px) {
+    .hero { min-height: 90vh; padding: 1.5rem 1rem; }
+    section { padding: 3rem 1rem; }
+    .page-card-body { padding: 1rem; }
+    .feedback-row { flex-direction: column; align-items: stretch; }
+    .fb-input { min-width: unset; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ════════════════════════════════ HERO ════════════════════════════════ -->
+<section class="hero">
+  <span class="hero-badge">Nuevo gesto Pax</span>
+  <h1>Regálale a tu hijo ser héroe de una tribu mágica</h1>
+  <p>Una mini-historia personalizada donde tu hijo entra al mundo Pax, conoce a la tribu, enciende un cristal con su superpoder... y vuelve a casa con un recuerdo mágico.</p>
+  <a href="#cta" class="hero-cta">Crear historia para mi hijo</a>
+  <div class="hero-scroll">Baja para ver el preview completo</div>
+</section>
+
+<!-- ═════════════════════════ CÓMO FUNCIONA ═════════════════════════ -->
+<section class="how-it-works" id="como-funciona">
+  <div class="container">
+    <h2 class="section-title">Cómo funciona</h2>
+    <p class="section-subtitle">3 pasos. 5 minutos. Un recuerdo para siempre.</p>
+    <div class="steps">
+      <div class="step">
+        <div class="step-number">1</div>
+        <h3>Sube una foto</h3>
+        <p>Sube una foto de tu hijo o hija. La usaremos para crear su versión Pax: un personaje único con su cara, pero al estilo de la tribu.</p>
+      </div>
+      <div class="step">
+        <div class="step-number">2</div>
+        <h3>Elige su superpoder</h3>
+        <p>Cada niño tiene algo especial. Elige el superpoder de tu hijo: ser generoso, ser valiente, hacer reír, ser curioso, ser amable o cuidar a otros.</p>
+      </div>
+      <div class="step">
+        <div class="step-number">3</div>
+        <h3>Recibe la historia</h3>
+        <p>Generamos un libro ilustrado de 7 páginas donde tu hijo es el héroe. Listo para leer en pantalla o mandar a imprimir.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════ STORYBOARD PREVIEW ═══════════════════════ -->
+<section class="storyboard-section" id="preview">
+  <div class="container">
+    <h2 class="section-title">Preview del storyboard</h2>
+    <p class="section-subtitle">Así se ve la historia de ejemplo. Cada página se personaliza con el nombre, foto y superpoder de tu hijo.</p>
+
+    <!-- Página 1 -->
+    <div class="page-card" data-page="1">
+      <img src="storyboard/pag1-llegada.png" alt="Página 1 — La llegada al Uray Pacha" loading="lazy">
+      <div class="page-card-body">
+        <span class="page-label">Página 1</span>
+        <h3>La llegada</h3>
+        <p>El niño descubre una grieta luminosa bajo su cama y cae suavemente al Uray Pacha, el mundo secreto bajo la superficie donde viven los Pax.</p>
+        <div class="feedback-row">
+          <button class="fb-btn" onclick="vote(this,'up')" aria-label="Me gusta">&#128077; Me gusta</button>
+          <button class="fb-btn" onclick="vote(this,'down')" aria-label="No me gusta">&#128078; Mejorar</button>
+          <input class="fb-input" type="text" placeholder="Comentario (opcional)..." maxlength="280">
+          <button class="fb-send" onclick="sendFeedback(this)">Enviar</button>
+        </div>
+        <div class="fb-status"></div>
+      </div>
+    </div>
+
+    <!-- Página 2 -->
+    <div class="page-card" data-page="2">
+      <img src="storyboard/pag2-jiggy-kz.png" alt="Página 2 — Conoce a Jiggy y KZ" loading="lazy">
+      <div class="page-card-body">
+        <span class="page-label">Página 2</span>
+        <h3>Jiggy y KZ</h3>
+        <p>El niño conoce a Jiggy, el chasqui irreverente de la tribu, y a KZ, el más joven del clan. Le dicen que llegó justo cuando lo necesitan.</p>
+        <div class="feedback-row">
+          <button class="fb-btn" onclick="vote(this,'up')" aria-label="Me gusta">&#128077; Me gusta</button>
+          <button class="fb-btn" onclick="vote(this,'down')" aria-label="No me gusta">&#128078; Mejorar</button>
+          <input class="fb-input" type="text" placeholder="Comentario (opcional)..." maxlength="280">
+          <button class="fb-send" onclick="sendFeedback(this)">Enviar</button>
+        </div>
+        <div class="fb-status"></div>
+      </div>
+    </div>
+
+    <!-- Página 3 -->
+    <div class="page-card" data-page="3">
+      <img src="storyboard/pag3-cristal-enfermo.png" alt="Página 3 — El cristal enfermo" loading="lazy">
+      <div class="page-card-body">
+        <span class="page-label">Página 3</span>
+        <h3>Algo se apaga</h3>
+        <p>Descubren un cristal gigante que se está apagando. Si muere, toda una zona del Uray Pacha se queda sin energía. Han probado de todo, pero nada funciona.</p>
+        <div class="feedback-row">
+          <button class="fb-btn" onclick="vote(this,'up')" aria-label="Me gusta">&#128077; Me gusta</button>
+          <button class="fb-btn" onclick="vote(this,'down')" aria-label="No me gusta">&#128078; Mejorar</button>
+          <input class="fb-input" type="text" placeholder="Comentario (opcional)..." maxlength="280">
+          <button class="fb-send" onclick="sendFeedback(this)">Enviar</button>
+        </div>
+        <div class="fb-status"></div>
+      </div>
+    </div>
+
+    <!-- Página 4 -->
+    <div class="page-card" data-page="4">
+      <img src="storyboard/pag4-superpoder.png" alt="Página 4 — El superpoder del niño" loading="lazy">
+      <div class="page-card-body">
+        <span class="page-label">Página 4</span>
+        <h3>El superpoder</h3>
+        <p>El niño hace algo que nadie esperaba: usa su superpoder (ser valiente, generoso, hacer reír...). Una chispa de luz nace dentro del cristal.</p>
+        <div class="feedback-row">
+          <button class="fb-btn" onclick="vote(this,'up')" aria-label="Me gusta">&#128077; Me gusta</button>
+          <button class="fb-btn" onclick="vote(this,'down')" aria-label="No me gusta">&#128078; Mejorar</button>
+          <input class="fb-input" type="text" placeholder="Comentario (opcional)..." maxlength="280">
+          <button class="fb-send" onclick="sendFeedback(this)">Enviar</button>
+        </div>
+        <div class="fb-status"></div>
+      </div>
+    </div>
+
+    <!-- Página 5 -->
+    <div class="page-card" data-page="5">
+      <img src="storyboard/pag5-cristal-despierta.png" alt="Página 5 — El cristal despierta" loading="lazy">
+      <div class="page-card-body">
+        <span class="page-label">Página 5</span>
+        <h3>anuraK</h3>
+        <p>El cristal explota en luz. Magenta, cian, dorado. Es anuraK: la energía que nace cuando alguien hace algo bueno de verdad. El niño lo logró en un minuto.</p>
+        <div class="feedback-row">
+          <button class="fb-btn" onclick="vote(this,'up')" aria-label="Me gusta">&#128077; Me gusta</button>
+          <button class="fb-btn" onclick="vote(this,'down')" aria-label="No me gusta">&#128078; Mejorar</button>
+          <input class="fb-input" type="text" placeholder="Comentario (opcional)..." maxlength="280">
+          <button class="fb-send" onclick="sendFeedback(this)">Enviar</button>
+        </div>
+        <div class="fb-status"></div>
+      </div>
+    </div>
+
+    <!-- Página 6 -->
+    <div class="page-card" data-page="6">
+      <img src="storyboard/pag6-celebracion.png" alt="Página 6 — Celebración de la tribu" loading="lazy">
+      <div class="page-card-body">
+        <span class="page-label">Página 6</span>
+        <h3>Fiesta en el Uray Pacha</h3>
+        <p>Toda la tribu celebra. Wiz, Byte, Luxa, Onyx... todos quieren conocer al humano que encendió el cristal. Los cristales pulsan al ritmo de la música.</p>
+        <div class="feedback-row">
+          <button class="fb-btn" onclick="vote(this,'up')" aria-label="Me gusta">&#128077; Me gusta</button>
+          <button class="fb-btn" onclick="vote(this,'down')" aria-label="No me gusta">&#128078; Mejorar</button>
+          <input class="fb-input" type="text" placeholder="Comentario (opcional)..." maxlength="280">
+          <button class="fb-send" onclick="sendFeedback(this)">Enviar</button>
+        </div>
+        <div class="fb-status"></div>
+      </div>
+    </div>
+
+    <!-- Página 7 -->
+    <div class="page-card" data-page="7">
+      <img src="storyboard/pag7-recuerdo.png" alt="Página 7 — De vuelta a casa" loading="lazy">
+      <div class="page-card-body">
+        <span class="page-label">Página 7</span>
+        <h3>De vuelta a casa</h3>
+        <p>El niño vuelve a su cuarto con un pequeño cristal que brilla cada vez que siente esa cosquilla en el pecho. Ahora sabe lo que es: se llama anuraK.</p>
+        <div class="feedback-row">
+          <button class="fb-btn" onclick="vote(this,'up')" aria-label="Me gusta">&#128077; Me gusta</button>
+          <button class="fb-btn" onclick="vote(this,'down')" aria-label="No me gusta">&#128078; Mejorar</button>
+          <input class="fb-input" type="text" placeholder="Comentario (opcional)..." maxlength="280">
+          <button class="fb-send" onclick="sendFeedback(this)">Enviar</button>
+        </div>
+        <div class="fb-status"></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════ CTA FINAL ══════════════════════════ -->
+<section class="cta-section" id="cta">
+  <h2>Crea una historia para tu hijo</h2>
+  <p>Para cumpleaños, Día del Niño, Navidad... o simplemente porque sí. Un regalo que nunca va a olvidar.</p>
+  <a href="#" class="hero-cta" onclick="alert('Pronto disponible. Estamos preparando la magia.'); return false;">Crear historia para mi hijo</a>
+</section>
+
+<!-- ══════════════════════════ FOOTER ══════════════════════════ -->
+<footer>
+  <p>Pax &mdash; Un proyecto donde la bondad enciende cristales. <a href="https://pax-os.vercel.app" target="_blank">pax-os.vercel.app</a></p>
+</footer>
+
+<!-- ══════════════════════════ JS ══════════════════════════ -->
+<script>
+function vote(btn, type) {
+  const row = btn.closest('.feedback-row');
+  const buttons = row.querySelectorAll('.fb-btn');
+  buttons.forEach(b => b.classList.remove('active-up', 'active-down'));
+  btn.classList.add(type === 'up' ? 'active-up' : 'active-down');
+}
+
+function sendFeedback(btn) {
+  const card = btn.closest('.page-card');
+  const page = card.dataset.page;
+  const row = btn.closest('.feedback-row');
+  const input = row.querySelector('.fb-input');
+  const status = card.querySelector('.fb-status');
+  const activeBtn = row.querySelector('.fb-btn.active-up, .fb-btn.active-down');
+  const voteType = activeBtn
+    ? (activeBtn.classList.contains('active-up') ? 'up' : 'down')
+    : null;
+
+  const data = {
+    page: page,
+    vote: voteType,
+    comment: input.value.trim(),
+    timestamp: new Date().toISOString()
+  };
+
+  // MVP: log to console + show confirmation
+  console.log('Feedback:', JSON.stringify(data));
+  status.textContent = 'Feedback guardado. Gracias.';
+  input.value = '';
+
+  setTimeout(() => { status.textContent = ''; }, 3000);
+}
+</script>
+
+</body>
+</html>

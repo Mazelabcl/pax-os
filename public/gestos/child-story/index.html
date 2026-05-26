@@ -1,0 +1,1253 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Pax Child Story — Tu hijo, heroe de una tribu magica</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet" />
+<style>
+/* ── Tokens ── */
+:root {
+  --jade: #00C896;
+  --amber: #F59E0B;
+  --magenta: #E91E63;
+  --basalt: #0F0F18;
+  --basalt-2: #16161F;
+  --basalt-3: #1F1F2B;
+  --text: #E8E8F0;
+  --text-dim: #A8A8BD;
+  --border: #2A2A38;
+  --glass-bg: rgba(22, 22, 31, 0.55);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-blur: 18px;
+}
+
+/* ── Reset ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--basalt);
+  color: var(--text);
+  font-family: 'Manrope', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* ── Animated gradient background ── */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 25% 15%, rgba(0, 200, 150, 0.07) 0%, transparent 50%),
+    radial-gradient(ellipse at 75% 85%, rgba(233, 30, 99, 0.06) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 50%, rgba(245, 158, 11, 0.04) 0%, transparent 60%);
+  animation: bgShift 12s ease-in-out infinite alternate;
+  pointer-events: none;
+  z-index: 0;
+}
+@keyframes bgShift {
+  0%   { opacity: 0.7; transform: scale(1); }
+  100% { opacity: 1;   transform: scale(1.08); }
+}
+@keyframes pulse {
+  0%   { transform: translateX(-100%); }
+  50%  { transform: translateX(200%); }
+  100% { transform: translateX(-100%); }
+}
+
+main { position: relative; z-index: 1; }
+
+/* ── Reveal ── */
+.reveal {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 0.8s cubic-bezier(0.2, 0.7, 0.2, 1),
+              transform 0.8s cubic-bezier(0.2, 0.7, 0.2, 1);
+  will-change: opacity, transform;
+}
+.reveal.in { opacity: 1; transform: translateY(0); }
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; transition: none; }
+}
+
+/* ── Glass card ── */
+.glass {
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+}
+
+/* ── Section shared ── */
+section { padding: 100px 24px; max-width: 900px; margin: 0 auto; }
+
+.section-eyebrow {
+  color: var(--jade);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  font-weight: 700;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+h2 {
+  font-size: clamp(28px, 4vw, 42px);
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+  font-weight: 800;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.section-sub {
+  text-align: center;
+  color: var(--text-dim);
+  font-size: clamp(16px, 1.6vw, 19px);
+  max-width: 600px;
+  margin: 0 auto 48px;
+  line-height: 1.55;
+}
+
+/* ══════════════════════ HERO ══════════════════════ */
+section.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding-top: 60px;
+  padding-bottom: 60px;
+  max-width: none;
+  position: relative;
+  overflow: hidden;
+}
+section.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 30% 30%, rgba(0, 200, 150, 0.14) 0%, transparent 50%),
+    radial-gradient(ellipse at 70% 70%, rgba(233, 30, 99, 0.10) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.hero-inner { position: relative; z-index: 2; max-width: 780px; }
+
+.hero-badge {
+  display: inline-block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--jade);
+  border: 1px solid rgba(0, 200, 150, 0.3);
+  padding: 6px 18px;
+  border-radius: 100px;
+  margin-bottom: 28px;
+  background: rgba(0, 200, 150, 0.06);
+}
+
+.hero h1 {
+  font-size: clamp(34px, 6vw, 64px);
+  line-height: 1.08;
+  letter-spacing: -0.025em;
+  font-weight: 800;
+  margin-bottom: 24px;
+}
+.hero h1 .accent {
+  background: linear-gradient(90deg, var(--jade) 0%, var(--amber) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.hero .lead {
+  font-size: clamp(18px, 2.2vw, 23px);
+  color: var(--text-dim);
+  max-width: 580px;
+  margin: 0 auto 36px;
+  line-height: 1.5;
+}
+
+.hero-cta {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--magenta), #B030A0);
+  color: white;
+  font-size: 17px;
+  font-weight: 700;
+  padding: 16px 40px;
+  border-radius: 14px;
+  text-decoration: none;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 4px 28px rgba(233, 30, 99, 0.3);
+}
+.hero-cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 36px rgba(233, 30, 99, 0.45);
+}
+
+/* Hero preview images */
+.hero-previews {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  margin-top: 48px;
+  flex-wrap: wrap;
+}
+.hero-previews img {
+  width: clamp(140px, 20vw, 200px);
+  aspect-ratio: 3/2;
+  object-fit: cover;
+  border-radius: 14px;
+  border: 1px solid var(--glass-border);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  transition: transform 0.3s;
+}
+.hero-previews img:hover { transform: scale(1.04) translateY(-4px); }
+
+.scroll-hint {
+  margin-top: 48px;
+  color: var(--text-dim);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  opacity: 0.5;
+}
+.scroll-hint .arrow {
+  display: inline-block;
+  margin-left: 8px;
+  animation: bounce 2s ease-in-out infinite;
+}
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(6px); }
+}
+@keyframes crystalPulse {
+  0%, 100% { transform: scale(1); opacity: 0.7; }
+  50% { transform: scale(1.2); opacity: 1; }
+}
+
+/* ══════════════════════ STORYBOARD BOOK ══════════════════════ */
+section.storybook {
+  max-width: 720px;
+  padding-top: 80px;
+  padding-bottom: 80px;
+}
+
+.page-spread {
+  margin-bottom: 56px;
+  border-radius: 20px;
+  overflow: hidden;
+  transition: transform 0.3s;
+}
+.page-spread:hover { transform: translateY(-4px); }
+
+.page-spread img {
+  width: 100%;
+  display: block;
+  aspect-ratio: 3/2;
+  object-fit: cover;
+}
+
+.page-body {
+  padding: 24px 28px;
+}
+
+.page-tag {
+  display: inline-block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--magenta);
+  background: rgba(233, 30, 99, 0.08);
+  border: 1px solid rgba(233, 30, 99, 0.2);
+  padding: 4px 12px;
+  border-radius: 100px;
+  margin-bottom: 12px;
+}
+
+.page-body h3 {
+  font-size: 20px;
+  font-weight: 800;
+  margin-bottom: 8px;
+  letter-spacing: -0.01em;
+}
+
+.page-body p {
+  color: var(--text-dim);
+  font-size: 15px;
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+
+/* ── Vote buttons ── */
+.vote-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.vote-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: var(--text-dim);
+  font-family: 'Manrope', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 8px 16px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.vote-btn:hover { background: rgba(255,255,255,0.08); color: var(--text); }
+.vote-btn.active-up {
+  background: rgba(0, 200, 150, 0.12);
+  border-color: var(--jade);
+  color: var(--jade);
+}
+.vote-btn.active-down {
+  background: rgba(233, 30, 99, 0.12);
+  border-color: var(--magenta);
+  color: var(--magenta);
+}
+
+.vote-input {
+  flex: 1;
+  min-width: 160px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: var(--text);
+  font-family: 'Manrope', sans-serif;
+  font-size: 13px;
+  padding: 8px 14px;
+  border-radius: 10px;
+  outline: none;
+  transition: border-color 0.15s;
+}
+.vote-input::placeholder { color: rgba(255,255,255,0.25); }
+.vote-input:focus { border-color: var(--jade); }
+
+.vote-send {
+  background: var(--basalt-3);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-family: 'Manrope', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 8px 18px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.vote-send:hover { background: var(--magenta); border-color: var(--magenta); }
+
+.vote-status {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--jade);
+  margin-top: 8px;
+  min-height: 1.2em;
+}
+
+/* ══════════════════════ HOW IT WORKS ══════════════════════ */
+section.how {
+  max-width: 900px;
+}
+
+.steps-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.step-card {
+  padding: 32px 24px;
+  text-align: center;
+  transition: transform 0.3s, border-color 0.3s;
+}
+.step-card:hover { transform: translateY(-4px); border-color: var(--jade); }
+
+.step-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  background: linear-gradient(135deg, var(--jade), var(--amber));
+  border-radius: 50%;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--basalt);
+  margin-bottom: 18px;
+}
+
+.step-card h3 {
+  font-size: 18px;
+  font-weight: 800;
+  margin-bottom: 8px;
+}
+
+.step-card p {
+  color: var(--text-dim);
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+/* ══════════════════════ SUPERPOWERS ══════════════════════ */
+section.powers { max-width: 900px; }
+
+.powers-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.power-card {
+  padding: 28px 22px;
+  text-align: center;
+  transition: transform 0.3s, border-color 0.3s;
+}
+.power-card:hover { transform: translateY(-4px); }
+
+.power-icon {
+  font-size: 36px;
+  margin-bottom: 14px;
+  display: block;
+}
+
+.power-card h3 {
+  font-size: 16px;
+  font-weight: 800;
+  margin-bottom: 6px;
+}
+
+.power-card p {
+  color: var(--text-dim);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.power-card:nth-child(1):hover { border-color: var(--amber); }
+.power-card:nth-child(2):hover { border-color: var(--jade); }
+.power-card:nth-child(3):hover { border-color: var(--magenta); }
+.power-card:nth-child(4):hover { border-color: var(--jade); }
+.power-card:nth-child(5):hover { border-color: var(--amber); }
+.power-card:nth-child(6):hover { border-color: var(--magenta); }
+
+/* ══════════════════════ PRICING / GIFT ══════════════════════ */
+section.gift { max-width: 720px; }
+
+.gift-options {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-top: 32px;
+}
+
+.gift-opt {
+  padding: 28px 20px;
+  text-align: center;
+  transition: transform 0.3s, border-color 0.3s;
+}
+.gift-opt:hover { transform: translateY(-4px); border-color: var(--amber); }
+
+.gift-opt .gift-icon { font-size: 32px; margin-bottom: 12px; display: block; }
+.gift-opt h3 { font-size: 16px; font-weight: 800; margin-bottom: 6px; }
+.gift-opt p { color: var(--text-dim); font-size: 13px; line-height: 1.5; }
+
+.price-block {
+  text-align: center;
+  margin-top: 40px;
+  padding: 36px 28px;
+}
+
+.price-block .price {
+  font-size: clamp(36px, 5vw, 52px);
+  font-weight: 800;
+  background: linear-gradient(90deg, var(--jade), var(--amber));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  margin-bottom: 8px;
+}
+
+.price-block .price-note {
+  color: var(--text-dim);
+  font-size: 15px;
+}
+
+/* ══════════════════════ CTA FINAL ══════════════════════ */
+section.cta-final {
+  max-width: none;
+  text-align: center;
+  padding: 120px 24px;
+  position: relative;
+  overflow: hidden;
+}
+section.cta-final::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 50% 50%, rgba(233, 30, 99, 0.10) 0%, transparent 60%),
+    radial-gradient(ellipse at 30% 80%, rgba(0, 200, 150, 0.06) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.cta-inner { position: relative; z-index: 2; max-width: 600px; margin: 0 auto; }
+
+.cta-final h2 {
+  background: linear-gradient(90deg, var(--amber) 0%, var(--magenta) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  margin-bottom: 16px;
+}
+
+.cta-final .lead {
+  color: var(--text-dim);
+  font-size: clamp(16px, 1.8vw, 20px);
+  margin-bottom: 36px;
+}
+
+/* ══════════════════════ FOOTER ══════════════════════ */
+footer {
+  text-align: center;
+  padding: 36px 24px;
+  border-top: 1px solid var(--border);
+}
+footer .footer-inner {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 24px 28px;
+}
+footer p {
+  color: var(--text-dim);
+  font-size: 13px;
+}
+footer a {
+  color: var(--jade);
+  text-decoration: none;
+}
+footer a:hover { text-decoration: underline; }
+
+/* ══════════════════════ RESPONSIVE ══════════════════════ */
+@media (max-width: 700px) {
+  section { padding: 72px 18px; }
+  .steps-grid { grid-template-columns: 1fr; gap: 16px; }
+  .powers-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  .gift-options { grid-template-columns: 1fr; gap: 12px; }
+  .hero-previews { gap: 10px; }
+  .hero-previews img { width: clamp(100px, 28vw, 150px); }
+  .vote-row { flex-direction: column; align-items: stretch; }
+  .vote-input { min-width: unset; }
+  .page-body { padding: 18px 20px; }
+}
+
+@media (max-width: 400px) {
+  .powers-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- Video background fijo -->
+<div id="video-bg" style="position:fixed;inset:0;z-index:-1;background:#0F0F18;overflow:hidden;">
+  <video id="bg-video" muted playsinline preload="auto"
+    style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);min-width:100%;min-height:100%;object-fit:cover;opacity:0.3;">
+    <source src="bg-video.mp4" type="video/mp4">
+  </video>
+</div>
+
+<!-- Loading screen -->
+<div id="loading" style="position:fixed;inset:0;z-index:50;background:#0F0F18;display:flex;align-items:center;justify-content:center;">
+  <div style="text-align:center;">
+    <p style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.2em;color:rgba(255,255,255,0.5);">LOADING</p>
+    <div style="width:256px;height:1px;background:rgba(255,255,255,0.1);margin-top:32px;overflow:hidden;">
+      <div style="height:100%;background:white;width:33%;animation:pulse 1.5s ease infinite;"></div>
+    </div>
+  </div>
+</div>
+
+<main>
+
+<!-- ══════════════════════════ HERO ══════════════════════════ -->
+<section class="hero">
+  <div class="hero-inner reveal">
+    <span class="hero-badge">Nuevo gesto Pax</span>
+    <h1>Regala a tu hijo ser <span class="accent">heroe de una tribu magica</span></h1>
+    <p class="lead">Una mini-historia personalizada donde tu hijo entra al mundo Pax, conoce a la tribu, enciende un cristal con su superpoder y vuelve a casa con un recuerdo que nunca va a olvidar.</p>
+    <a href="#cta" class="hero-cta">Crear historia para mi hijo</a>
+
+    <div class="hero-previews">
+      <img src="pag1-llegada.png" alt="Preview - La llegada" loading="eager" />
+      <img src="pag4-superpoder.png" alt="Preview - El superpoder" loading="eager" />
+      <img src="pag5-cristal-despierta.png" alt="Preview - anuraK despierta" loading="eager" />
+    </div>
+
+    <div class="scroll-hint">Baja para ver la historia completa <span class="arrow">&#8595;</span></div>
+  </div>
+</section>
+
+<!-- ══════════════════════════ STORYBOARD BOOK ══════════════════════════ -->
+<section class="storybook" id="historia">
+  <div class="section-eyebrow">La historia ejemplo</div>
+  <h2>7 paginas. Un viaje completo.</h2>
+  <p class="section-sub">Asi se ve una historia de ejemplo. Cada pagina se personaliza con el nombre, la foto y el superpoder de tu hijo.</p>
+
+  <!-- Pagina 1 -->
+  <div class="page-spread glass reveal" data-page="1">
+    <img src="pag1-llegada.png" alt="Pagina 1 - La llegada al Uray Pacha" loading="lazy" />
+    <div class="page-body">
+      <span class="page-tag">Pagina 1</span>
+      <h3>La llegada</h3>
+      <p>El nino descubre una grieta luminosa bajo su cama y cae suavemente al Uray Pacha, el mundo secreto bajo la superficie donde viven los Pax.</p>
+      <div class="vote-row">
+        <button class="vote-btn" onclick="vote(this,'up')">&#128077; Me gusta</button>
+        <button class="vote-btn" onclick="vote(this,'down')">&#128078; Mejorar</button>
+        <input class="vote-input" type="text" placeholder="Comentario opcional..." maxlength="280" />
+        <button class="vote-send" onclick="sendFb(this)">Enviar</button>
+      </div>
+      <div class="vote-status"></div>
+    </div>
+  </div>
+
+  <!-- Pagina 2 -->
+  <div class="page-spread glass reveal" data-page="2">
+    <img src="pag2-jiggy-kz.png" alt="Pagina 2 - Jiggy y KZ" loading="lazy" />
+    <div class="page-body">
+      <span class="page-tag">Pagina 2</span>
+      <h3>Jiggy y KZ</h3>
+      <p>El nino conoce a Jiggy, el chasqui irreverente de la tribu, y a KZ, el mas joven del clan. Le dicen que llego justo cuando lo necesitan.</p>
+      <div class="vote-row">
+        <button class="vote-btn" onclick="vote(this,'up')">&#128077; Me gusta</button>
+        <button class="vote-btn" onclick="vote(this,'down')">&#128078; Mejorar</button>
+        <input class="vote-input" type="text" placeholder="Comentario opcional..." maxlength="280" />
+        <button class="vote-send" onclick="sendFb(this)">Enviar</button>
+      </div>
+      <div class="vote-status"></div>
+    </div>
+  </div>
+
+  <!-- Pagina 3 -->
+  <div class="page-spread glass reveal" data-page="3">
+    <img src="pag3-cristal-enfermo.png" alt="Pagina 3 - El cristal enfermo" loading="lazy" />
+    <div class="page-body">
+      <span class="page-tag">Pagina 3</span>
+      <h3>Algo se apaga</h3>
+      <p>Descubren un cristal gigante que se esta apagando. Si muere, toda una zona del Uray Pacha se queda sin energia. Han probado de todo, pero nada funciona.</p>
+      <div class="vote-row">
+        <button class="vote-btn" onclick="vote(this,'up')">&#128077; Me gusta</button>
+        <button class="vote-btn" onclick="vote(this,'down')">&#128078; Mejorar</button>
+        <input class="vote-input" type="text" placeholder="Comentario opcional..." maxlength="280" />
+        <button class="vote-send" onclick="sendFb(this)">Enviar</button>
+      </div>
+      <div class="vote-status"></div>
+    </div>
+  </div>
+
+  <!-- Pagina 4 -->
+  <div class="page-spread glass reveal" data-page="4">
+    <img src="pag4-superpoder.png" alt="Pagina 4 - El superpoder del nino" loading="lazy" />
+    <div class="page-body">
+      <span class="page-tag">Pagina 4</span>
+      <h3>El superpoder</h3>
+      <p>El nino hace algo que nadie esperaba: usa su superpoder. Una chispa de luz nace dentro del cristal.</p>
+      <div class="vote-row">
+        <button class="vote-btn" onclick="vote(this,'up')">&#128077; Me gusta</button>
+        <button class="vote-btn" onclick="vote(this,'down')">&#128078; Mejorar</button>
+        <input class="vote-input" type="text" placeholder="Comentario opcional..." maxlength="280" />
+        <button class="vote-send" onclick="sendFb(this)">Enviar</button>
+      </div>
+      <div class="vote-status"></div>
+    </div>
+  </div>
+
+  <!-- Pagina 5 -->
+  <div class="page-spread glass reveal" data-page="5">
+    <img src="pag5-cristal-despierta.png" alt="Pagina 5 - anuraK despierta" loading="lazy" />
+    <div class="page-body">
+      <span class="page-tag">Pagina 5</span>
+      <h3>anuraK</h3>
+      <p>El cristal explota en luz. Magenta, cian, dorado. Es anuraK: la energia que nace cuando alguien hace algo bueno de verdad. El nino lo logro en un minuto.</p>
+      <div class="vote-row">
+        <button class="vote-btn" onclick="vote(this,'up')">&#128077; Me gusta</button>
+        <button class="vote-btn" onclick="vote(this,'down')">&#128078; Mejorar</button>
+        <input class="vote-input" type="text" placeholder="Comentario opcional..." maxlength="280" />
+        <button class="vote-send" onclick="sendFb(this)">Enviar</button>
+      </div>
+      <div class="vote-status"></div>
+    </div>
+  </div>
+
+  <!-- Pagina 6 -->
+  <div class="page-spread glass reveal" data-page="6">
+    <img src="pag6-celebracion.png" alt="Pagina 6 - Celebracion de la tribu" loading="lazy" />
+    <div class="page-body">
+      <span class="page-tag">Pagina 6</span>
+      <h3>Fiesta en el Uray Pacha</h3>
+      <p>Toda la tribu celebra. Wiz, Byte, Luxa, Onyx... todos quieren conocer al humano que encendio el cristal. Los cristales pulsan al ritmo de la musica.</p>
+      <div class="vote-row">
+        <button class="vote-btn" onclick="vote(this,'up')">&#128077; Me gusta</button>
+        <button class="vote-btn" onclick="vote(this,'down')">&#128078; Mejorar</button>
+        <input class="vote-input" type="text" placeholder="Comentario opcional..." maxlength="280" />
+        <button class="vote-send" onclick="sendFb(this)">Enviar</button>
+      </div>
+      <div class="vote-status"></div>
+    </div>
+  </div>
+
+  <!-- Pagina 7 -->
+  <div class="page-spread glass reveal" data-page="7">
+    <img src="pag7-recuerdo.png" alt="Pagina 7 - De vuelta a casa" loading="lazy" />
+    <div class="page-body">
+      <span class="page-tag">Pagina 7</span>
+      <h3>De vuelta a casa</h3>
+      <p>El nino vuelve a su cuarto con un pequeno cristal que brilla cada vez que siente esa cosquilla en el pecho. Ahora sabe lo que es: se llama anuraK.</p>
+      <div class="vote-row">
+        <button class="vote-btn" onclick="vote(this,'up')">&#128077; Me gusta</button>
+        <button class="vote-btn" onclick="vote(this,'down')">&#128078; Mejorar</button>
+        <input class="vote-input" type="text" placeholder="Comentario opcional..." maxlength="280" />
+        <button class="vote-send" onclick="sendFb(this)">Enviar</button>
+      </div>
+      <div class="vote-status"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════ COMO FUNCIONA ══════════════════════════ -->
+<section class="how reveal" id="como-funciona">
+  <div class="section-eyebrow">Como funciona</div>
+  <h2>3 pasos. 5 minutos. Un recuerdo para siempre.</h2>
+
+  <div class="steps-grid">
+    <div class="step-card glass">
+      <div class="step-num">1</div>
+      <h3>Sube una foto</h3>
+      <p>Sube una foto de tu hijo o hija. La usamos para crear su version Pax: un personaje unico con su cara, pero al estilo de la tribu.</p>
+    </div>
+    <div class="step-card glass">
+      <div class="step-num">2</div>
+      <h3>Elige su superpoder</h3>
+      <p>Cada nino tiene algo especial. Elige el superpoder que mejor lo define: ser generoso, valiente, curioso, hacer reir...</p>
+    </div>
+    <div class="step-card glass">
+      <div class="step-num">3</div>
+      <h3>Recibe la historia</h3>
+      <p>Generamos un libro ilustrado de 7 paginas donde tu hijo es el heroe. Listo para leer en pantalla o mandar a imprimir.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════ SUPERPOWERS ══════════════════════════ -->
+<section class="powers reveal" id="superpoderes">
+  <div class="section-eyebrow">Personalizacion</div>
+  <h2>Cada nino tiene un <span style="color:var(--amber)">superpoder</span></h2>
+  <p class="section-sub">El superpoder define como tu hijo salva el cristal. Es lo que hace unica su historia.</p>
+
+  <div class="powers-grid">
+    <div class="power-card glass">
+      <span class="power-icon">&#128516;</span>
+      <h3>Hacer reir</h3>
+      <p>El cristal se enciende con su risa contagiosa. La alegria es pura energia.</p>
+    </div>
+    <div class="power-card glass">
+      <span class="power-icon">&#129409;</span>
+      <h3>Valentia</h3>
+      <p>Se acerca al cristal cuando todos tienen miedo. Su coraje lo despierta.</p>
+    </div>
+    <div class="power-card glass">
+      <span class="power-icon">&#127873;</span>
+      <h3>Generosidad</h3>
+      <p>Comparte algo preciado con la tribu. El cristal responde a su bondad.</p>
+    </div>
+    <div class="power-card glass">
+      <span class="power-icon">&#128269;</span>
+      <h3>Curiosidad</h3>
+      <p>Descubre algo que nadie vio. Su pregunta correcta activa el cristal.</p>
+    </div>
+    <div class="power-card glass">
+      <span class="power-icon">&#128156;</span>
+      <h3>Amabilidad</h3>
+      <p>Un gesto simple y sincero hacia otro Pax. El cristal siente su calidez.</p>
+    </div>
+    <div class="power-card glass">
+      <span class="power-icon">&#128588;</span>
+      <h3>Cuidar a otros</h3>
+      <p>Protege a un Pax pequeno o herido. El cristal reconoce a un guardian.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════ PRECIO + REGALO ══════════════════════════ -->
+<section class="gift reveal" id="regalo">
+  <div class="section-eyebrow">Precio y presentacion</div>
+  <h2>Un regalo que no se olvida</h2>
+  <p class="section-sub">Para cumpleanos, Dia del Nino, Navidad, o simplemente porque si. Tres formas de entregarlo.</p>
+
+  <div class="gift-options">
+    <div class="gift-opt glass">
+      <span class="gift-icon">&#128241;</span>
+      <h3>Digital</h3>
+      <p>PDF de alta resolucion para ver en tablet o telefono. Envio inmediato.</p>
+    </div>
+    <div class="gift-opt glass">
+      <span class="gift-icon">&#128214;</span>
+      <h3>Libro impreso</h3>
+      <p>Impresion premium en papel grueso. Llega a tu casa listo para regalar.</p>
+    </div>
+    <div class="gift-opt glass">
+      <span class="gift-icon">&#128444;</span>
+      <h3>Cuadro / Frame</h3>
+      <p>La pagina favorita impresa en calidad de poster. Para colgar en su cuarto.</p>
+    </div>
+  </div>
+
+  <div class="price-block glass">
+    <div class="price">Pronto</div>
+    <p class="price-note">Estamos afinando la magia. Pronto el precio y la fecha de lanzamiento.</p>
+  </div>
+</section>
+
+<!-- ══════════════════════════ CTA / CREATE STORY ══════════════════════════ -->
+<section class="cta-final" id="cta">
+  <div class="cta-inner reveal">
+    <h2>Crea una historia para tu hijo</h2>
+    <p class="lead">Un libro donde tu hijo es el heroe. Con su cara, su nombre y su superpoder. No existe otro igual en el mundo.</p>
+
+    <!-- STEP 1: Upload photo -->
+    <div id="cs-step1" class="cs-step">
+      <div class="cs-panel glass" style="max-width:500px;margin:0 auto;padding:2rem;">
+        <h3 style="font-size:18px;margin-bottom:16px;">Paso 1: Sube una foto de tu hijo</h3>
+        <div class="cs-dropzone" id="csDropzone" style="border:2px dashed rgba(0,200,150,0.3);border-radius:14px;padding:2rem;cursor:pointer;transition:border-color 0.3s;position:relative;margin-bottom:16px;">
+          <div style="font-size:2.5rem;margin-bottom:8px;">&#128247;</div>
+          <div style="color:var(--text-dim);">Arrastra una foto o toca para seleccionar</div>
+          <input type="file" accept="image/*" id="csFileInput" style="position:absolute;inset:0;opacity:0;cursor:pointer;">
+        </div>
+        <div id="csPreview" style="display:none;margin-bottom:16px;text-align:center;">
+          <img id="csPreviewImg" style="width:140px;height:140px;object-fit:cover;border-radius:14px;border:1px solid var(--glass-border);">
+          <div style="font-size:12px;color:var(--text-dim);margin-top:6px;" id="csFileName"></div>
+        </div>
+        <div style="display:flex;gap:10px;justify-content:center;margin-bottom:16px;">
+          <div class="cs-style-opt selected" data-style="humanized" onclick="csSelectStyle(this)" style="flex:1;max-width:200px;padding:12px;background:rgba(15,15,24,0.6);border:2px solid var(--jade);border-radius:12px;cursor:pointer;text-align:center;">
+            <div style="font-weight:700;font-size:14px;color:var(--magenta);">Humanizado</div>
+            <div style="font-size:11px;color:var(--text-dim);">Piel real + outfit Pax</div>
+          </div>
+          <div class="cs-style-opt" data-style="full-pax" onclick="csSelectStyle(this)" style="flex:1;max-width:200px;padding:12px;background:rgba(15,15,24,0.6);border:2px solid var(--glass-border);border-radius:12px;cursor:pointer;text-align:center;">
+            <div style="font-weight:700;font-size:14px;color:var(--jade);">Full Pax</div>
+            <div style="font-size:11px;color:var(--text-dim);">Piel jade turquesa</div>
+          </div>
+        </div>
+        <button id="csGenCharBtn" disabled onclick="csGenerateChar()" style="display:inline-flex;align-items:center;gap:6px;padding:12px 28px;background:linear-gradient(135deg,var(--magenta),#B030A0);color:white;font-size:15px;font-weight:700;border:none;border-radius:12px;cursor:pointer;transition:transform 0.2s,box-shadow 0.2s;box-shadow:0 4px 20px rgba(233,30,99,0.3);">
+          Generar character sheet
+        </button>
+        <div id="csError1" style="display:none;margin-top:12px;background:rgba(233,30,99,0.1);border:1px solid rgba(233,30,99,0.3);border-radius:10px;padding:10px;color:var(--magenta);font-size:13px;"></div>
+      </div>
+    </div>
+
+    <!-- LOADING: Character sheet -->
+    <div id="cs-loading1" style="display:none;text-align:center;padding:3rem 0;">
+      <div style="width:50px;height:50px;margin:0 auto 16px;background:linear-gradient(135deg,var(--jade),var(--magenta));clip-path:polygon(50% 0%,80% 25%,80% 75%,50% 100%,20% 75%,20% 25%);animation:crystalPulse 1.5s ease-in-out infinite;"></div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--jade);" id="csLoadText1">Los cristales estan procesando la foto...</div>
+    </div>
+
+    <!-- STEP 2: Character sheet result + story details -->
+    <div id="cs-step2" style="display:none;" class="cs-step">
+      <div class="cs-panel glass" style="max-width:560px;margin:0 auto;padding:2rem;">
+        <h3 style="font-size:18px;margin-bottom:16px;">Paso 2: Character sheet listo!</h3>
+        <img id="csCharSheet" style="width:100%;max-width:400px;border-radius:14px;border:1px solid var(--glass-border);margin-bottom:20px;">
+        <div style="text-align:left;">
+          <label style="display:block;font-size:14px;font-weight:700;margin-bottom:6px;">Nombre del nino/nina</label>
+          <input type="text" id="csChildName" maxlength="50" placeholder="Ej: Sofia, Mateo..." style="width:100%;padding:10px 14px;background:rgba(15,15,24,0.6);border:1px solid var(--glass-border);border-radius:10px;color:var(--text);font-size:15px;margin-bottom:14px;outline:none;">
+          <label style="display:block;font-size:14px;font-weight:700;margin-bottom:6px;">Edad</label>
+          <input type="number" id="csChildAge" min="3" max="14" value="7" style="width:100px;padding:10px 14px;background:rgba(15,15,24,0.6);border:1px solid var(--glass-border);border-radius:10px;color:var(--text);font-size:15px;margin-bottom:14px;outline:none;">
+          <label style="display:block;font-size:14px;font-weight:700;margin-bottom:6px;">Superpoder</label>
+          <div id="csPowerGrid" style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:20px;">
+            <div class="cs-power selected" data-power="ser generoso" onclick="csSelectPower(this)" style="padding:10px;background:rgba(0,200,150,0.08);border:2px solid var(--jade);border-radius:10px;cursor:pointer;text-align:center;">
+              <div style="font-size:20px;">&#127873;</div>
+              <div style="font-size:13px;font-weight:700;">Ser generoso</div>
+            </div>
+            <div class="cs-power" data-power="ser valiente" onclick="csSelectPower(this)" style="padding:10px;background:rgba(15,15,24,0.4);border:2px solid var(--glass-border);border-radius:10px;cursor:pointer;text-align:center;">
+              <div style="font-size:20px;">&#129409;</div>
+              <div style="font-size:13px;font-weight:700;">Ser valiente</div>
+            </div>
+            <div class="cs-power" data-power="hacer reir" onclick="csSelectPower(this)" style="padding:10px;background:rgba(15,15,24,0.4);border:2px solid var(--glass-border);border-radius:10px;cursor:pointer;text-align:center;">
+              <div style="font-size:20px;">&#128516;</div>
+              <div style="font-size:13px;font-weight:700;">Hacer reir</div>
+            </div>
+            <div class="cs-power" data-power="ser curioso" onclick="csSelectPower(this)" style="padding:10px;background:rgba(15,15,24,0.4);border:2px solid var(--glass-border);border-radius:10px;cursor:pointer;text-align:center;">
+              <div style="font-size:20px;">&#128269;</div>
+              <div style="font-size:13px;font-weight:700;">Ser curioso</div>
+            </div>
+            <div class="cs-power" data-power="ser amable" onclick="csSelectPower(this)" style="padding:10px;background:rgba(15,15,24,0.4);border:2px solid var(--glass-border);border-radius:10px;cursor:pointer;text-align:center;">
+              <div style="font-size:20px;">&#128156;</div>
+              <div style="font-size:13px;font-weight:700;">Ser amable</div>
+            </div>
+            <div class="cs-power" data-power="cuidar a otros" onclick="csSelectPower(this)" style="padding:10px;background:rgba(15,15,24,0.4);border:2px solid var(--glass-border);border-radius:10px;cursor:pointer;text-align:center;">
+              <div style="font-size:20px;">&#128588;</div>
+              <div style="font-size:13px;font-weight:700;">Cuidar a otros</div>
+            </div>
+          </div>
+        </div>
+        <button onclick="csGenerateStory()" style="display:inline-flex;align-items:center;gap:6px;padding:14px 32px;background:linear-gradient(135deg,var(--magenta),#B030A0);color:white;font-size:16px;font-weight:700;border:none;border-radius:14px;cursor:pointer;transition:transform 0.2s,box-shadow 0.2s;box-shadow:0 4px 24px rgba(233,30,99,0.3);">
+          Generar historia (7 paginas)
+        </button>
+        <div style="margin-top:10px;font-size:12px;color:var(--text-dim);">Tarda ~2-3 minutos. No cierres esta pagina.</div>
+        <div id="csError2" style="display:none;margin-top:12px;background:rgba(233,30,99,0.1);border:1px solid rgba(233,30,99,0.3);border-radius:10px;padding:10px;color:var(--magenta);font-size:13px;"></div>
+      </div>
+    </div>
+
+    <!-- LOADING: Story generation -->
+    <div id="cs-loading2" style="display:none;text-align:center;padding:3rem 0;">
+      <div style="width:50px;height:50px;margin:0 auto 16px;background:linear-gradient(135deg,var(--jade),var(--magenta));clip-path:polygon(50% 0%,80% 25%,80% 75%,50% 100%,20% 75%,20% 25%);animation:crystalPulse 1.5s ease-in-out infinite;"></div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--jade);" id="csLoadText2">Generando pagina 1 de 7...</div>
+      <div style="margin-top:12px;font-size:11px;color:var(--text-dim);">Esto tarda ~2-3 minutos. Los cristales trabajan en cada escena.</div>
+    </div>
+
+    <!-- STEP 3: Story result -->
+    <div id="cs-step3" style="display:none;" class="cs-step">
+      <div style="max-width:720px;margin:0 auto;">
+        <h3 style="font-size:22px;margin-bottom:24px;text-align:center;">La historia de <span id="csStoryName"></span></h3>
+        <div id="csStoryPages"></div>
+        <div style="text-align:center;margin-top:32px;">
+          <button onclick="csRestart()" style="padding:12px 28px;background:transparent;border:1px solid var(--glass-border);color:var(--text);font-size:15px;font-weight:600;border-radius:12px;cursor:pointer;">Crear otra historia</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ══════════════════════════ FOOTER ══════════════════════════ -->
+<footer>
+  <div class="footer-inner glass">
+    <p>Pax &mdash; Un proyecto donde la bondad enciende cristales.</p>
+    <p style="margin-top:8px"><a href="https://pax-os.vercel.app" target="_blank">pax-os.vercel.app</a></p>
+  </div>
+</footer>
+
+<!-- ══════════════════════════ JS ══════════════════════════ -->
+<script>
+/* ── Scroll-driven video ── */
+(function(){
+  var video = document.getElementById('bg-video');
+  var loadingScreen = document.getElementById('loading');
+  var videoLoaded = false;
+
+  video.addEventListener('canplaythrough', function() {
+    videoLoaded = true;
+    loadingScreen.style.display = 'none';
+  });
+
+  video.addEventListener('error', function() {
+    var videoBg = document.getElementById('video-bg');
+    videoBg.style.background = 'radial-gradient(ellipse at 25% 15%, rgba(0, 200, 150, 0.07) 0%, transparent 50%), radial-gradient(ellipse at 75% 85%, rgba(233, 30, 99, 0.06) 0%, transparent 50%)';
+    loadingScreen.style.display = 'none';
+  });
+
+  video.load();
+  setTimeout(function() { loadingScreen.style.display = 'none'; }, 5000);
+
+  window.addEventListener('scroll', function() {
+    if (!videoLoaded || !video.duration || video.seeking) return;
+    var maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+    var stopPoint = maxScroll * 0.8;
+    var fraction = Math.max(0, Math.min(1, window.scrollY / stopPoint));
+    video.currentTime = fraction * video.duration;
+  }, { passive: true });
+})();
+
+/* ── IntersectionObserver scroll reveal ── */
+(function(){
+  var prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (prefersReduced) {
+    document.querySelectorAll('.reveal').forEach(function(el) { el.classList.add('in'); });
+    return;
+  }
+  var io = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (e.isIntersecting) {
+        e.target.classList.add('in');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(function(el) { io.observe(el); });
+})();
+
+/* ── Vote ── */
+function vote(btn, type) {
+  var row = btn.closest('.vote-row');
+  row.querySelectorAll('.vote-btn').forEach(function(b) { b.classList.remove('active-up', 'active-down'); });
+  btn.classList.add(type === 'up' ? 'active-up' : 'active-down');
+}
+
+/* ── Send feedback ── */
+function sendFb(btn) {
+  var spread = btn.closest('.page-spread');
+  var page = spread.dataset.page;
+  var row = btn.closest('.vote-row');
+  var input = row.querySelector('.vote-input');
+  var status = spread.querySelector('.vote-status');
+  var active = row.querySelector('.vote-btn.active-up, .vote-btn.active-down');
+  var voteType = active ? (active.classList.contains('active-up') ? 'up' : 'down') : null;
+
+  var data = { page: page, vote: voteType, comment: input.value.trim(), ts: new Date().toISOString() };
+  console.log('Feedback:', JSON.stringify(data));
+  status.textContent = 'Feedback guardado. Gracias.';
+  input.value = '';
+  setTimeout(function() { status.textContent = ''; }, 3000);
+}
+
+/* ══════════════════════════ CHILD STORY CREATOR ══════════════════════════ */
+(function() {
+  'use strict';
+
+  var csFile = null;
+  var csStyle = 'humanized';
+  var csCharUrl = '';
+  var csPower = 'ser generoso';
+
+  var csFileInput = document.getElementById('csFileInput');
+  var csDropzone = document.getElementById('csDropzone');
+
+  // Step 1: File handling
+  if (csFileInput) {
+    csFileInput.addEventListener('change', function(e) {
+      var file = e.target.files[0];
+      if (file) csHandleFile(file);
+    });
+  }
+
+  if (csDropzone) {
+    csDropzone.addEventListener('dragover', function(e) { e.preventDefault(); csDropzone.style.borderColor = 'var(--jade)'; });
+    csDropzone.addEventListener('dragleave', function() { csDropzone.style.borderColor = ''; });
+    csDropzone.addEventListener('drop', function(e) {
+      e.preventDefault();
+      csDropzone.style.borderColor = '';
+      var file = e.dataTransfer.files[0];
+      if (file) csHandleFile(file);
+    });
+  }
+
+  function csHandleFile(file) {
+    if (!file.type.startsWith('image/')) return;
+    csFile = file;
+    var reader = new FileReader();
+    reader.onload = function(e) {
+      document.getElementById('csPreviewImg').src = e.target.result;
+      document.getElementById('csFileName').textContent = file.name;
+      document.getElementById('csPreview').style.display = 'block';
+      document.getElementById('csDropzone').style.display = 'none';
+      document.getElementById('csGenCharBtn').disabled = false;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  // Style selection
+  window.csSelectStyle = function(el) {
+    document.querySelectorAll('.cs-style-opt').forEach(function(opt) {
+      opt.classList.remove('selected');
+      opt.style.borderColor = 'var(--glass-border)';
+    });
+    el.classList.add('selected');
+    el.style.borderColor = 'var(--jade)';
+    csStyle = el.dataset.style;
+  };
+
+  // Power selection
+  window.csSelectPower = function(el) {
+    document.querySelectorAll('.cs-power').forEach(function(p) {
+      p.classList.remove('selected');
+      p.style.borderColor = 'var(--glass-border)';
+      p.style.background = 'rgba(15,15,24,0.4)';
+    });
+    el.classList.add('selected');
+    el.style.borderColor = 'var(--jade)';
+    el.style.background = 'rgba(0,200,150,0.08)';
+    csPower = el.dataset.power;
+  };
+
+  // Generate character sheet
+  var loadMsgs1 = [
+    'Los cristales estan procesando la foto...',
+    'Conectando con el Uray Pacha...',
+    'La tribu prepara la transformacion...',
+    'anuraK fluyendo...',
+  ];
+
+  window.csGenerateChar = function() {
+    if (!csFile) return;
+    document.getElementById('cs-step1').style.display = 'none';
+    document.getElementById('cs-loading1').style.display = 'block';
+    document.getElementById('csError1').style.display = 'none';
+
+    var msgIdx = 0;
+    var msgInt = setInterval(function() {
+      msgIdx = (msgIdx + 1) % loadMsgs1.length;
+      document.getElementById('csLoadText1').textContent = loadMsgs1[msgIdx];
+    }, 3500);
+
+    var fd = new FormData();
+    fd.append('photo', csFile);
+    fd.append('style', csStyle);
+
+    fetch('/api/paxearte', { method: 'POST', body: fd })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      clearInterval(msgInt);
+      document.getElementById('cs-loading1').style.display = 'none';
+      if (data.ok && data.imageBase64) {
+        csCharUrl = data.imageBase64;
+        document.getElementById('csCharSheet').src = data.imageBase64;
+        document.getElementById('cs-step2').style.display = 'block';
+        document.getElementById('cs-step2').scrollIntoView({ behavior: 'smooth' });
+      } else {
+        document.getElementById('cs-step1').style.display = '';
+        document.getElementById('csError1').textContent = data.error || 'Error al generar.';
+        document.getElementById('csError1').style.display = 'block';
+      }
+    })
+    .catch(function(err) {
+      clearInterval(msgInt);
+      document.getElementById('cs-loading1').style.display = 'none';
+      document.getElementById('cs-step1').style.display = '';
+      document.getElementById('csError1').textContent = 'Error de conexion.';
+      document.getElementById('csError1').style.display = 'block';
+      console.error(err);
+    });
+  };
+
+  // Generate story
+  var loadMsgs2 = [
+    'Generando pagina 1 de 7 — La llegada...',
+    'Generando pagina 2 de 7 — Jiggy y KZ...',
+    'Generando pagina 3 de 7 — El cristal enfermo...',
+    'Generando pagina 4 de 7 — El superpoder...',
+    'Generando pagina 5 de 7 — anuraK...',
+    'Generando pagina 6 de 7 — La celebracion...',
+    'Generando pagina 7 de 7 — De vuelta a casa...',
+    'Casi listo... los ultimos detalles...',
+  ];
+
+  window.csGenerateStory = function() {
+    var name = document.getElementById('csChildName').value.trim();
+    var age = parseInt(document.getElementById('csChildAge').value, 10);
+
+    if (!name) {
+      document.getElementById('csError2').textContent = 'Ingresa el nombre del nino.';
+      document.getElementById('csError2').style.display = 'block';
+      return;
+    }
+    if (!age || age < 3 || age > 14) {
+      document.getElementById('csError2').textContent = 'Edad debe estar entre 3 y 14.';
+      document.getElementById('csError2').style.display = 'block';
+      return;
+    }
+
+    document.getElementById('csError2').style.display = 'none';
+    document.getElementById('cs-step2').style.display = 'none';
+    document.getElementById('cs-loading2').style.display = 'block';
+
+    var msgIdx = 0;
+    var msgInt = setInterval(function() {
+      msgIdx = Math.min(msgIdx + 1, loadMsgs2.length - 1);
+      document.getElementById('csLoadText2').textContent = loadMsgs2[msgIdx];
+    }, 25000); // ~25s per page
+
+    fetch('/api/child-story', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        characterSheetUrl: csCharUrl, // base64 data URL from /api/paxearte
+        childName: name,
+        childAge: age,
+        superpower: csPower,
+      }),
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      clearInterval(msgInt);
+      document.getElementById('cs-loading2').style.display = 'none';
+      if (data.ok && data.pages) {
+        showStory(data.pages, name);
+      } else {
+        document.getElementById('cs-step2').style.display = '';
+        document.getElementById('csError2').textContent = data.error || 'Error al generar historia.';
+        document.getElementById('csError2').style.display = 'block';
+      }
+    })
+    .catch(function(err) {
+      clearInterval(msgInt);
+      document.getElementById('cs-loading2').style.display = 'none';
+      document.getElementById('cs-step2').style.display = '';
+      document.getElementById('csError2').textContent = 'Error de conexion.';
+      document.getElementById('csError2').style.display = 'block';
+      console.error(err);
+    });
+  };
+
+  function showStory(pages, name) {
+    document.getElementById('csStoryName').textContent = name;
+    var container = document.getElementById('csStoryPages');
+    container.innerHTML = '';
+
+    pages.forEach(function(page) {
+      var div = document.createElement('div');
+      div.className = 'page-spread glass';
+      div.style.marginBottom = '40px';
+
+      var imgHtml = page.imageBase64
+        ? '<img src="' + page.imageBase64 + '" alt="Pagina ' + page.pageNum + '" style="width:100%;display:block;aspect-ratio:3/2;object-fit:cover;border-radius:20px 20px 0 0;">'
+        : '<div style="width:100%;aspect-ratio:3/2;background:var(--basalt-2,#16161F);display:flex;align-items:center;justify-content:center;color:var(--text-dim);border-radius:20px 20px 0 0;">Imagen no disponible</div>';
+
+      div.innerHTML = imgHtml +
+        '<div style="padding:20px 24px;">' +
+        '<span class="page-tag">Pagina ' + page.pageNum + '</span>' +
+        '<h3 style="font-size:18px;font-weight:800;margin-bottom:8px;">' + page.title + '</h3>' +
+        '<p style="color:var(--text-dim);font-size:14px;line-height:1.6;">' + page.text + '</p>' +
+        '</div>';
+
+      container.appendChild(div);
+    });
+
+    document.getElementById('cs-step3').style.display = 'block';
+    document.getElementById('cs-step3').scrollIntoView({ behavior: 'smooth' });
+  }
+
+  // Restart
+  window.csRestart = function() {
+    csFile = null;
+    csCharUrl = '';
+    document.getElementById('cs-step3').style.display = 'none';
+    document.getElementById('cs-step2').style.display = 'none';
+    document.getElementById('cs-step1').style.display = '';
+    document.getElementById('csPreview').style.display = 'none';
+    document.getElementById('csDropzone').style.display = '';
+    document.getElementById('csGenCharBtn').disabled = true;
+    if (csFileInput) csFileInput.value = '';
+    document.getElementById('cta').scrollIntoView({ behavior: 'smooth' });
+  };
+})();
+</script>
+</body>
+</html>

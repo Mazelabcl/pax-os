@@ -6,6 +6,49 @@
 
 ---
 
+## REGLA OBLIGATORIA DE GENERACIÓN DE IMÁGENES
+
+**SIEMPRE usar `edit_image()` con el PNG canónico como referencia visual. NUNCA usar `generate_image()` para personajes Pax.**
+
+```python
+# CORRECTO — mantiene identidad del personaje
+from openai_images import edit_image
+edit_image(
+    prompt="Image 1 is the character reference. Generate [personaje] doing [acción], 3D PBR render, neon-magic lighting, Pax style",
+    input_image_paths=["_lore/personajes/jiggy.png"],
+    output_path="output.png"
+)
+
+# INCORRECTO — inventa el personaje desde cero, pierde identidad
+from openai_images import generate_image
+generate_image(prompt="Jiggy, a Pax tribe member...", output_path="output.png")
+```
+
+**Paths canónicos de char sheets (post-reorg 2026-05-22):**
+
+| Personaje | PNG canónico |
+|---|---|
+| Jiggy | `_lore/personajes/jiggy.png` |
+| Wiz | `_lore/personajes/wiz.png` |
+| Byte | `_lore/personajes/byte.png` |
+| KZ | `_lore/personajes/kz.png` |
+| Onyx | `_lore/personajes/onyx.png` |
+| Agatha | `_lore/personajes/agatha.png` |
+| Alma | `_lore/personajes/alma.png` |
+| Aura | `_lore/personajes/aura.png` |
+| Baba | `_lore/personajes/baba.png` |
+| Brizk | `_lore/personajes/brizk.png` |
+| Cyfer | `_lore/personajes/cyfer.png` |
+| Fortis | `_lore/personajes/fortis.png` |
+| Iris | `_lore/personajes/iris.png` |
+| Kif | `_lore/personajes/kif.png` |
+| Ludus | `_lore/personajes/ludus.png` |
+| Luz | `_lore/personajes/luz.png` |
+
+> **NOTA:** Los paths de la tabla "Cast Oficial" más abajo apuntan a `public/images/personajes/` — esa ubicación es **OBSOLETA** (pre-reorg). Los paths correctos son los de arriba.
+
+---
+
 ## CAST OFICIAL — Quest 2 (post-feedback Pipez 2026-05-05)
 
 ### Clan core (los 7 que protagonizan la webserie 12x3min)

@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Video Educativo Paxeado — Un Pax te enseña a concentrarte</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Manrope:wght@400;600;800&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --jade: #00C896;
+    --amber: #F59E0B;
+    --magenta: #E91E63;
+    --basalt: #0F0F18;
+    --basalt-2: #16161F;
+    --basalt-3: #1F1F2B;
+    --text: #E8E8F0;
+    --text-dim: #A8A8BD;
+    --border: #2A2A38;
+    --glass-bg: rgba(22, 22, 31, 0.65);
+    --glass-border: rgba(255, 255, 255, 0.08);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--basalt);
+    color: var(--text);
+    font-family: 'Manrope', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  /* Animated gradient background */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(circle at 20% 30%, rgba(0, 200, 150, 0.06), transparent 50%),
+      radial-gradient(circle at 80% 70%, rgba(233, 30, 99, 0.05), transparent 50%),
+      radial-gradient(circle at 50% 50%, rgba(245, 158, 11, 0.03), transparent 60%);
+    animation: bgShift 12s ease-in-out infinite alternate;
+    pointer-events: none;
+    z-index: 0;
+  }
+  @keyframes bgShift {
+    0%   { opacity: 1; }
+    50%  { opacity: 0.7; }
+    100% { opacity: 1; }
+  }
+  @keyframes pulse {
+    0%   { transform: translateX(-100%); }
+    50%  { transform: translateX(200%); }
+    100% { transform: translateX(-100%); }
+  }
+
+  main { position: relative; z-index: 1; }
+
+  /* Reveal */
+  .reveal {
+    opacity: 0;
+    transform: translateY(32px);
+    transition: opacity 0.8s cubic-bezier(0.2, 0.7, 0.2, 1),
+                transform 0.8s cubic-bezier(0.2, 0.7, 0.2, 1);
+    will-change: opacity, transform;
+  }
+  .reveal.in {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { opacity: 1; transform: none; transition: none; }
+  }
+
+  /* Sections */
+  section {
+    padding: 100px 24px;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  /* Glassmorphism card */
+  .glass {
+    background: var(--glass-bg);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+  }
+
+  /* ============ HERO ============ */
+  section.hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-top: 60px;
+    padding-bottom: 60px;
+    text-align: center;
+  }
+  .hero h1 {
+    font-size: clamp(32px, 6vw, 60px);
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+    font-weight: 800;
+    margin-bottom: 24px;
+  }
+  .hero h1 .accent {
+    background: linear-gradient(90deg, var(--jade) 0%, var(--amber) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .hero .lead {
+    font-size: clamp(17px, 2.2vw, 22px);
+    color: var(--text-dim);
+    max-width: 640px;
+    margin: 0 auto 20px;
+    line-height: 1.55;
+  }
+  .hero .concept-box {
+    display: inline-block;
+    padding: 16px 24px;
+    margin: 20px auto 0;
+    max-width: 560px;
+    font-size: 15px;
+    color: var(--jade);
+    line-height: 1.6;
+  }
+  .hero .concept-box strong {
+    color: var(--magenta);
+  }
+
+  /* Hero preview frames */
+  .hero-preview {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    max-width: 560px;
+    margin: 40px auto 0;
+  }
+  .hero-preview img {
+    width: 100%;
+    border-radius: 14px;
+    border: 1px solid var(--glass-border);
+    aspect-ratio: 3/2;
+    object-fit: cover;
+    transition: transform 0.4s;
+  }
+  .hero-preview img:hover {
+    transform: scale(1.03);
+  }
+
+  .scroll-hint {
+    margin-top: 60px;
+    color: var(--text-dim);
+    font-size: 12px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    opacity: 0.5;
+    text-align: center;
+  }
+  .scroll-hint .arrow {
+    display: inline-block;
+    margin-left: 6px;
+    animation: bounce 2s ease-in-out infinite;
+  }
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(5px); }
+  }
+
+  /* ============ TYPOGRAPHY ============ */
+  h2 {
+    font-size: clamp(26px, 4vw, 38px);
+    font-weight: 800;
+    line-height: 1.15;
+    letter-spacing: -0.015em;
+    margin-bottom: 20px;
+  }
+  h2 .accent {
+    background: linear-gradient(90deg, var(--jade), var(--amber));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  h3 {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+  p { margin-bottom: 16px; }
+  .dim { color: var(--text-dim); }
+  .mono { font-family: 'JetBrains Mono', monospace; }
+  .tag {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 4px 12px;
+    border-radius: 6px;
+    margin-bottom: 16px;
+  }
+  .tag-jade { background: rgba(0,200,150,0.12); color: var(--jade); }
+  .tag-magenta { background: rgba(233,30,99,0.12); color: var(--magenta); }
+  .tag-amber { background: rgba(245,158,11,0.12); color: var(--amber); }
+
+  /* ============ STORYBOARD SCENES ============ */
+  .scene-section {
+    padding: 80px 24px;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  .scene-card {
+    margin-bottom: 12px;
+    overflow: hidden;
+  }
+  .scene-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 24px;
+    border-bottom: 1px solid var(--glass-border);
+  }
+  .scene-num {
+    background: var(--magenta);
+    color: #fff;
+    font-weight: 800;
+    font-size: 14px;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .scene-title {
+    font-weight: 700;
+    font-size: 17px;
+    color: var(--amber);
+  }
+  .scene-time {
+    margin-left: auto;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--text-dim);
+  }
+
+  .frames-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: var(--border);
+  }
+  .frame-cell {
+    background: var(--basalt-2);
+    padding: 12px;
+  }
+  .frame-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 8px;
+    text-align: center;
+  }
+  .frame-label.start { color: var(--jade); }
+  .frame-label.end { color: var(--magenta); }
+  .frame-cell img {
+    width: 100%;
+    border-radius: 10px;
+    aspect-ratio: 3/2;
+    object-fit: cover;
+    border: 1px solid var(--glass-border);
+    transition: transform 0.3s;
+  }
+  .frame-cell img:hover {
+    transform: scale(1.02);
+  }
+
+  .scene-script {
+    padding: 16px 24px;
+    font-size: 15px;
+    line-height: 1.7;
+    border-top: 1px solid var(--glass-border);
+  }
+  .scene-script .char {
+    font-weight: 700;
+    color: var(--amber);
+  }
+  .scene-script .char.wiz { color: var(--jade); }
+  .scene-script em {
+    color: var(--text-dim);
+    font-style: italic;
+  }
+  .scene-script .line {
+    margin-bottom: 8px;
+  }
+  .scene-script .line:last-child { margin-bottom: 0; }
+
+  /* Vote row */
+  .vote-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 24px;
+    border-top: 1px solid var(--glass-border);
+    flex-wrap: wrap;
+  }
+  .vote-btn {
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: var(--text);
+    line-height: 1;
+  }
+  .vote-btn:hover { border-color: var(--jade); transform: scale(1.1); }
+  .vote-btn.voted-up { border-color: var(--jade); background: rgba(0,200,150,0.12); }
+  .vote-btn.voted-down { border-color: var(--magenta); background: rgba(233,30,99,0.12); }
+  .vote-input {
+    flex: 1;
+    min-width: 180px;
+    background: var(--basalt);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 12px;
+    color: var(--text);
+    font-family: 'Manrope', sans-serif;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .vote-input::placeholder { color: var(--text-dim); }
+  .vote-input:focus { border-color: var(--jade); }
+
+  /* ============ CONCEPT SECTION ============ */
+  .concept-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+    margin-top: 24px;
+  }
+  .concept-item {
+    padding: 24px;
+  }
+  .concept-item h3 {
+    color: var(--jade);
+    font-size: 17px;
+    margin-bottom: 8px;
+  }
+  .concept-item p {
+    color: var(--text-dim);
+    font-size: 15px;
+    margin-bottom: 0;
+  }
+
+  /* ============ PIPELINE ============ */
+  .pipeline {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-top: 32px;
+  }
+  .pipe-step {
+    padding: 24px 16px;
+    text-align: center;
+    position: relative;
+  }
+  .pipe-step::after {
+    content: "\2192";
+    position: absolute;
+    right: -14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--magenta);
+    font-size: 20px;
+    font-weight: 800;
+  }
+  .pipe-step:last-child::after { display: none; }
+  .pipe-icon {
+    font-size: 32px;
+    margin-bottom: 12px;
+  }
+  .pipe-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--jade);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 6px;
+  }
+  .pipe-desc {
+    font-size: 13px;
+    color: var(--text-dim);
+    line-height: 1.5;
+  }
+
+  /* ============ SCALABILITY ============ */
+  .scale-highlight {
+    padding: 40px 32px;
+    text-align: center;
+    margin-top: 24px;
+  }
+  .scale-highlight p {
+    font-size: clamp(16px, 2vw, 19px);
+    color: var(--text-dim);
+    max-width: 560px;
+    margin: 0 auto;
+    line-height: 1.7;
+  }
+  .scale-highlight strong {
+    color: var(--amber);
+  }
+
+  /* ============ CTA ============ */
+  .cta-section {
+    text-align: center;
+    padding: 100px 24px;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  .cta-btn {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--magenta), #9C27B0);
+    color: #fff;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 700;
+    font-size: 17px;
+    padding: 16px 40px;
+    border-radius: 14px;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 24px rgba(233,30,99,0.3);
+  }
+  .cta-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(233,30,99,0.45);
+  }
+  .cta-btn.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  .cta-btn.disabled:hover {
+    transform: none;
+    box-shadow: 0 4px 24px rgba(233,30,99,0.3);
+  }
+  .cta-note {
+    font-size: 13px;
+    color: var(--text-dim);
+    margin-top: 14px;
+  }
+
+  /* ============ FOOTER ============ */
+  footer {
+    padding: 40px 24px;
+    text-align: center;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  footer .glass {
+    padding: 32px;
+  }
+  footer p {
+    font-size: 13px;
+    color: var(--text-dim);
+    margin-bottom: 4px;
+  }
+  footer a {
+    color: var(--jade);
+    text-decoration: none;
+  }
+  footer a:hover { text-decoration: underline; }
+
+  /* ============ RESPONSIVE ============ */
+  @media (max-width: 700px) {
+    section, .scene-section { padding: 60px 16px; }
+    .pipeline {
+      grid-template-columns: 1fr 1fr;
+    }
+    .pipe-step::after { display: none; }
+    .frames-grid { grid-template-columns: 1fr; }
+    .hero-preview { grid-template-columns: 1fr; max-width: 320px; }
+    .vote-row { flex-direction: column; align-items: stretch; }
+  }
+  @media (max-width: 480px) {
+    .pipeline { grid-template-columns: 1fr; }
+    section, .scene-section { padding: 48px 14px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Video background fijo -->
+<div id="video-bg" style="position:fixed;inset:0;z-index:-1;background:#0F0F18;overflow:hidden;">
+  <video id="bg-video" muted playsinline preload="auto"
+    style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);min-width:100%;min-height:100%;object-fit:cover;opacity:0.3;">
+    <source src="bg-video.mp4" type="video/mp4">
+  </video>
+</div>
+
+<!-- Loading screen -->
+<div id="loading" style="position:fixed;inset:0;z-index:50;background:#0F0F18;display:flex;align-items:center;justify-content:center;">
+  <div style="text-align:center;">
+    <p style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.2em;color:rgba(255,255,255,0.5);">LOADING</p>
+    <div style="width:256px;height:1px;background:rgba(255,255,255,0.1);margin-top:32px;overflow:hidden;">
+      <div style="height:100%;background:white;width:33%;animation:pulse 1.5s ease infinite;"></div>
+    </div>
+  </div>
+</div>
+
+<main>
+
+  <!-- ==================== HERO ==================== -->
+  <section class="hero">
+    <div class="reveal">
+      <span class="tag tag-jade">Gesto: Video Educativo Paxeado</span>
+      <h1>Un Pax te enseña<br>a <span class="accent">concentrarte</span></h1>
+      <p class="lead">
+        El metodo japones Mushin, narrado por Wiz — el sabio mas viejo del Uray Pacha — para que Jiggy (y tu) aprendan a enfocarse de verdad.
+      </p>
+      <div class="glass concept-box">
+        Concentrarte con todo tu ser es como los Pax cargan un cristal: con intencion pura, sin ruido mental. El enfoque profundo es una forma de <strong>anuraK personal</strong>.
+      </div>
+    </div>
+    <div class="hero-preview reveal">
+      <img src="e01-cueva-silenciosa_start.png" alt="Wiz meditando frente a cristal en la cueva" loading="lazy" />
+      <img src="e05-cristal-encendido_end.png" alt="Uray Pacha iluminado, cristales encendidos" loading="lazy" />
+    </div>
+    <div class="scroll-hint reveal">
+      Scroll para ver el storyboard <span class="arrow">&#8595;</span>
+    </div>
+  </section>
+
+  <!-- ==================== STORYBOARD ==================== -->
+  <section>
+    <div class="reveal">
+      <span class="tag tag-magenta">Storyboard visual</span>
+      <h2>5 escenas, <span class="accent">start y end</span></h2>
+      <p class="dim">Cada escena tiene un frame de inicio y uno de cierre. Entre ambos, el video animado que la IA generara.</p>
+    </div>
+  </section>
+
+  <!-- Escena 1 -->
+  <div class="scene-section">
+    <div class="glass scene-card reveal">
+      <div class="scene-header">
+        <div class="scene-num">1</div>
+        <span class="scene-title">La cueva silenciosa</span>
+        <span class="scene-time">0:00 — 0:15</span>
+      </div>
+      <div class="frames-grid">
+        <div class="frame-cell">
+          <div class="frame-label start">Start frame</div>
+          <img src="e01-cueva-silenciosa_start.png" alt="Wiz sentado frente a cristal tenue en cueva" loading="lazy" />
+        </div>
+        <div class="frame-cell">
+          <div class="frame-label end">End frame</div>
+          <img src="e01-cueva-silenciosa_end.png" alt="Cristal comienza a pulsar suavemente" loading="lazy" />
+        </div>
+      </div>
+      <div class="scene-script">
+        <div class="line"><span class="char wiz">WIZ:</span> "Hay algo que los humanos olvidaron. Algo que nosotros los Pax usamos cada vez que tocamos un cristal. Le dicen Mushin — la mente vacia. Nosotros le decimos: <em>presencia pura</em>."</div>
+      </div>
+      <div class="vote-row">
+        <button class="vote-btn" onclick="vote(this,'up',1)">&#128077;</button>
+        <button class="vote-btn" onclick="vote(this,'down',1)">&#128078;</button>
+        <input class="vote-input" placeholder="Feedback sobre esta escena..." data-scene="1" />
+      </div>
+    </div>
+  </div>
+
+  <!-- Escena 2 -->
+  <div class="scene-section">
+    <div class="glass scene-card reveal">
+      <div class="scene-header">
+        <div class="scene-num">2</div>
+        <span class="scene-title">Jiggy no puede enfocarse</span>
+        <span class="scene-time">0:15 — 0:25</span>
+      </div>
+      <div class="frames-grid">
+        <div class="frame-cell">
+          <div class="frame-label start">Start frame</div>
+          <img src="e02-jiggy-frustrado_start.png" alt="Jiggy frustrado ante cristal apagado" loading="lazy" />
+        </div>
+        <div class="frame-cell">
+          <div class="frame-label end">End frame</div>
+          <img src="e02-jiggy-frustrado_end.png" alt="Wiz aparece detras de Jiggy" loading="lazy" />
+        </div>
+      </div>
+      <div class="scene-script">
+        <div class="line"><span class="char">JIGGY:</span> "No funciona! Llevo horas y este cristal no enciende."</div>
+        <div class="line"><span class="char wiz">WIZ:</span> "Llevas horas... <em>pensando en que no funciona</em>. Ese es el problema."</div>
+      </div>
+      <div class="vote-row">
+        <button class="vote-btn" onclick="vote(this,'up',2)">&#128077;</button>
+        <button class="vote-btn" onclick="vote(this,'down',2)">&#128078;</button>
+        <input class="vote-input" placeholder="Feedback sobre esta escena..." data-scene="2" />
+      </div>
+    </div>
+  </div>
+
+  <!-- Escena 3 -->
+  <div class="scene-section">
+    <div class="glass scene-card reveal">
+      <div class="scene-header">
+        <div class="scene-num">3</div>
+        <span class="scene-title">Vaciar y Anclar</span>
+        <span class="scene-time">0:25 — 0:40</span>
+      </div>
+      <div class="frames-grid">
+        <div class="frame-cell">
+          <div class="frame-label start">Start frame</div>
+          <img src="e03-vaciar-anclar_start.png" alt="Mano de Wiz tocando cristal" loading="lazy" />
+        </div>
+        <div class="frame-cell">
+          <div class="frame-label end">End frame</div>
+          <img src="e03-vaciar-anclar_end.png" alt="Cristal con brillo estable" loading="lazy" />
+        </div>
+      </div>
+      <div class="scene-script">
+        <div class="line"><span class="char wiz">WIZ:</span> "Primer paso: <em>vacia</em>. Suelta la duda, el miedo, la voz que dice 'no puedo'."</div>
+        <div class="line"><span class="char wiz">WIZ:</span> "Segundo paso: <em>ancla tu atencion en UNA sola cosa</em>. No en el resultado. Solo en lo que tienes delante."</div>
+      </div>
+      <div class="vote-row">
+        <button class="vote-btn" onclick="vote(this,'up',3)">&#128077;</button>
+        <button class="vote-btn" onclick="vote(this,'down',3)">&#128078;</button>
+        <input class="vote-input" placeholder="Feedback sobre esta escena..." data-scene="3" />
+      </div>
+    </div>
+  </div>
+
+  <!-- Escena 4 -->
+  <div class="scene-section">
+    <div class="glass scene-card reveal">
+      <div class="scene-header">
+        <div class="scene-num">4</div>
+        <span class="scene-title">Repetir, Soltar, Fluir</span>
+        <span class="scene-time">0:40 — 1:00</span>
+      </div>
+      <div class="frames-grid">
+        <div class="frame-cell">
+          <div class="frame-label start">Start frame</div>
+          <img src="e04-jiggy-practica_start.png" alt="Jiggy concentrado, cristal pulsando" loading="lazy" />
+        </div>
+        <div class="frame-cell">
+          <div class="frame-label end">End frame</div>
+          <img src="e04-jiggy-practica_end.png" alt="Cristal emite pulso de luz masivo" loading="lazy" />
+        </div>
+      </div>
+      <div class="scene-script">
+        <div class="line"><span class="char wiz">WIZ:</span> "Tercero: <em>repite hasta que el cuerpo lo sepa solo</em>."</div>
+        <div class="line"><span class="char wiz">WIZ:</span> "Cuarto: <em>suelta el resultado</em>. No te concentres para ganar. Concentra porque el momento lo merece."</div>
+        <div class="line"><span class="char wiz">WIZ:</span> "Y quinto: <em>deja que fluya</em>. Cuando la mente deja de interferir, la accion aparece sola. Eso es Mushin."</div>
+      </div>
+      <div class="vote-row">
+        <button class="vote-btn" onclick="vote(this,'up',4)">&#128077;</button>
+        <button class="vote-btn" onclick="vote(this,'down',4)">&#128078;</button>
+        <input class="vote-input" placeholder="Feedback sobre esta escena..." data-scene="4" />
+      </div>
+    </div>
+  </div>
+
+  <!-- Escena 5 -->
+  <div class="scene-section">
+    <div class="glass scene-card reveal">
+      <div class="scene-header">
+        <div class="scene-num">5</div>
+        <span class="scene-title">El cristal encendido</span>
+        <span class="scene-time">1:00 — 1:15</span>
+      </div>
+      <div class="frames-grid">
+        <div class="frame-cell">
+          <div class="frame-label start">Start frame</div>
+          <img src="e05-cristal-encendido_start.png" alt="Wiz y Jiggy frente a cristal brillante" loading="lazy" />
+        </div>
+        <div class="frame-cell">
+          <div class="frame-label end">End frame</div>
+          <img src="e05-cristal-encendido_end.png" alt="Uray Pacha iluminado, reaccion en cadena" loading="lazy" />
+        </div>
+      </div>
+      <div class="scene-script">
+        <div class="line"><span class="char">JIGGY:</span> "Wiz... asi de simple?"</div>
+        <div class="line"><span class="char wiz">WIZ:</span> "Simple no es facil, Jiggy. Pero cada vez que lo logras... <em>un pedazo del mundo se enciende</em>."</div>
+        <div class="line" style="margin-top:12px"><em style="color:var(--amber)">Tu Ayni de hoy: elige UNA cosa. Dale 25 minutos de presencia pura. Sin telefono. Sin ruido. Solo tu y lo que importa.</em></div>
+      </div>
+      <div class="vote-row">
+        <button class="vote-btn" onclick="vote(this,'up',5)">&#128077;</button>
+        <button class="vote-btn" onclick="vote(this,'down',5)">&#128078;</button>
+        <input class="vote-input" placeholder="Feedback sobre esta escena..." data-scene="5" />
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== CONCEPTO "PAX TE ENSENA" ==================== -->
+  <section>
+    <div class="reveal">
+      <span class="tag tag-jade">El concepto</span>
+      <h2>Un miembro de la tribu te <span class="accent">regala un skill</span></h2>
+      <p class="dim">Los Pax han practicado estas habilidades por eones. Cuando un Pax te enseña algo, no es una clase: es un regalo de la tribu para tu vida.</p>
+    </div>
+    <div class="concept-grid">
+      <div class="glass concept-item reveal">
+        <h3>La concentracion es anuraK personal</h3>
+        <p>Enfocar toda tu energia en una cosa es como cargar un cristal con intencion pura. Sin dispersion, sin ruido, la energia fluye y el cristal responde.</p>
+      </div>
+      <div class="glass concept-item reveal">
+        <h3>Wiz eligio a Jiggy (y a ti)</h3>
+        <p>En el lore Pax, los sabios no enseñan a cualquiera. Wiz vio en Jiggy la misma chispa que ve en ti: el deseo genuino de mejorar. Eso basta para empezar.</p>
+      </div>
+      <div class="glass concept-item reveal">
+        <h3>Cada video = un skill de la tribu</h3>
+        <p>Mushin es solo el primero. Cualquier habilidad humana valiosa puede ser reinterpretada por un Pax que la ha dominado por generaciones.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== LA MAQUINA ==================== -->
+  <section>
+    <div class="reveal">
+      <span class="tag tag-magenta">La maquina</span>
+      <h2>Pega un link de YouTube.<br><span class="accent">La IA genera la version Pax.</span></h2>
+      <p class="dim">4 pasos automatizados para transformar cualquier video educativo en una leccion narrada por un personaje del universo Pax.</p>
+    </div>
+    <div class="pipeline reveal">
+      <div class="glass pipe-step">
+        <div class="pipe-icon">&#128221;</div>
+        <div class="pipe-label">Transcripcion</div>
+        <div class="pipe-desc">La IA extrae el contenido completo del video original</div>
+      </div>
+      <div class="glass pipe-step">
+        <div class="pipe-icon">&#128300;</div>
+        <div class="pipe-label">Analisis</div>
+        <div class="pipe-desc">Identifica los pasos clave de la enseñanza</div>
+      </div>
+      <div class="glass pipe-step">
+        <div class="pipe-icon">&#9997;&#65039;</div>
+        <div class="pipe-label">Storyboard Pax</div>
+        <div class="pipe-desc">Reescribe el script con personajes y lore Pax</div>
+      </div>
+      <div class="glass pipe-step">
+        <div class="pipe-icon">&#127909;</div>
+        <div class="pipe-label">Video</div>
+        <div class="pipe-desc">Genera frames + clips animados con IA generativa</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== ESCALABILIDAD ==================== -->
+  <section>
+    <div class="reveal">
+      <span class="tag tag-amber">Escalabilidad</span>
+      <h2>Cualquier video se puede <span class="accent">paxear</span></h2>
+    </div>
+    <div class="glass scale-highlight reveal">
+      <p>Este es solo el primero. <strong>Cualquier video educativo de YouTube se puede transformar en una leccion del universo Pax.</strong> Meditacion, productividad, creatividad, liderazgo, cocina, fitness — si un humano lo enseña, un Pax lo puede reinterpretar con su sabiduria ancestral.</p>
+    </div>
+  </section>
+
+  <!-- ==================== CTA ==================== -->
+  <div class="cta-section">
+    <div class="reveal">
+      <h2>Listo para paxear<br><span class="accent">otro video?</span></h2>
+      <p class="dim" style="margin-bottom:32px">Proximamente: pega cualquier URL y la maquina Pax la transforma.</p>
+      <button class="cta-btn disabled" disabled>Paxear otro video</button>
+      <p class="cta-note">Disponible pronto</p>
+    </div>
+  </div>
+
+  <!-- ==================== FOOTER ==================== -->
+  <footer>
+    <div class="glass reveal">
+      <p><strong style="color:var(--text)">Pax Project</strong> — Video Educativo Paxeado</p>
+      <p>Metodo original: <a href="https://www.youtube.com/watch?v=56LzCRw0Eko" target="_blank" rel="noopener">Mushin-Ryu System</a></p>
+      <p style="margin-top:8px; font-size:12px; opacity:0.5;">Cada skill que aprendes enciende un pedazo del mundo.</p>
+    </div>
+  </footer>
+
+</main>
+
+<script>
+// Scroll-driven video
+(function(){
+  var video = document.getElementById('bg-video');
+  var loadingScreen = document.getElementById('loading');
+  var videoLoaded = false;
+
+  video.addEventListener('canplaythrough', function() {
+    videoLoaded = true;
+    loadingScreen.style.display = 'none';
+  });
+
+  video.addEventListener('error', function() {
+    var videoBg = document.getElementById('video-bg');
+    videoBg.style.background = 'radial-gradient(circle at 20% 30%, rgba(0, 200, 150, 0.06), transparent 50%), radial-gradient(circle at 80% 70%, rgba(233, 30, 99, 0.05), transparent 50%)';
+    loadingScreen.style.display = 'none';
+  });
+
+  video.load();
+  setTimeout(function() { loadingScreen.style.display = 'none'; }, 5000);
+
+  window.addEventListener('scroll', function() {
+    if (!videoLoaded || !video.duration || video.seeking) return;
+    var maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+    var stopPoint = maxScroll * 0.8;
+    var fraction = Math.max(0, Math.min(1, window.scrollY / stopPoint));
+    video.currentTime = fraction * video.duration;
+  }, { passive: true });
+})();
+
+// Scroll reveal
+(function(){
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduced) {
+    document.querySelectorAll('.reveal').forEach(el => el.classList.add('in'));
+    return;
+  }
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('in');
+        obs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+})();
+
+// Vote
+function vote(btn, type, scene) {
+  const row = btn.parentElement;
+  row.querySelectorAll('.vote-btn').forEach(b => b.classList.remove('voted-up','voted-down'));
+  btn.classList.add(type === 'up' ? 'voted-up' : 'voted-down');
+  console.log('Scene ' + scene + ': ' + type);
+}
+</script>
+</body>
+</html>

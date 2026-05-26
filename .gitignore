@@ -54,3 +54,29 @@ scripts/test-gpt-image-2.png
 
 # backups locales pesados (movidos durante reorg 2026-05-21)
 _archive/backups-comprimidos/
+
+# imagenes generadas por API (paxearte / child-story)
+public/generated/*
+!public/generated/.gitkeep
+
+# Working files pesados (imagenes y audio generados localmente)
+gestos/_backlog/*/frames/*.png
+gestos/_backlog/*/frames-9min/*.png
+gestos/_backlog/*/storyboard/*.png
+gestos/_backlog/*/images/*.png
+gestos/_backlog/*/pages/*.png
+gestos/_backlog/*/fail/
+gestos/_backlog/*/capsule/
+gestos/_backlog/*/clips/
+gestos/_backlog/*/final/
+public/gestos/*/fail/
+gestos/_backlog/video-educativo/test-clips/
+gestos/_backlog/video-educativo/audio/
+gestos/_backlog/video-educativo/audio-myrrdin/
+nuevos_gestos/
+logs/
+ejemplo_story.png
+landing-evolucion-*.html
+landing-v*.html
+landing-experiment/
+lore-preview.html

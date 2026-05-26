@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PAX TRIBE Coloring Book — Crystal Keepers of Equilibrium</title>
+<style>
+  :root {
+    --jade: #21D8B6;
+    --amber: #FFE34D;
+    --basalt: #1A1340;
+    --magenta: #E83FC8;
+    --bg: #0E0820;
+    --card: #1A1340;
+    --text: #E8E4F0;
+    --text-dim: #9B8FC4;
+    --border: #2E2460;
+    --success: #21D8B6;
+    --danger: #FF4B6E;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* --- HERO --- */
+  .hero {
+    text-align: center;
+    padding: 3rem 1.5rem 2rem;
+    background: linear-gradient(180deg, #1A1340 0%, #0E0820 100%);
+    border-bottom: 1px solid var(--border);
+  }
+  .hero h1 {
+    font-size: clamp(1.8rem, 5vw, 3rem);
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--jade), var(--amber));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 0.5rem;
+  }
+  .hero .subtitle {
+    font-size: clamp(1rem, 2.5vw, 1.3rem);
+    color: var(--magenta);
+    font-weight: 600;
+    margin-bottom: 1rem;
+  }
+  .hero p {
+    max-width: 600px;
+    margin: 0 auto 1.5rem;
+    color: var(--text-dim);
+    font-size: 0.95rem;
+  }
+  .price-tag {
+    display: inline-block;
+    background: var(--magenta);
+    color: #fff;
+    font-size: 1.4rem;
+    font-weight: 800;
+    padding: 0.5rem 1.5rem;
+    border-radius: 2rem;
+    margin-bottom: 1rem;
+  }
+  .cta-btn {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--jade), #1AAF94);
+    color: #fff;
+    font-size: 1.1rem;
+    font-weight: 700;
+    padding: 0.8rem 2.5rem;
+    border-radius: 2rem;
+    text-decoration: none;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 20px rgba(33, 216, 182, 0.3);
+  }
+  .cta-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 28px rgba(33, 216, 182, 0.5);
+  }
+
+  /* --- CONCEPTO --- */
+  .concepto {
+    max-width: 700px;
+    margin: 2rem auto;
+    padding: 0 1.5rem;
+  }
+  .concepto h2 {
+    font-size: 1.3rem;
+    color: var(--amber);
+    margin-bottom: 0.8rem;
+  }
+  .concepto p {
+    color: var(--text-dim);
+    font-size: 0.9rem;
+    margin-bottom: 0.6rem;
+  }
+  .concepto ul {
+    list-style: none;
+    padding: 0;
+  }
+  .concepto li {
+    padding: 0.3rem 0;
+    color: var(--text-dim);
+    font-size: 0.9rem;
+  }
+  .concepto li::before {
+    content: "\2B50 ";
+  }
+
+  /* --- GALERIA --- */
+  .gallery-section {
+    padding: 2rem 1rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .gallery-section h2 {
+    text-align: center;
+    font-size: 1.5rem;
+    color: var(--jade);
+    margin-bottom: 1.5rem;
+  }
+  .gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+  .page-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    transition: transform 0.2s, border-color 0.2s;
+  }
+  .page-card:hover {
+    transform: translateY(-3px);
+    border-color: var(--magenta);
+  }
+  .page-card img {
+    width: 100%;
+    aspect-ratio: 2/3;
+    object-fit: cover;
+    display: block;
+    background: #fff;
+  }
+  .page-card .card-body {
+    padding: 1rem;
+  }
+  .page-card h3 {
+    font-size: 0.95rem;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+  }
+  .page-card .desc {
+    font-size: 0.8rem;
+    color: var(--text-dim);
+    margin-bottom: 0.8rem;
+  }
+
+  /* --- FEEDBACK --- */
+  .feedback-row {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    margin-bottom: 0.5rem;
+  }
+  .vote-btn {
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text);
+    font-size: 1.2rem;
+    width: 40px;
+    height: 36px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .vote-btn:hover { border-color: var(--jade); }
+  .vote-btn.up.active { background: var(--success); color: #fff; border-color: var(--success); }
+  .vote-btn.down.active { background: var(--danger); color: #fff; border-color: var(--danger); }
+  .vote-label {
+    font-size: 0.75rem;
+    color: var(--text-dim);
+  }
+  .feedback-input {
+    width: 100%;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--text);
+    border-radius: 8px;
+    padding: 0.5rem 0.7rem;
+    font-size: 0.8rem;
+    resize: none;
+    height: 2.2rem;
+    transition: border-color 0.2s;
+  }
+  .feedback-input:focus {
+    outline: none;
+    border-color: var(--jade);
+  }
+  .feedback-input::placeholder { color: var(--text-dim); }
+  .feedback-saved {
+    font-size: 0.7rem;
+    color: var(--success);
+    opacity: 0;
+    transition: opacity 0.3s;
+    margin-top: 0.2rem;
+  }
+  .feedback-saved.show { opacity: 1; }
+
+  /* --- FOOTER --- */
+  .footer {
+    text-align: center;
+    padding: 2rem 1rem;
+    border-top: 1px solid var(--border);
+    margin-top: 2rem;
+  }
+  .footer p {
+    color: var(--text-dim);
+    font-size: 0.8rem;
+    margin-bottom: 0.5rem;
+  }
+  .footer .code-pax {
+    font-style: italic;
+    color: var(--amber);
+    font-size: 0.85rem;
+  }
+
+  /* --- RESPONSIVE --- */
+  @media (max-width: 600px) {
+    .gallery {
+      grid-template-columns: 1fr;
+      max-width: 340px;
+      margin: 0 auto;
+    }
+    .hero { padding: 2rem 1rem 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <h1>PAX TRIBE</h1>
+  <div class="subtitle">Crystal Keepers of Equilibrium</div>
+  <p>
+    Libro para colorear del universo Pax. 12 paginas de line art con personajes,
+    cristales magicos y escenas donde la bondad humana carga el mundo subterraneo.
+    Para todas las edades.
+  </p>
+  <div class="price-tag">$0.50 USD</div>
+  <br><br>
+  <a href="#" class="cta-btn" onclick="alert('Link de descarga pendiente. Proximamente en Gumroad.')">Descargar PDF</a>
+</section>
+
+<!-- CONCEPTO -->
+<section class="concepto">
+  <h2>El concepto</h2>
+  <p>
+    Bajo la superficie del planeta vive una tribu de alquimistas juguetones llamados Pax.
+    Sus cristales solo se cargan con <strong>anuraK</strong> — la energia que generan los actos
+    de bondad humanos autenticos. Cada pagina de este libro es una ventana a su mundo.
+  </p>
+  <p>Dentro encontraras:</p>
+  <ul>
+    <li>Personajes individuales: Jiggy, Wiz, KZ, Fortis y Baba</li>
+    <li>Escenas epicas del Templo Olvidado y el Jardin de Cristales</li>
+    <li>Escenas del "mundo de arriba" donde actos de bondad cargan cristales</li>
+    <li>Mapa completo del Uray Pacha</li>
+    <li>Lineas gruesas, sin sombreado — perfecto para crayones, marcadores o lapices</li>
+  </ul>
+</section>
+
+<!-- GALERIA -->
+<section class="gallery-section">
+  <h2>Preview de paginas</h2>
+  <div class="gallery" id="gallery"></div>
+</section>
+
+<!-- FOOTER -->
+<section class="footer">
+  <p>Pax Coloring Book MVP — Gesto del proyecto Pax</p>
+  <p class="code-pax">"Cualquier gesto cuenta. Lo que se jerarquiza es la sinceridad, no el tamano."</p>
+  <p>Cada libro vendido carga un cristal. Cada cristal cargado es un Ayni.</p>
+</section>
+
+<script>
+const PAGES = [
+  {
+    file: "pages/00-portada.png",
+    title: "Portada",
+    desc: "PAX TRIBE — cinco personajes del clan alrededor del cristal central."
+  },
+  {
+    file: "pages/01-jiggy-cristal.png",
+    title: "Jiggy con cristal",
+    desc: "Jiggy corriendo por la caverna con un cristal en alto."
+  },
+  {
+    file: "pages/02-wiz-meditando.png",
+    title: "Wiz meditando",
+    desc: "El sabio Wiz meditando rodeado de cristales flotantes."
+  },
+  {
+    file: "pages/03-kz-inventando.png",
+    title: "KZ inventando",
+    desc: "KZ en su taller, construyendo un aparato con cristales."
+  },
+  {
+    file: "pages/04-fortis-protector.png",
+    title: "Fortis y Baba",
+    desc: "Fortis protegiendo a Baba, la cria del clan."
+  },
+  {
+    file: "pages/05-templo-olvidado.png",
+    title: "Templo Olvidado",
+    desc: "Jiggy descubre el gran templo subterraneo perdido."
+  },
+  {
+    file: "pages/06-cristales-cargando.png",
+    title: "Jardin de cristales",
+    desc: "Cristales en todas sus formas cargandose con anuraK."
+  },
+  {
+    file: "pages/07-tribu-reunida.png",
+    title: "La tribu reunida",
+    desc: "Los siete Pax del clan core reunidos en circulo."
+  },
+  {
+    file: "pages/08-ayni-cafe.png",
+    title: "Ayni: el cafe",
+    desc: "Un humano paga el cafe del siguiente — abajo un cristal pulsa."
+  },
+  {
+    file: "pages/09-ayni-playa.png",
+    title: "Ayni: limpieza de playa",
+    desc: "Voluntarios limpiando la playa mientras los cristales brillan."
+  },
+  {
+    file: "pages/10-ayni-ensenando.png",
+    title: "Ayni: ensenando",
+    desc: "Una persona ensena a leer a un nino bajo un arbol."
+  },
+  {
+    file: "pages/11-mapa-uray-pacha.png",
+    title: "Mapa del Uray Pacha",
+    desc: "Contraportada: mapa completo del mundo subterraneo Pax."
+  }
+];
+
+const gallery = document.getElementById("gallery");
+
+// Load saved feedback from localStorage
+function loadFeedback() {
+  try {
+    return JSON.parse(localStorage.getItem("pax-coloring-feedback") || "{}");
+  } catch { return {}; }
+}
+function saveFeedback(data) {
+  localStorage.setItem("pax-coloring-feedback", JSON.stringify(data));
+}
+
+PAGES.forEach((page, i) => {
+  const saved = loadFeedback();
+  const key = page.file;
+  const vote = saved[key]?.vote || null;
+  const comment = saved[key]?.comment || "";
+
+  const card = document.createElement("div");
+  card.className = "page-card";
+  card.innerHTML = `
+    <img src="${page.file}" alt="${page.title}" loading="lazy">
+    <div class="card-body">
+      <h3>${page.title}</h3>
+      <p class="desc">${page.desc}</p>
+      <div class="feedback-row">
+        <button class="vote-btn up ${vote === 'up' ? 'active' : ''}"
+                onclick="handleVote(this, '${key}', 'up')"
+                title="Me gusta">&#128077;</button>
+        <button class="vote-btn down ${vote === 'down' ? 'active' : ''}"
+                onclick="handleVote(this, '${key}', 'down')"
+                title="No me gusta">&#128078;</button>
+        <span class="vote-label">Tu voto</span>
+      </div>
+      <textarea class="feedback-input"
+                placeholder="Comentario (opcional)..."
+                oninput="handleComment(this, '${key}')"
+      >${comment}</textarea>
+      <div class="feedback-saved" id="saved-${i}">Guardado</div>
+    </div>
+  `;
+  gallery.appendChild(card);
+});
+
+function handleVote(btn, key, type) {
+  const data = loadFeedback();
+  // Toggle
+  if (data[key]?.vote === type) {
+    data[key].vote = null;
+    btn.classList.remove("active");
+  } else {
+    data[key] = data[key] || {};
+    data[key].vote = type;
+    // Update UI
+    const row = btn.parentElement;
+    row.querySelectorAll(".vote-btn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+  }
+  saveFeedback(data);
+  showSaved(btn);
+}
+
+let commentTimers = {};
+function handleComment(textarea, key) {
+  clearTimeout(commentTimers[key]);
+  commentTimers[key] = setTimeout(() => {
+    const data = loadFeedback();
+    data[key] = data[key] || {};
+    data[key].comment = textarea.value;
+    saveFeedback(data);
+    showSaved(textarea);
+  }, 500);
+}
+
+function showSaved(el) {
+  const card = el.closest(".page-card");
+  const savedEl = card.querySelector(".feedback-saved");
+  savedEl.classList.add("show");
+  setTimeout(() => savedEl.classList.remove("show"), 1500);
+}
+</script>
+
+</body>
+</html>

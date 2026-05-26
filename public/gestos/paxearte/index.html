@@ -1,0 +1,1721 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Paxearte — Tu cara, su magia</title>
+<meta name="description" content="Sube tu foto y la IA te transforma en miembro de la Tribu Pax. Dos estilos: Full Pax turquesa o Humanizado con tu piel real.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
+  :root {
+    --jade: #00C896;
+    --amber: #F59E0B;
+    --magenta: #E91E63;
+    --basalt: #0F0F18;
+    --text: #E8E8F0;
+    --text-dim: #9A9AB0;
+    --glass-bg: rgba(26,26,26,0.6);
+    --glass-border: rgba(255,255,255,0.1);
+    --glass-blur: blur(80px);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Manrope', system-ui, sans-serif;
+    background: var(--basalt);
+    color: var(--text);
+    line-height: 1.7;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  /* ============ ANIMATED GRADIENT BACKGROUND ============ */
+  .bg-gradient {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(135deg, #0F0F18, #00C896, #E91E63, #0F0F18);
+    background-size: 400% 400%;
+    animation: gradientShift 8s ease infinite;
+    z-index: -2;
+    opacity: 0.35;
+  }
+
+  @keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  .bg-noise {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    z-index: -1;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    background-repeat: repeat;
+    pointer-events: none;
+  }
+
+  /* ============ SCROLL PROGRESS BAR ============ */
+  .scroll-progress {
+    position: fixed;
+    top: 0; left: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--jade), var(--magenta));
+    z-index: 1000;
+    width: 0%;
+    transition: width 0.1s linear;
+  }
+
+  /* ============ TYPOGRAPHY ============ */
+  h1, h2, h3 { font-family: 'Manrope', sans-serif; font-weight: 800; }
+  .mono { font-family: 'JetBrains Mono', monospace; }
+
+  /* ============ HERO ============ */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1.5rem;
+    position: relative;
+    text-align: center;
+  }
+
+  .hero-badge {
+    display: inline-block;
+    padding: 0.4rem 1.4rem;
+    border: 1px solid var(--jade);
+    border-radius: 50px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--jade);
+    margin-bottom: 2rem;
+    opacity: 0;
+    animation: fadeInUp 0.8s ease-out 0.2s forwards;
+  }
+
+  .hero h1 {
+    font-size: clamp(3rem, 10vw, 7rem);
+    line-height: 1;
+    letter-spacing: -0.03em;
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeInUp 0.8s ease-out 0.3s forwards;
+  }
+
+  .hero h1 .jade { color: var(--jade); }
+  .hero h1 .magenta { color: var(--magenta); }
+
+  .hero-sub {
+    font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+    color: var(--text-dim);
+    max-width: 550px;
+    margin-bottom: 3rem;
+    font-weight: 300;
+    opacity: 0;
+    animation: fadeInUp 0.8s ease-out 0.5s forwards;
+  }
+
+  .hero-sub strong { color: var(--text); font-weight: 600; }
+
+  /* Hero comparison */
+  .hero-compare {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    opacity: 0;
+    animation: fadeInUp 0.8s ease-out 0.7s forwards;
+    margin-bottom: 2rem;
+  }
+
+  .compare-card {
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    overflow: hidden;
+    width: 260px;
+    text-align: center;
+    transition: transform 0.4s cubic-bezier(0.25,0.46,0.45,0.94), box-shadow 0.4s ease;
+  }
+
+  .compare-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 20px 60px rgba(0,200,150,0.15);
+  }
+
+  .compare-card img {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    display: block;
+  }
+
+  .compare-label {
+    padding: 1rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    font-size: 0.85rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .label-full { color: var(--jade); }
+  .label-human { color: var(--magenta); }
+
+  .vs-badge {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 800;
+    font-size: 0.8rem;
+    color: var(--amber);
+    flex-shrink: 0;
+  }
+
+  .scroll-hint {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text-dim);
+    font-size: 0.75rem;
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.1em;
+    opacity: 0;
+    animation: fadeInUp 0.8s ease-out 1s forwards;
+  }
+
+  .scroll-arrow {
+    width: 20px;
+    height: 20px;
+    border-right: 2px solid var(--text-dim);
+    border-bottom: 2px solid var(--text-dim);
+    transform: rotate(45deg);
+    animation: bounce 2s ease infinite;
+  }
+
+  @keyframes bounce {
+    0%, 100% { transform: rotate(45deg) translateY(0); }
+    50% { transform: rotate(45deg) translateY(6px); }
+  }
+
+  /* ============ SECTIONS ============ */
+  .section {
+    padding: 6rem 1.5rem;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  .section-reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.8s cubic-bezier(0.25,0.46,0.45,0.94), transform 0.8s cubic-bezier(0.25,0.46,0.45,0.94);
+  }
+
+  .section-reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .section-tag {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--jade);
+    margin-bottom: 1rem;
+    padding: 0.3rem 1rem;
+    border: 1px solid rgba(0,200,150,0.3);
+    border-radius: 30px;
+  }
+
+  h2 {
+    font-size: clamp(2rem, 5vw, 3rem);
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    margin-bottom: 1.5rem;
+  }
+
+  h2 .jade { color: var(--jade); }
+  h2 .magenta { color: var(--magenta); }
+
+  /* ============ CONCEPTO ============ */
+  .concepto-text {
+    font-size: 1.1rem;
+    line-height: 1.9;
+    color: var(--text-dim);
+    max-width: 720px;
+  }
+
+  .concepto-text p { margin-bottom: 1.5rem; }
+  .concepto-text strong { color: var(--jade); font-weight: 600; }
+
+  .lore-quote {
+    border-left: 3px solid var(--magenta);
+    padding: 1.2rem 1.8rem;
+    margin: 2rem 0;
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    border-radius: 0 16px 16px 0;
+    font-style: italic;
+    font-size: 1.15rem;
+    color: var(--text);
+    line-height: 1.6;
+  }
+
+  /* ============ REAL EXAMPLES (Aldo + Pipez) ============ */
+  .real-examples {
+    display: flex;
+    gap: 2rem;
+    margin-top: 2rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .real-card {
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    overflow: hidden;
+    width: 300px;
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+  }
+
+  .real-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 16px 50px rgba(0,200,150,0.12);
+  }
+
+  .real-card img {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    display: block;
+  }
+
+  .real-card-info {
+    padding: 1.2rem;
+  }
+
+  .real-card-name {
+    font-weight: 700;
+    font-size: 1rem;
+    margin-bottom: 0.3rem;
+  }
+
+  .real-card-desc {
+    font-size: 0.85rem;
+    color: var(--text-dim);
+  }
+
+  /* ============ GALLERY ============ */
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+  }
+
+  .gallery-item {
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    overflow: hidden;
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+  }
+
+  .gallery-item:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 16px 50px rgba(0,200,150,0.12);
+  }
+
+  .gallery-item img {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    display: block;
+  }
+
+  .gallery-info {
+    padding: 1.2rem;
+  }
+
+  .gallery-tag {
+    display: inline-block;
+    padding: 0.25rem 0.8rem;
+    border-radius: 20px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 0.6rem;
+  }
+
+  .tag-full { background: rgba(0,200,150,0.15); color: var(--jade); border: 1px solid rgba(0,200,150,0.25); }
+  .tag-human { background: rgba(233,30,99,0.12); color: var(--magenta); border: 1px solid rgba(233,30,99,0.2); }
+  .tag-sheet { background: rgba(245,158,11,0.12); color: var(--amber); border: 1px solid rgba(245,158,11,0.2); }
+
+  .gallery-title {
+    font-weight: 700;
+    font-size: 0.95rem;
+    margin-bottom: 1rem;
+  }
+
+  /* ============ FEEDBACK CONTROLS ============ */
+  .feedback-row {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    margin-bottom: 0.6rem;
+  }
+
+  .fb-btn {
+    background: none;
+    border: 1px solid var(--glass-border);
+    border-radius: 10px;
+    padding: 0.45rem 0.9rem;
+    cursor: pointer;
+    font-size: 1.1rem;
+    color: var(--text-dim);
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+  }
+
+  .fb-btn:hover { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.2); }
+  .fb-btn.active-up { background: rgba(0,200,150,0.2); border-color: var(--jade); color: var(--jade); }
+  .fb-btn.active-down { background: rgba(233,30,99,0.15); border-color: var(--magenta); color: var(--magenta); }
+
+  .fb-count {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    opacity: 0.6;
+  }
+
+  .fb-input {
+    width: 100%;
+    background: rgba(15,15,24,0.5);
+    border: 1px solid var(--glass-border);
+    border-radius: 10px;
+    padding: 0.6rem 1rem;
+    color: var(--text);
+    font-size: 0.85rem;
+    font-family: 'Manrope', sans-serif;
+    outline: none;
+    transition: border-color 0.3s;
+  }
+
+  .fb-input::placeholder { color: rgba(154,154,176,0.4); }
+  .fb-input:focus { border-color: var(--jade); box-shadow: 0 0 0 3px rgba(0,200,150,0.08); }
+
+  /* ============ HOW IT WORKS ============ */
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    margin-top: 3rem;
+  }
+
+  .step {
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    padding: 2rem 1.5rem;
+    text-align: center;
+    transition: transform 0.3s ease, border-color 0.3s ease;
+  }
+
+  .step:hover {
+    transform: translateY(-4px);
+    border-color: rgba(0,200,150,0.25);
+  }
+
+  .step-number {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--jade);
+    line-height: 1;
+    margin-bottom: 1rem;
+    opacity: 0.7;
+  }
+
+  .step-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    display: block;
+  }
+
+  .step h3 {
+    font-size: 1.1rem;
+    margin-bottom: 0.8rem;
+    color: var(--text);
+  }
+
+  .step p {
+    font-size: 0.9rem;
+    color: var(--text-dim);
+    line-height: 1.6;
+  }
+
+  /* ============ EXTRAS / PREMIUM ============ */
+  .extras-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2.5rem;
+  }
+
+  .extra-card {
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    padding: 2rem 1.5rem;
+    transition: transform 0.3s ease, border-color 0.3s ease;
+  }
+
+  .extra-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(245,158,11,0.3);
+  }
+
+  .extra-icon {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    display: block;
+  }
+
+  .extra-card h3 {
+    font-size: 1.05rem;
+    margin-bottom: 0.6rem;
+    color: var(--text);
+  }
+
+  .extra-card p {
+    font-size: 0.88rem;
+    color: var(--text-dim);
+    line-height: 1.6;
+  }
+
+  .extra-price {
+    display: inline-block;
+    margin-top: 0.8rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--amber);
+    padding: 0.25rem 0.8rem;
+    border: 1px solid rgba(245,158,11,0.3);
+    border-radius: 20px;
+  }
+
+  /* ============ DIVIDER ============ */
+  .divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    padding: 3rem 0;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  .divider::before,
+  .divider::after {
+    content: '';
+    height: 1px;
+    flex: 1;
+    max-width: 200px;
+    background: linear-gradient(90deg, transparent, var(--glass-border), transparent);
+  }
+
+  .divider-crystal {
+    width: 8px;
+    height: 8px;
+    background: var(--jade);
+    transform: rotate(45deg);
+    opacity: 0.5;
+  }
+
+  /* ============ CTA ============ */
+  .cta-section {
+    text-align: center;
+    padding: 6rem 1.5rem;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  .cta-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 1.1rem 2.8rem;
+    background: linear-gradient(135deg, var(--jade), #00A87A);
+    color: var(--basalt);
+    font-family: 'Manrope', sans-serif;
+    font-weight: 700;
+    font-size: 1.1rem;
+    border: none;
+    border-radius: 60px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    box-shadow: 0 4px 25px rgba(0,200,150,0.35);
+  }
+
+  .cta-btn:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 8px 40px rgba(0,200,150,0.45);
+  }
+
+  .cta-btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.9rem 2.2rem;
+    background: transparent;
+    color: var(--text);
+    font-family: 'Manrope', sans-serif;
+    font-weight: 600;
+    font-size: 1rem;
+    border: 1px solid var(--glass-border);
+    border-radius: 60px;
+    cursor: pointer;
+    text-decoration: none;
+    margin-left: 1rem;
+    transition: all 0.25s ease;
+  }
+
+  .cta-btn-secondary:hover {
+    border-color: var(--magenta);
+    background: rgba(233,30,99,0.08);
+  }
+
+  .cta-sub {
+    margin-top: 1.5rem;
+    color: var(--text-dim);
+    font-size: 0.85rem;
+  }
+
+  /* ============ FOOTER ============ */
+  footer {
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border-top: 1px solid var(--glass-border);
+    padding: 3rem 1.5rem;
+    text-align: center;
+  }
+
+  .footer-brand {
+    font-family: 'Manrope', sans-serif;
+    font-weight: 800;
+    font-size: 1.3rem;
+    margin-bottom: 0.8rem;
+  }
+
+  .footer-brand .jade { color: var(--jade); }
+
+  .footer-tagline {
+    color: var(--text-dim);
+    font-size: 0.9rem;
+    margin-bottom: 1.5rem;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .footer-links {
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 1.5rem;
+  }
+
+  .footer-links a {
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: 0.82rem;
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.05em;
+    transition: color 0.2s;
+  }
+
+  .footer-links a:hover { color: var(--jade); }
+
+  .footer-copy {
+    color: rgba(154,154,176,0.4);
+    font-size: 0.72rem;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* ============ ANIMATIONS ============ */
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(25px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes pulse {
+    0%   { transform: translateX(-100%); }
+    50%  { transform: translateX(200%); }
+    100% { transform: translateX(-100%); }
+  }
+
+  /* ============ UPLOAD PANEL ============ */
+  .upload-panel {
+    max-width: 560px;
+    margin: 0 auto;
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    border-radius: 24px;
+    padding: 2.5rem 2rem;
+    text-align: center;
+  }
+
+  .upload-dropzone {
+    border: 2px dashed rgba(0,200,150,0.3);
+    border-radius: 16px;
+    padding: 2.5rem 1.5rem;
+    cursor: pointer;
+    transition: border-color 0.3s, background 0.3s;
+    margin-bottom: 1.5rem;
+    position: relative;
+  }
+
+  .upload-dropzone:hover,
+  .upload-dropzone.dragover {
+    border-color: var(--jade);
+    background: rgba(0,200,150,0.05);
+  }
+
+  .upload-dropzone .drop-icon {
+    font-size: 3rem;
+    display: block;
+    margin-bottom: 0.8rem;
+  }
+
+  .upload-dropzone .drop-text {
+    font-size: 1rem;
+    color: var(--text-dim);
+  }
+
+  .upload-dropzone .drop-text strong {
+    color: var(--jade);
+  }
+
+  .upload-dropzone input[type="file"] {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    cursor: pointer;
+  }
+
+  .upload-preview {
+    display: none;
+    margin-bottom: 1.5rem;
+  }
+
+  .upload-preview.show {
+    display: block;
+  }
+
+  .upload-preview img {
+    width: 180px;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 16px;
+    border: 2px solid var(--glass-border);
+    margin-bottom: 0.8rem;
+  }
+
+  .upload-preview .preview-name {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--text-dim);
+  }
+
+  .style-selector {
+    display: flex;
+    gap: 0.8rem;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+  }
+
+  .style-option {
+    flex: 1;
+    max-width: 220px;
+    padding: 1rem;
+    background: rgba(15,15,24,0.6);
+    border: 2px solid var(--glass-border);
+    border-radius: 14px;
+    cursor: pointer;
+    transition: border-color 0.3s, background 0.3s;
+    text-align: center;
+  }
+
+  .style-option:hover {
+    border-color: rgba(255,255,255,0.2);
+  }
+
+  .style-option.selected {
+    border-color: var(--jade);
+    background: rgba(0,200,150,0.08);
+  }
+
+  .style-option.selected[data-style="full-pax"] {
+    border-color: var(--magenta);
+    background: rgba(233,30,99,0.08);
+  }
+
+  .style-option .style-label {
+    font-weight: 700;
+    font-size: 0.95rem;
+    margin-bottom: 0.3rem;
+  }
+
+  .style-option .style-desc {
+    font-size: 0.75rem;
+    color: var(--text-dim);
+  }
+
+  .generate-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 1rem 2.5rem;
+    background: linear-gradient(135deg, var(--jade), #00A87A);
+    color: var(--basalt);
+    font-family: 'Manrope', sans-serif;
+    font-weight: 700;
+    font-size: 1.05rem;
+    border: none;
+    border-radius: 60px;
+    cursor: pointer;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, opacity 0.3s;
+    box-shadow: 0 4px 25px rgba(0,200,150,0.35);
+  }
+
+  .generate-btn:hover:not(:disabled) {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 8px 40px rgba(0,200,150,0.45);
+  }
+
+  .generate-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  /* Loading state */
+  .loading-overlay {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 3rem 1rem;
+  }
+
+  .loading-overlay.show {
+    display: flex;
+  }
+
+  .crystal-pulse {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, var(--jade), var(--magenta));
+    clip-path: polygon(50% 0%, 80% 25%, 80% 75%, 50% 100%, 20% 75%, 20% 25%);
+    animation: crystalPulse 1.5s ease-in-out infinite;
+  }
+
+  @keyframes crystalPulse {
+    0%, 100% { transform: scale(1); opacity: 0.7; }
+    50% { transform: scale(1.2); opacity: 1; }
+  }
+
+  .loading-text {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    color: var(--jade);
+    text-align: center;
+  }
+
+  /* Result */
+  .result-panel {
+    display: none;
+    text-align: center;
+  }
+
+  .result-panel.show {
+    display: block;
+  }
+
+  .result-panel img {
+    width: 100%;
+    max-width: 500px;
+    border-radius: 16px;
+    border: 2px solid var(--glass-border);
+    margin-bottom: 1.5rem;
+    box-shadow: 0 16px 60px rgba(0,200,150,0.15);
+  }
+
+  .result-actions {
+    display: flex;
+    gap: 0.8rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+  }
+
+  .result-actions button {
+    padding: 0.8rem 1.8rem;
+    border-radius: 50px;
+    font-family: 'Manrope', sans-serif;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    border: none;
+  }
+
+  .btn-download {
+    background: linear-gradient(135deg, var(--jade), #00A87A);
+    color: var(--basalt);
+    box-shadow: 0 4px 20px rgba(0,200,150,0.3);
+  }
+
+  .btn-download:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(0,200,150,0.4);
+  }
+
+  .btn-share {
+    background: transparent;
+    border: 1px solid var(--glass-border) !important;
+    color: var(--text);
+  }
+
+  .btn-share:hover {
+    border-color: var(--magenta) !important;
+    background: rgba(233,30,99,0.08);
+  }
+
+  .btn-retry {
+    background: transparent;
+    border: 1px solid var(--glass-border) !important;
+    color: var(--text-dim);
+  }
+
+  .btn-retry:hover {
+    border-color: var(--jade) !important;
+    color: var(--text);
+  }
+
+  .error-msg {
+    display: none;
+    background: rgba(233,30,99,0.1);
+    border: 1px solid rgba(233,30,99,0.3);
+    border-radius: 12px;
+    padding: 1rem 1.5rem;
+    color: var(--magenta);
+    font-size: 0.9rem;
+    margin-top: 1rem;
+  }
+
+  .error-msg.show {
+    display: block;
+  }
+
+  /* ============ RESPONSIVE ============ */
+  @media (max-width: 768px) {
+    .hero-compare { flex-direction: column; align-items: center; gap: 1rem; }
+    .vs-badge { margin: -0.3rem 0; }
+    .compare-card { width: 220px; }
+    .steps { grid-template-columns: 1fr; gap: 1rem; }
+    .gallery-grid { grid-template-columns: 1fr; }
+    .extras-grid { grid-template-columns: 1fr; }
+    .section { padding: 4rem 1.2rem; }
+    .real-examples { flex-direction: column; align-items: center; }
+    .real-card { width: 100%; max-width: 320px; }
+    .cta-btn-secondary { margin-left: 0; margin-top: 1rem; }
+    .cta-section .cta-buttons { display: flex; flex-direction: column; align-items: center; }
+    .upload-panel { padding: 1.5rem 1rem; }
+    .style-selector { flex-direction: column; align-items: center; }
+    .style-option { max-width: 100%; }
+  }
+
+  @media (max-width: 480px) {
+    .compare-card { width: 200px; }
+    .footer-links { flex-direction: column; gap: 0.8rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Video background fijo -->
+<div id="video-bg" style="position:fixed;inset:0;z-index:-2;background:#0F0F18;overflow:hidden;">
+  <video id="bg-video" muted playsinline preload="auto"
+    style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);min-width:100%;min-height:100%;object-fit:cover;opacity:0.35;">
+    <source src="bg-video.mp4" type="video/mp4">
+  </video>
+</div>
+
+<!-- Loading screen -->
+<div id="loading" style="position:fixed;inset:0;z-index:50;background:#0F0F18;display:flex;align-items:center;justify-content:center;">
+  <div style="text-align:center;">
+    <p style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:0.2em;color:rgba(255,255,255,0.5);">LOADING</p>
+    <div style="width:256px;height:1px;background:rgba(255,255,255,0.1);margin-top:32px;overflow:hidden;">
+      <div style="height:100%;background:white;width:33%;animation:pulse 1.5s ease infinite;"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Animated gradient fallback (hidden when video loads) -->
+<div class="bg-gradient" id="bg-gradient-fallback"></div>
+<div class="bg-noise"></div>
+
+<!-- Scroll progress bar -->
+<div class="scroll-progress" id="scrollProgress"></div>
+
+<!-- ============ HERO ============ -->
+<header class="hero">
+  <span class="hero-badge">Nuevo gesto Pax</span>
+  <h1><span class="magenta">Pax</span><span class="jade">earte</span></h1>
+  <p class="hero-sub">
+    Tu cara, su magia. <strong>Sube tu foto</strong> y la IA te transforma en miembro de la Tribu Pax en dos estilos cinematograficos.
+  </p>
+
+  <div class="hero-compare">
+    <div class="compare-card">
+      <img src="full-pax-woman-latina.png" alt="Ejemplo Full Pax - piel mineral jade, ojo ciclope, orejas elfas" loading="lazy">
+      <div class="compare-label label-full">Full Pax</div>
+    </div>
+    <div class="vs-badge">VS</div>
+    <div class="compare-card">
+      <img src="humanized-man-european.png" alt="Ejemplo Humanizado - tu piel real con outfit tribal Pax" loading="lazy">
+      <div class="compare-label label-human">Humanizado</div>
+    </div>
+  </div>
+
+  <div class="scroll-hint">
+    <span>Scroll</span>
+    <div class="scroll-arrow"></div>
+  </div>
+</header>
+
+<!-- ============ CONCEPTO ============ -->
+<section class="section section-reveal">
+  <span class="section-tag">El concepto</span>
+  <h2>No es un filtro.<br>Es una <span class="jade">declaracion</span>.</h2>
+  <div class="concepto-text">
+    <p>
+      Bajo la superficie del planeta existe la Tribu Pax: alquimistas juguetones que custodian cristales
+      cargados con <strong>anuraK</strong>, la energia que generan los actos de bondad humanos.
+      Cada vez que alguien ayuda a otro de verdad, un cristal pulsa. Esa cosquilla en el pecho
+      que sientes al hacer algo bueno tiene nombre: anuraK. Y tiene consecuencias.
+    </p>
+
+    <p>
+      Cuando te paxeas, no es cosmetico. Es poner cara y nombre a tu energia de ayuda.
+      En el lore Pax, cada humano que reconoce su conexion con la tribu
+      se convierte en un <strong>puente</strong> entre la superficie y el Uray Pacha,
+      el mundo subterraneo donde los cristales esperan ser cargados.
+    </p>
+
+    <div class="lore-quote">
+      "No vienen a salvar el mundo. Vienen a activarlo."<br>
+      Tu version Pax es la prueba de que ya empezaste.
+    </div>
+
+    <p>
+      <strong>Full Pax</strong> te da piel mineral jade, ojo ciclope,
+      orejas elfas y tatuajes tribales: como si hubieras nacido en el Uray Pacha.
+      <strong>Humanizado</strong> conserva tu piel real pero te viste con el outfit de la tribu:
+      bandana tribal, cristales violetas, tatuajes jade y proporciones chibi.
+      Ambas versiones se generan siempre. Tu eliges cual compartir, cual poner de perfil,
+      cual imprimir, cual insertar como actor en la mini-serie.
+    </p>
+  </div>
+</section>
+
+<div class="divider"><div class="divider-crystal"></div></div>
+
+<!-- ============ PERSONAS REALES ============ -->
+<section class="section section-reveal">
+  <span class="section-tag">Personas reales</span>
+  <h2>Aldo y Pipez,<br><span class="jade">paxeados</span></h2>
+  <div class="concepto-text" style="margin-bottom: 1rem;">
+    <p>No son personajes inventados. Son los creadores del proyecto, transformados por la misma IA. Asi se ve Paxearte con caras reales.</p>
+  </div>
+
+  <div class="real-examples">
+    <div class="real-card">
+      <img src="aldo-1.jpg" alt="Aldo paxeado - version Full Pax" loading="lazy">
+      <div class="real-card-info">
+        <div class="real-card-name">Aldo - Full Pax</div>
+        <div class="real-card-desc">Creador del proyecto, transformado en miembro de la tribu</div>
+        <div class="feedback-row" style="margin-top: 0.8rem;">
+          <button class="fb-btn" onclick="vote(this,'up')">&#128077; <span class="fb-count">0</span></button>
+          <button class="fb-btn" onclick="vote(this,'down')">&#128078; <span class="fb-count">0</span></button>
+        </div>
+        <input class="fb-input" type="text" placeholder="Feedback sobre este estilo...">
+      </div>
+    </div>
+
+    <div class="real-card">
+      <img src="aldo-2.jpg" alt="Aldo paxeado - version alternativa" loading="lazy">
+      <div class="real-card-info">
+        <div class="real-card-name">Aldo - Variante</div>
+        <div class="real-card-desc">Otra interpretacion del mismo rostro, diferente composicion</div>
+        <div class="feedback-row" style="margin-top: 0.8rem;">
+          <button class="fb-btn" onclick="vote(this,'up')">&#128077; <span class="fb-count">0</span></button>
+          <button class="fb-btn" onclick="vote(this,'down')">&#128078; <span class="fb-count">0</span></button>
+        </div>
+        <input class="fb-input" type="text" placeholder="Feedback sobre este estilo...">
+      </div>
+    </div>
+
+    <div class="real-card">
+      <img src="pipez.jpg" alt="Pipez paxeado" loading="lazy">
+      <div class="real-card-info">
+        <div class="real-card-name">Pipez - Paxeado</div>
+        <div class="real-card-desc">Co-creador del proyecto, su version en la Tribu Pax</div>
+        <div class="feedback-row" style="margin-top: 0.8rem;">
+          <button class="fb-btn" onclick="vote(this,'up')">&#128077; <span class="fb-count">0</span></button>
+          <button class="fb-btn" onclick="vote(this,'down')">&#128078; <span class="fb-count">0</span></button>
+        </div>
+        <input class="fb-input" type="text" placeholder="Feedback sobre este estilo...">
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"><div class="divider-crystal"></div></div>
+
+<!-- ============ GALERIA COMPARATIVA ============ -->
+<section class="section section-reveal">
+  <span class="section-tag">Galeria</span>
+  <h2>Full Pax vs <span class="magenta">Humanizado</span></h2>
+  <p class="concepto-text" style="margin-bottom: 0;">
+    Ejemplos generados por IA. Vota cada imagen para ayudarnos a calibrar el estilo final.
+  </p>
+
+  <div class="gallery-grid">
+
+    <!-- 1 -->
+    <div class="gallery-item">
+      <img src="full-pax-woman-latina.png" alt="Full Pax - Mujer Latina con baston de cristal" loading="lazy">
+      <div class="gallery-info">
+        <span class="gallery-tag tag-full">Full Pax</span>
+        <div class="gallery-title">Mujer latina con baston de cristal</div>
+        <div class="feedback-row">
+          <button class="fb-btn" onclick="vote(this,'up')">&#128077; <span class="fb-count">0</span></button>
+          <button class="fb-btn" onclick="vote(this,'down')">&#128078; <span class="fb-count">0</span></button>
+        </div>
+        <input class="fb-input" type="text" placeholder="Feedback (opcional)...">
+      </div>
+    </div>
+
+    <!-- 2 -->
+    <div class="gallery-item">
+      <img src="full-pax-man-asian.png" alt="Full Pax - Hombre asiatico con cristal en alto" loading="lazy">
+      <div class="gallery-info">
+        <span class="gallery-tag tag-full">Full Pax</span>
+        <div class="gallery-title">Hombre asiatico con cristal en alto</div>
+        <div class="feedback-row">
+          <button class="fb-btn" onclick="vote(this,'up')">&#128077; <span class="fb-count">0</span></button>
+          <button class="fb-btn" onclick="vote(this,'down')">&#128078; <span class="fb-count">0</span></button>
+        </div>
+        <input class="fb-input" type="text" placeholder="Feedback (opcional)...">
+      </div>
+    </div>
+
+    <!-- 3 -->
+    <div class="gallery-item">
+      <img src="humanized-woman-african.png" alt="Humanizado - Mujer africana con outfit tribal" loading="lazy">
+      <div class="gallery-info">
+        <span class="gallery-tag tag-human">Humanizado</span>
+        <div class="gallery-title">Mujer africana con outfit tribal</div>
+        <div class="feedback-row">
+          <button class="fb-btn" onclick="vote(this,'up')">&#128077; <span class="fb-count">0</span></button>
+          <button class="fb-btn" onclick="vote(this,'down')">&#128078; <span class="fb-count">0</span></button>
+        </div>
+        <input class="fb-input" type="text" placeholder="Feedback (opcional)...">
+      </div>
+    </div>
+
+    <!-- 4 -->
+    <div class="gallery-item">
+      <img src="humanized-man-european.png" alt="Humanizado - Hombre europeo pelirrojo" loading="lazy">
+      <div class="gallery-info">
+        <span class="gallery-tag tag-human">Humanizado</span>
+        <div class="gallery-title">Hombre europeo pelirrojo saludando</div>
+        <div class="feedback-row">
+          <button class="fb-btn" onclick="vote(this,'up')">&#128077; <span class="fb-count">0</span></button>
+          <button class="fb-btn" onclick="vote(this,'down')">&#128078; <span class="fb-count">0</span></button>
+        </div>
+        <input class="fb-input" type="text" placeholder="Feedback (opcional)...">
+      </div>
+    </div>
+
+    <!-- 5 -->
+    <div class="gallery-item">
+      <img src="charsheet-woman-middle-eastern.png" alt="Character Sheet - Mujer de Medio Oriente, 5 poses humanizado" loading="lazy">
+      <div class="gallery-info">
+        <span class="gallery-tag tag-sheet">Character Sheet</span>
+        <div class="gallery-title">Mujer de Medio Oriente — 5 poses humanizado</div>
+        <div class="feedback-row">
+          <button class="fb-btn" onclick="vote(this,'up')">&#128077; <span class="fb-count">0</span></button>
+          <button class="fb-btn" onclick="vote(this,'down')">&#128078; <span class="fb-count">0</span></button>
+        </div>
+        <input class="fb-input" type="text" placeholder="Feedback (opcional)...">
+      </div>
+    </div>
+
+    <!-- 6 -->
+    <div class="gallery-item">
+      <img src="charsheet-full-pax-kid.png" alt="Character Sheet - Nino Full Pax, 5 poses turquesa" loading="lazy">
+      <div class="gallery-info">
+        <span class="gallery-tag tag-sheet">Character Sheet</span>
+        <div class="gallery-title">Nino Full Pax — 5 poses turquesa</div>
+        <div class="feedback-row">
+          <button class="fb-btn" onclick="vote(this,'up')">&#128077; <span class="fb-count">0</span></button>
+          <button class="fb-btn" onclick="vote(this,'down')">&#128078; <span class="fb-count">0</span></button>
+        </div>
+        <input class="fb-input" type="text" placeholder="Feedback (opcional)...">
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"><div class="divider-crystal"></div></div>
+
+<!-- ============ COMO FUNCIONA ============ -->
+<section class="section section-reveal">
+  <span class="section-tag">Proceso</span>
+  <h2>Tres pasos. <span class="jade">Dos versiones</span>.</h2>
+
+  <div class="steps">
+    <div class="step">
+      <span class="step-number">01</span>
+      <span class="step-icon">&#128247;</span>
+      <h3>Sube tu foto</h3>
+      <p>Una selfie, un retrato, lo que tengas. La IA se adapta a cualquier angulo y resolucion.</p>
+    </div>
+    <div class="step">
+      <span class="step-number">02</span>
+      <span class="step-icon">&#9878;&#65039;</span>
+      <h3>Elige tu estilo</h3>
+      <p>Full Pax (piel mineral jade, ojo ciclope, orejas elfas) o Humanizado (tu piel real, outfit tribal).</p>
+    </div>
+    <div class="step">
+      <span class="step-number">03</span>
+      <span class="step-icon">&#10024;</span>
+      <h3>Recibe tu Pax</h3>
+      <p>Ambas versiones se generan siempre. Comparte, pon de perfil, imprime o inserta en la serie.</p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"><div class="divider-crystal"></div></div>
+
+<!-- ============ EXTRAS PREMIUM ============ -->
+<section class="section section-reveal">
+  <span class="section-tag">Extras premium</span>
+  <h2>Mas alla del <span class="magenta">avatar</span></h2>
+  <div class="concepto-text" style="margin-bottom: 0;">
+    <p>Paxearte basico es gratuito. Tres niveles premium que financian el ciclo virtuoso: tu compra carga un cristal. Un Ayni concreto.</p>
+  </div>
+
+  <div class="extras-grid">
+    <div class="extra-card">
+      <span class="extra-icon">&#128444;&#65039;</span>
+      <h3>Alta resolucion</h3>
+      <p>Tu avatar Pax en calidad poster, listo para imprimir, usar como fondo de pantalla o compartir en redes sin pixeles.</p>
+      <span class="extra-price">Proximamente</span>
+      <div class="feedback-row" style="margin-top: 1rem;">
+        <button class="fb-btn" onclick="vote(this,'up')">&#128077; <span class="fb-count">0</span></button>
+        <button class="fb-btn" onclick="vote(this,'down')">&#128078; <span class="fb-count">0</span></button>
+      </div>
+      <input class="fb-input" type="text" placeholder="Feedback de este extra...">
+    </div>
+
+    <div class="extra-card">
+      <span class="extra-icon">&#129529;</span>
+      <h3>Impresion 3D</h3>
+      <p>Tu avatar como figurita fisica. Modelo 3D optimizado para impresion FDM/resin, directo a tu escritorio.</p>
+      <span class="extra-price">Proximamente</span>
+      <div class="feedback-row" style="margin-top: 1rem;">
+        <button class="fb-btn" onclick="vote(this,'up')">&#128077; <span class="fb-count">0</span></button>
+        <button class="fb-btn" onclick="vote(this,'down')">&#128078; <span class="fb-count">0</span></button>
+      </div>
+      <input class="fb-input" type="text" placeholder="Feedback de este extra...">
+    </div>
+
+    <div class="extra-card">
+      <span class="extra-icon">&#127916;</span>
+      <h3>Actor en la mini-serie</h3>
+      <p>Tu Pax aparece como personaje en un episodio real de la webserie. Credits incluidos. Tu cara, en la Tribu.</p>
+      <span class="extra-price">Proximamente</span>
+      <div class="feedback-row" style="margin-top: 1rem;">
+        <button class="fb-btn" onclick="vote(this,'up')">&#128077; <span class="fb-count">0</span></button>
+        <button class="fb-btn" onclick="vote(this,'down')">&#128078; <span class="fb-count">0</span></button>
+      </div>
+      <input class="fb-input" type="text" placeholder="Feedback de este extra...">
+    </div>
+  </div>
+</section>
+
+<div class="divider"><div class="divider-crystal"></div></div>
+
+<!-- ============ CHARACTER SHEET PREVIEW ============ -->
+<section class="section section-reveal">
+  <span class="section-tag">Bonus</span>
+  <h2>Character Sheet: <span class="jade">5 poses</span></h2>
+  <div class="concepto-text">
+    <p>Cada avatar puede expandirse a un character sheet completo: 5 poses (frente, perfil, espalda, accion, emote). Ideal para usar tu Pax como personaje recurrente en animacion, videojuegos o la mini-serie.</p>
+  </div>
+
+  <div class="gallery-grid" style="grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));">
+    <div class="gallery-item">
+      <img src="charsheet-woman-middle-eastern.png" alt="Character Sheet Humanizado - 5 poses" loading="lazy">
+      <div class="gallery-info">
+        <span class="gallery-tag tag-sheet">Character Sheet</span>
+        <div class="gallery-title">Humanizado — frente, perfil, espalda, accion, emote</div>
+        <div class="feedback-row">
+          <button class="fb-btn" onclick="vote(this,'up')">&#128077; <span class="fb-count">0</span></button>
+          <button class="fb-btn" onclick="vote(this,'down')">&#128078; <span class="fb-count">0</span></button>
+        </div>
+        <input class="fb-input" type="text" placeholder="Feedback del character sheet...">
+      </div>
+    </div>
+    <div class="gallery-item">
+      <img src="charsheet-full-pax-kid.png" alt="Character Sheet Full Pax - 5 poses" loading="lazy">
+      <div class="gallery-info">
+        <span class="gallery-tag tag-sheet">Character Sheet</span>
+        <div class="gallery-title">Full Pax — 5 poses en turquesa mineral</div>
+        <div class="feedback-row">
+          <button class="fb-btn" onclick="vote(this,'up')">&#128077; <span class="fb-count">0</span></button>
+          <button class="fb-btn" onclick="vote(this,'down')">&#128078; <span class="fb-count">0</span></button>
+        </div>
+        <input class="fb-input" type="text" placeholder="Feedback del character sheet...">
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"><div class="divider-crystal"></div></div>
+
+<!-- ============ CTA / UPLOAD ============ -->
+<section class="cta-section section-reveal" id="upload-section">
+  <span class="section-tag">Tu turno</span>
+  <h2>Descubre tu <span class="jade">version Pax</span></h2>
+  <p class="concepto-text" style="margin: 0 auto 2.5rem; text-align: center;">
+    Sube tu foto y deja que la IA revele tu conexion con la Tribu.
+    Tu anuraK ya esta activo. Solo falta ponerle cara.
+  </p>
+
+  <div class="upload-panel" id="uploadPanel">
+    <!-- Dropzone -->
+    <div class="upload-dropzone" id="dropzone">
+      <span class="drop-icon">&#128247;</span>
+      <div class="drop-text"><strong>Arrastra tu foto aqui</strong> o toca para seleccionar</div>
+      <input type="file" accept="image/*" id="fileInput">
+    </div>
+
+    <!-- Preview -->
+    <div class="upload-preview" id="uploadPreview">
+      <img id="previewImg" alt="Preview de tu foto">
+      <div class="preview-name" id="previewName"></div>
+    </div>
+
+    <!-- Style selector -->
+    <div class="style-selector">
+      <div class="style-option selected" data-style="humanized" onclick="selectStyle(this)">
+        <div class="style-label" style="color: var(--magenta);">Humanizado</div>
+        <div class="style-desc">Tu piel real + outfit tribal Pax</div>
+      </div>
+      <div class="style-option" data-style="full-pax" onclick="selectStyle(this)">
+        <div class="style-label" style="color: var(--jade);">Full Pax</div>
+        <div class="style-desc">Piel mineral jade turquesa</div>
+      </div>
+    </div>
+
+    <!-- Generate button -->
+    <button class="generate-btn" id="generateBtn" disabled onclick="generatePax()">
+      &#9878;&#65039; Generar mi Pax
+    </button>
+
+    <!-- Error message -->
+    <div class="error-msg" id="errorMsg"></div>
+  </div>
+
+  <!-- Loading state -->
+  <div class="loading-overlay" id="loadingOverlay">
+    <div class="crystal-pulse"></div>
+    <div class="loading-text" id="loadingText">Los cristales estan procesando tu imagen...</div>
+  </div>
+
+  <!-- Result -->
+  <div class="result-panel" id="resultPanel">
+    <img id="resultImg" alt="Tu version Pax">
+    <div class="result-actions">
+      <button class="btn-download" onclick="downloadResult()">&#11015; Descargar</button>
+      <button class="btn-share" onclick="shareResult()">&#128279; Compartir</button>
+      <button class="btn-retry" onclick="resetUpload()">&#8634; Generar otro</button>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="footer-brand"><span class="jade">Pax</span>earte</div>
+  <p class="footer-tagline">Cada gesto cuenta y se ve. Tu cara en la Tribu Pax es un Ayni con nombre.</p>
+  <div class="footer-links">
+    <a href="/">Pax Home</a>
+    <a href="/oraculo">Oraculo</a>
+    <a href="#" onclick="window.scrollTo({top:0,behavior:'smooth'}); return false;">Volver arriba</a>
+  </div>
+  <p class="footer-copy">Pax &mdash; 2026 &mdash; Hecho con anuraK</p>
+</footer>
+
+<!-- ============ JS ============ -->
+<script>
+(function() {
+  'use strict';
+
+  // ---- Scroll-driven video ----
+  var video = document.getElementById('bg-video');
+  var loadingScreen = document.getElementById('loading');
+  var gradientFallback = document.getElementById('bg-gradient-fallback');
+  var videoLoaded = false;
+
+  video.addEventListener('canplaythrough', function() {
+    videoLoaded = true;
+    loadingScreen.style.display = 'none';
+    if (gradientFallback) gradientFallback.style.display = 'none';
+  });
+
+  video.addEventListener('error', function() {
+    // Fallback: show animated gradient
+    var videoBg = document.getElementById('video-bg');
+    videoBg.style.background = 'linear-gradient(135deg, #0F0F18, #00C896, #E91E63, #0F0F18)';
+    videoBg.style.backgroundSize = '400% 400%';
+    videoBg.style.animation = 'gradientShift 10s ease infinite';
+    loadingScreen.style.display = 'none';
+  });
+
+  video.load();
+
+  // Hide loading after 5s max (in case canplaythrough never fires)
+  setTimeout(function() { loadingScreen.style.display = 'none'; }, 5000);
+
+  // ---- Scroll progress bar ----
+  var progressBar = document.getElementById('scrollProgress');
+
+  function updateProgress() {
+    var scrollTop = window.scrollY;
+    var docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    var progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+    progressBar.style.width = progress + '%';
+  }
+
+  // ---- Scroll reveal (IntersectionObserver) ----
+  var revealObserver = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, {
+    threshold: 0.1,
+    rootMargin: '0px 0px -60px 0px'
+  });
+
+  document.querySelectorAll('.section-reveal').forEach(function(el) {
+    revealObserver.observe(el);
+  });
+
+  // ---- Hide scroll hint after first scroll ----
+  var scrollHint = document.querySelector('.scroll-hint');
+  var hintHidden = false;
+
+  function hideHint() {
+    if (!hintHidden && window.scrollY > 100) {
+      hintHidden = true;
+      if (scrollHint) {
+        scrollHint.style.transition = 'opacity 0.5s';
+        scrollHint.style.opacity = '0';
+      }
+    }
+  }
+
+  // ---- Scroll event (throttled via rAF) ----
+  var ticking = false;
+
+  window.addEventListener('scroll', function() {
+    if (!ticking) {
+      window.requestAnimationFrame(function() {
+        updateProgress();
+        hideHint();
+        // Scroll-driven video sync
+        if (videoLoaded && video.duration && !video.seeking) {
+          var maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+          var stopPoint = maxScroll * 0.8;
+          var fraction = Math.max(0, Math.min(1, window.scrollY / stopPoint));
+          video.currentTime = fraction * video.duration;
+        }
+        ticking = false;
+      });
+      ticking = true;
+    }
+  }, { passive: true });
+
+  // ---- Vote buttons (visual only, no backend) ----
+  window.vote = function(btn, direction) {
+    var row = btn.closest('.feedback-row');
+    var buttons = row.querySelectorAll('.fb-btn');
+    var wasActive = btn.classList.contains('active-up') || btn.classList.contains('active-down');
+    buttons.forEach(function(b) { b.classList.remove('active-up', 'active-down'); });
+    if (!wasActive) {
+      if (direction === 'up') btn.classList.add('active-up');
+      else btn.classList.add('active-down');
+    }
+    btn.style.transform = 'scale(1.15)';
+    setTimeout(function() { btn.style.transform = 'scale(1)'; }, 150);
+  };
+
+  // ============ UPLOAD / GENERATE LOGIC ============
+
+  var selectedFile = null;
+  var selectedStyle = 'humanized';
+  var resultImageUrl = null;
+
+  var fileInput = document.getElementById('fileInput');
+  var dropzone = document.getElementById('dropzone');
+  var uploadPreview = document.getElementById('uploadPreview');
+  var previewImg = document.getElementById('previewImg');
+  var previewName = document.getElementById('previewName');
+  var generateBtn = document.getElementById('generateBtn');
+  var uploadPanel = document.getElementById('uploadPanel');
+  var loadingOverlay = document.getElementById('loadingOverlay');
+  var loadingText = document.getElementById('loadingText');
+  var resultPanel = document.getElementById('resultPanel');
+  var resultImg = document.getElementById('resultImg');
+  var errorMsg = document.getElementById('errorMsg');
+
+  // File input change
+  fileInput.addEventListener('change', function(e) {
+    var file = e.target.files[0];
+    if (file) handleFile(file);
+  });
+
+  // Drag and drop
+  dropzone.addEventListener('dragover', function(e) {
+    e.preventDefault();
+    dropzone.classList.add('dragover');
+  });
+  dropzone.addEventListener('dragleave', function() {
+    dropzone.classList.remove('dragover');
+  });
+  dropzone.addEventListener('drop', function(e) {
+    e.preventDefault();
+    dropzone.classList.remove('dragover');
+    var file = e.dataTransfer.files[0];
+    if (file) handleFile(file);
+  });
+
+  function handleFile(file) {
+    if (!file.type.startsWith('image/')) {
+      showError('Por favor selecciona una imagen (JPG, PNG, WebP).');
+      return;
+    }
+    if (file.size > 20 * 1024 * 1024) {
+      showError('Imagen demasiado grande. Maximo 20MB.');
+      return;
+    }
+    selectedFile = file;
+    hideError();
+
+    // Show preview
+    var reader = new FileReader();
+    reader.onload = function(e) {
+      previewImg.src = e.target.result;
+      previewName.textContent = file.name + ' (' + (file.size / 1024 / 1024).toFixed(1) + ' MB)';
+      uploadPreview.classList.add('show');
+      dropzone.style.display = 'none';
+      generateBtn.disabled = false;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  // Style selector
+  window.selectStyle = function(el) {
+    document.querySelectorAll('.style-option').forEach(function(opt) {
+      opt.classList.remove('selected');
+    });
+    el.classList.add('selected');
+    selectedStyle = el.dataset.style;
+  };
+
+  // Loading messages rotation
+  var loadingMessages = [
+    'Los cristales estan procesando tu imagen...',
+    'Conectando con el Uray Pacha...',
+    'La tribu Pax esta preparando tu transformacion...',
+    'anuraK fluyendo... casi listo...',
+    'Los alquimistas ajustan los ultimos detalles...',
+    'Tu version Pax esta tomando forma...',
+  ];
+
+  // Generate
+  window.generatePax = function() {
+    if (!selectedFile) return;
+
+    // Hide upload, show loading
+    uploadPanel.style.display = 'none';
+    resultPanel.classList.remove('show');
+    loadingOverlay.classList.add('show');
+    hideError();
+
+    // Rotate loading messages
+    var msgIdx = 0;
+    var msgInterval = setInterval(function() {
+      msgIdx = (msgIdx + 1) % loadingMessages.length;
+      loadingText.textContent = loadingMessages[msgIdx];
+    }, 4000);
+
+    // Build form data
+    var formData = new FormData();
+    formData.append('photo', selectedFile);
+    formData.append('style', selectedStyle);
+
+    fetch('/api/paxearte', {
+      method: 'POST',
+      body: formData,
+    })
+    .then(function(res) { return res.json(); })
+    .then(function(data) {
+      clearInterval(msgInterval);
+      loadingOverlay.classList.remove('show');
+
+      if (data.ok && data.imageBase64) {
+        resultImageUrl = data.imageBase64;
+        resultImg.src = data.imageBase64;
+        resultPanel.classList.add('show');
+      } else {
+        uploadPanel.style.display = '';
+        showError(data.error || 'Error al generar la imagen. Intenta de nuevo.');
+      }
+    })
+    .catch(function(err) {
+      clearInterval(msgInterval);
+      loadingOverlay.classList.remove('show');
+      uploadPanel.style.display = '';
+      showError('Error de conexion. Verifica tu internet e intenta de nuevo.');
+      console.error('[paxearte]', err);
+    });
+  };
+
+  // Download result (base64 data URL)
+  window.downloadResult = function() {
+    if (!resultImageUrl) return;
+    var a = document.createElement('a');
+    a.href = resultImageUrl;
+    a.download = 'mi-pax-' + selectedStyle + '.png';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  };
+
+  // Share result (base64 — share page URL instead of image URL)
+  window.shareResult = function() {
+    if (!resultImageUrl) return;
+    var shareUrl = window.location.href;
+
+    if (navigator.share) {
+      navigator.share({
+        title: 'Mi version Pax',
+        text: 'Mira mi transformacion en miembro de la Tribu Pax! Crea la tuya en:',
+        url: shareUrl,
+      }).catch(function() {});
+    } else {
+      navigator.clipboard.writeText(shareUrl).then(function() {
+        alert('Link copiado al portapapeles!');
+      }).catch(function() {
+        prompt('Copia este link:', shareUrl);
+      });
+    }
+  };
+
+  // Reset to upload state
+  window.resetUpload = function() {
+    selectedFile = null;
+    resultImageUrl = null;
+    fileInput.value = '';
+    uploadPreview.classList.remove('show');
+    dropzone.style.display = '';
+    generateBtn.disabled = true;
+    resultPanel.classList.remove('show');
+    loadingOverlay.classList.remove('show');
+    uploadPanel.style.display = '';
+    hideError();
+    // Scroll to upload section
+    document.getElementById('upload-section').scrollIntoView({ behavior: 'smooth' });
+  };
+
+  function showError(msg) {
+    errorMsg.textContent = msg;
+    errorMsg.classList.add('show');
+  }
+
+  function hideError() {
+    errorMsg.classList.remove('show');
+  }
+
+  // ---- Initial call ----
+  updateProgress();
+
+})();
+</script>
+
+</body>
+</html>
