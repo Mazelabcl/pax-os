@@ -1245,6 +1245,26 @@ function sendFb(btn) {
     document.getElementById('cs-step3').style.display = 'block';
     document.getElementById('cs-step3').scrollIntoView({ behavior: 'smooth' });
 
+    // Compress character sheet to reduce request body size (~3MB → ~300KB)
+    // Vercel Free has 4.5MB body limit per request
+    var compressedChar = csCharBase64;
+    try {
+      var img = new Image();
+      img.src = csCharBase64;
+      var cvs = document.createElement('canvas');
+      var MAX_W = 768;
+      var scale = Math.min(1, MAX_W / (img.naturalWidth || 1024));
+      cvs.width = (img.naturalWidth || 1024) * scale;
+      cvs.height = (img.naturalHeight || 1024) * scale;
+      cvs.getContext('2d').drawImage(img, 0, 0, cvs.width, cvs.height);
+      compressedChar = cvs.toDataURL('image/jpeg', 0.8);
+      console.log('[child-story] Compressed char sheet: ' +
+        Math.round(csCharBase64.length/1024) + 'KB → ' +
+        Math.round(compressedChar.length/1024) + 'KB');
+    } catch(e) {
+      console.warn('[child-story] Compression failed, using original:', e);
+    }
+
     // Generate pages in batches of 3 (avoids OpenAI rate limiting)
     var completed = 0;
     var msgIdx = 0;
@@ -1273,7 +1293,7 @@ function sendFb(btn) {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            characterSheetBase64: csCharBase64,
+            characterSheetBase64: compressedChar,
             childName: name,
             childAge: age,
             superpower: csPower,
