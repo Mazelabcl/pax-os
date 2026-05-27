@@ -211,41 +211,29 @@ function getComicPage(
 // ---------------------------------------------------------------------------
 
 async function loadJiggyBuffer(): Promise<Buffer> {
-  // In Vercel prod, public/ files are on the CDN, not the lambda filesystem.
-  // Try filesystem first (dev), then fetch from public URL.
-  try {
-    const { readFile } = await import("fs/promises");
-    const { join } = await import("path");
-    const jiggyPath = join(
-      process.cwd(),
-      "_lore",
-      "personajes",
-      "jiggy.png"
-    );
-    return await readFile(jiggyPath);
-  } catch {
-    // Fallback: try public/ path
+  // Fetch from CDN (works in both dev and Vercel prod)
+  const base = process.env.VERCEL_URL
+    ? `https://${process.env.VERCEL_URL}`
+    : process.env.NEXT_PUBLIC_VERCEL_URL
+    ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
+    : "http://localhost:3000";
+
+  console.log(`[child-story/page] Fetching Jiggy from ${base}/images/personajes/jiggy.png`);
+
+  const resp = await fetch(`${base}/images/personajes/jiggy.png`);
+  if (!resp.ok) {
+    // Fallback: try filesystem (dev only)
     try {
       const { readFile } = await import("fs/promises");
       const { join } = await import("path");
-      const publicPath = join(
-        process.cwd(),
-        "public",
-        "images",
-        "personajes",
-        "jiggy.png"
-      );
-      return await readFile(publicPath);
+      const localPath = join(process.cwd(), "public", "images", "personajes", "jiggy.png");
+      console.log(`[child-story/page] CDN failed, trying local: ${localPath}`);
+      return await readFile(localPath);
     } catch {
-      // Last resort for Vercel: fetch from own URL
-      const base = process.env.VERCEL_URL
-        ? `https://${process.env.VERCEL_URL}`
-        : "http://localhost:3000";
-      const resp = await fetch(`${base}/images/personajes/jiggy.png`);
-      if (!resp.ok) throw new Error("Failed to load Jiggy reference image");
-      return Buffer.from(await resp.arrayBuffer());
+      throw new Error(`Failed to load Jiggy ref: CDN ${resp.status}, filesystem also failed`);
     }
   }
+  return Buffer.from(await resp.arrayBuffer());
 }
 
 // ---------------------------------------------------------------------------
@@ -392,16 +380,16 @@ export async function POST(req: NextRequest) {
       );
       const charFile = new File(
         [new Uint8Array(charSheetBuffer)],
-        "character-sheet.png",
-        { type: "image/png" }
+        "character-sheet.jpg",
+        { type: characterSheetBase64.startsWith("data:image/jpeg") ? "image/jpeg" : "image/png" }
       );
       imageFiles = [jiggyFile, charFile];
     } else {
       // Pages without Jiggy: only child character sheet
       const charFile = new File(
         [new Uint8Array(charSheetBuffer)],
-        "character-sheet.png",
-        { type: "image/png" }
+        "character-sheet.jpg",
+        { type: characterSheetBase64.startsWith("data:image/jpeg") ? "image/jpeg" : "image/png" }
       );
       imageFiles = [charFile];
     }
@@ -462,7 +450,7 @@ export async function POST(req: NextRequest) {
     }
 
     return NextResponse.json(
-      { ok: false, error: "Error al generar la pagina. Intenta de nuevo." },
+      { ok: false, error: `Error: ${e.message || "desconocido"}. Intenta de nuevo.` },
       { status: 500 }
     );
   }
