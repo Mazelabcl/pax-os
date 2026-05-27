@@ -752,7 +752,7 @@ footer a:hover { text-decoration: underline; }
     <div class="step-card glass">
       <div class="step-num">3</div>
       <h3>Recibe la historia</h3>
-      <p>Generamos un libro ilustrado de 7 paginas donde tu hijo es el heroe. Listo para leer en pantalla o mandar a imprimir.</p>
+      <p>Elige Storybook (10 paginas) o Comic (6 paginas con paneles). Cada pagina se genera en tiempo real y aparece al instante.</p>
     </div>
   </div>
 </section>
@@ -833,8 +833,31 @@ footer a:hover { text-decoration: underline; }
     <h2>Crea una historia para tu hijo</h2>
     <p class="lead">Un libro donde tu hijo es el heroe. Con su cara, su nombre y su superpoder. No existe otro igual en el mundo.</p>
 
+    <!-- STEP 0: Format selector -->
+    <div id="cs-step0" class="cs-step">
+      <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;max-width:560px;margin:0 auto;">
+        <div class="cs-format-opt selected" data-format="storybook" data-pages="10" onclick="csSelectFormat(this)" style="flex:1;min-width:220px;max-width:260px;padding:28px 20px;background:rgba(15,15,24,0.6);border:2px solid var(--jade);border-radius:16px;cursor:pointer;text-align:center;transition:all 0.3s;">
+          <div style="font-size:42px;margin-bottom:10px;">&#128214;</div>
+          <div style="font-weight:800;font-size:18px;margin-bottom:6px;">Storybook</div>
+          <div style="font-size:13px;color:var(--text-dim);">10 paginas ilustradas, una escena por pagina. Ideal para leer antes de dormir.</div>
+          <div style="margin-top:10px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--jade);">~8 min generacion</div>
+        </div>
+        <div class="cs-format-opt" data-format="comic" data-pages="6" onclick="csSelectFormat(this)" style="flex:1;min-width:220px;max-width:260px;padding:28px 20px;background:rgba(15,15,24,0.6);border:2px solid var(--glass-border);border-radius:16px;cursor:pointer;text-align:center;transition:all 0.3s;">
+          <div style="font-size:42px;margin-bottom:10px;">&#128165;</div>
+          <div style="font-weight:800;font-size:18px;margin-bottom:6px;">Comic</div>
+          <div style="font-size:13px;color:var(--text-dim);">6 paginas con 4 paneles cada una. Estilo comic con burbujas de dialogo.</div>
+          <div style="margin-top:10px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--amber);">~5 min generacion</div>
+        </div>
+      </div>
+      <div style="text-align:center;margin-top:24px;">
+        <button onclick="csGoToStep1()" style="display:inline-flex;align-items:center;gap:8px;padding:14px 36px;background:linear-gradient(135deg,var(--magenta),#B030A0);color:white;font-size:16px;font-weight:700;border:none;border-radius:14px;cursor:pointer;transition:transform 0.2s,box-shadow 0.2s;box-shadow:0 4px 24px rgba(233,30,99,0.3);">
+          Siguiente &#8594;
+        </button>
+      </div>
+    </div>
+
     <!-- STEP 1: Upload photo -->
-    <div id="cs-step1" class="cs-step">
+    <div id="cs-step1" style="display:none;" class="cs-step">
       <div class="cs-panel glass" style="max-width:500px;margin:0 auto;padding:2rem;">
         <h3 style="font-size:18px;margin-bottom:16px;">Paso 1: Sube una foto de tu hijo</h3>
         <div class="cs-dropzone" id="csDropzone" style="border:2px dashed rgba(0,200,150,0.3);border-radius:14px;padding:2rem;cursor:pointer;transition:border-color 0.3s;position:relative;margin-bottom:16px;">
@@ -907,27 +930,38 @@ footer a:hover { text-decoration: underline; }
             </div>
           </div>
         </div>
-        <button onclick="csGenerateStory()" style="display:inline-flex;align-items:center;gap:6px;padding:14px 32px;background:linear-gradient(135deg,var(--magenta),#B030A0);color:white;font-size:16px;font-weight:700;border:none;border-radius:14px;cursor:pointer;transition:transform 0.2s,box-shadow 0.2s;box-shadow:0 4px 24px rgba(233,30,99,0.3);">
-          Generar historia (7 paginas)
+        <button id="csCreateStoryBtn" onclick="csGenerateStory()" style="display:inline-flex;align-items:center;gap:6px;padding:14px 32px;background:linear-gradient(135deg,var(--magenta),#B030A0);color:white;font-size:16px;font-weight:700;border:none;border-radius:14px;cursor:pointer;transition:transform 0.2s,box-shadow 0.2s;box-shadow:0 4px 24px rgba(233,30,99,0.3);">
+          Crear historia
         </button>
-        <div style="margin-top:10px;font-size:12px;color:var(--text-dim);">Tarda ~2-3 minutos. No cierres esta pagina.</div>
+        <div id="csFormatBadge" style="margin-top:10px;font-size:12px;color:var(--text-dim);"></div>
         <div id="csError2" style="display:none;margin-top:12px;background:rgba(233,30,99,0.1);border:1px solid rgba(233,30,99,0.3);border-radius:10px;padding:10px;color:var(--magenta);font-size:13px;"></div>
       </div>
     </div>
 
-    <!-- LOADING: Story generation -->
-    <div id="cs-loading2" style="display:none;text-align:center;padding:3rem 0;">
-      <div style="width:50px;height:50px;margin:0 auto 16px;background:linear-gradient(135deg,var(--jade),var(--magenta));clip-path:polygon(50% 0%,80% 25%,80% 75%,50% 100%,20% 75%,20% 25%);animation:crystalPulse 1.5s ease-in-out infinite;"></div>
-      <div style="font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--jade);" id="csLoadText2">Generando pagina 1 de 7...</div>
-      <div style="margin-top:12px;font-size:11px;color:var(--text-dim);">Esto tarda ~2-3 minutos. Los cristales trabajan en cada escena.</div>
-    </div>
-
-    <!-- STEP 3: Story result -->
+    <!-- STEP 3: Page-by-page generation + progressive display -->
     <div id="cs-step3" style="display:none;" class="cs-step">
       <div style="max-width:720px;margin:0 auto;">
-        <h3 style="font-size:22px;margin-bottom:24px;text-align:center;">La historia de <span id="csStoryName"></span></h3>
+        <h3 style="font-size:22px;margin-bottom:8px;text-align:center;">La historia de <span id="csStoryName"></span></h3>
+        <div id="csFormatLabel" style="text-align:center;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--amber);margin-bottom:24px;"></div>
+
+        <!-- Progress bar (visible while generating) -->
+        <div id="csProgressWrap" style="max-width:400px;margin:0 auto 20px;text-align:center;">
+          <div style="background:rgba(255,255,255,0.06);border-radius:100px;height:8px;overflow:hidden;margin-bottom:10px;">
+            <div id="csProgressBar" style="height:100%;background:linear-gradient(90deg,var(--jade),var(--amber));width:0%;transition:width 0.6s ease;border-radius:100px;"></div>
+          </div>
+          <div id="csProgressText" style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--jade);margin-bottom:4px;"></div>
+          <div id="csProgressMsg" style="font-size:13px;color:var(--text-dim);min-height:1.4em;"></div>
+          <div style="margin-top:12px;">
+            <div id="csProgressCrystal" style="width:40px;height:40px;margin:0 auto;background:linear-gradient(135deg,var(--jade),var(--magenta));clip-path:polygon(50% 0%,80% 25%,80% 75%,50% 100%,20% 75%,20% 25%);animation:crystalPulse 1.5s ease-in-out infinite;"></div>
+          </div>
+        </div>
+
+        <!-- Pages container (pages appear here as they arrive) -->
         <div id="csStoryPages"></div>
-        <div style="text-align:center;margin-top:32px;">
+
+        <!-- Actions (shown when complete) -->
+        <div id="csCompleteActions" style="display:none;text-align:center;margin-top:32px;">
+          <button onclick="alert('PDF disponible pronto!')" style="padding:12px 28px;background:linear-gradient(135deg,var(--jade),#009970);color:white;font-size:15px;font-weight:700;border:none;border-radius:12px;cursor:pointer;margin-right:12px;transition:transform 0.2s;">Descargar PDF</button>
           <button onclick="csRestart()" style="padding:12px 28px;background:transparent;border:1px solid var(--glass-border);color:var(--text);font-size:15px;font-weight:600;border-radius:12px;cursor:pointer;">Crear otra historia</button>
         </div>
       </div>
@@ -1018,19 +1052,52 @@ function sendFb(btn) {
   setTimeout(function() { status.textContent = ''; }, 3000);
 }
 
-/* ══════════════════════════ CHILD STORY CREATOR ══════════════════════════ */
+/* ══════════════════════════ CHILD STORY CREATOR v2 (page-by-page) ══════════════════════════ */
 (function() {
   'use strict';
 
   var csFile = null;
   var csStyle = 'humanized';
-  var csCharUrl = '';
+  var csCharBase64 = '';
   var csPower = 'ser generoso';
+  var csFormat = 'storybook';
+  var csTotalPages = 10;
+  var csGenerating = false;
 
   var csFileInput = document.getElementById('csFileInput');
   var csDropzone = document.getElementById('csDropzone');
 
-  // Step 1: File handling
+  // Loading messages that rotate during page generation
+  var loadingMsgs = [
+    'Los cristales estan procesando tu historia...',
+    'Jiggy esta preparando la siguiente escena...',
+    'La tribu esta emocionada de conocer a {NAME}...',
+    'Los tuneles del Uray Pacha se iluminan...',
+    'anuraK fluye por los cristales...',
+    'Wiz revisa que todo este perfecto...',
+    'Byte calcula la mejor composicion...',
+    'Luxa se asegura de que haya suficiente luz...',
+  ];
+
+  // Format selector
+  window.csSelectFormat = function(el) {
+    document.querySelectorAll('.cs-format-opt').forEach(function(opt) {
+      opt.classList.remove('selected');
+      opt.style.borderColor = 'var(--glass-border)';
+    });
+    el.classList.add('selected');
+    el.style.borderColor = 'var(--jade)';
+    csFormat = el.dataset.format;
+    csTotalPages = parseInt(el.dataset.pages, 10);
+  };
+
+  window.csGoToStep1 = function() {
+    document.getElementById('cs-step0').style.display = 'none';
+    document.getElementById('cs-step1').style.display = '';
+    document.getElementById('cs-step1').scrollIntoView({ behavior: 'smooth' });
+  };
+
+  // File handling
   if (csFileInput) {
     csFileInput.addEventListener('change', function(e) {
       var file = e.target.files[0];
@@ -1117,8 +1184,17 @@ function sendFb(btn) {
       clearInterval(msgInt);
       document.getElementById('cs-loading1').style.display = 'none';
       if (data.ok && data.imageBase64) {
-        csCharUrl = data.imageBase64;
+        csCharBase64 = data.imageBase64;
         document.getElementById('csCharSheet').src = data.imageBase64;
+        // Update button text and badge with format info
+        var btnLabel = csFormat === 'comic'
+          ? 'Crear comic (6 paginas)'
+          : 'Crear storybook (10 paginas)';
+        document.getElementById('csCreateStoryBtn').textContent = btnLabel;
+        var fmtBadge = csFormat === 'comic'
+          ? 'Formato: Comic (6 paginas, ~5 min)'
+          : 'Formato: Storybook (10 paginas, ~8 min)';
+        document.getElementById('csFormatBadge').textContent = fmtBadge;
         document.getElementById('cs-step2').style.display = 'block';
         document.getElementById('cs-step2').scrollIntoView({ behavior: 'smooth' });
       } else {
@@ -1137,19 +1213,9 @@ function sendFb(btn) {
     });
   };
 
-  // Generate story
-  var loadMsgs2 = [
-    'Generando pagina 1 de 7 — La llegada...',
-    'Generando pagina 2 de 7 — Jiggy y KZ...',
-    'Generando pagina 3 de 7 — El cristal enfermo...',
-    'Generando pagina 4 de 7 — El superpoder...',
-    'Generando pagina 5 de 7 — anuraK...',
-    'Generando pagina 6 de 7 — La celebracion...',
-    'Generando pagina 7 de 7 — De vuelta a casa...',
-    'Casi listo... los ultimos detalles...',
-  ];
-
+  // ── Generate story page-by-page ──
   window.csGenerateStory = function() {
+    if (csGenerating) return;
     var name = document.getElementById('csChildName').value.trim();
     var age = parseInt(document.getElementById('csChildAge').value, 10);
 
@@ -1164,86 +1230,149 @@ function sendFb(btn) {
       return;
     }
 
+    csGenerating = true;
     document.getElementById('csError2').style.display = 'none';
     document.getElementById('cs-step2').style.display = 'none';
-    document.getElementById('cs-loading2').style.display = 'block';
 
-    var msgIdx = 0;
-    var msgInt = setInterval(function() {
-      msgIdx = Math.min(msgIdx + 1, loadMsgs2.length - 1);
-      document.getElementById('csLoadText2').textContent = loadMsgs2[msgIdx];
-    }, 25000); // ~25s per page
+    // Show step 3 with progress
+    document.getElementById('csStoryName').textContent = name;
+    document.getElementById('csFormatLabel').textContent =
+      csFormat === 'comic' ? 'COMIC — 6 PAGINAS' : 'STORYBOOK — 10 PAGINAS';
+    document.getElementById('csStoryPages').innerHTML = '';
+    document.getElementById('csCompleteActions').style.display = 'none';
+    document.getElementById('csProgressWrap').style.display = '';
+    document.getElementById('csProgressCrystal').style.display = '';
+    document.getElementById('cs-step3').style.display = 'block';
+    document.getElementById('cs-step3').scrollIntoView({ behavior: 'smooth' });
 
-    fetch('/api/child-story', {
+    // Start sequential page generation
+    generatePagesSequentially(name, age, 1);
+  };
+
+  function generatePagesSequentially(name, age, pageNum) {
+    if (pageNum > csTotalPages) {
+      // All done
+      csGenerating = false;
+      document.getElementById('csProgressWrap').style.display = 'none';
+      document.getElementById('csProgressCrystal').style.display = 'none';
+      document.getElementById('csCompleteActions').style.display = '';
+      return;
+    }
+
+    // Update progress
+    var pct = Math.round(((pageNum - 1) / csTotalPages) * 100);
+    document.getElementById('csProgressBar').style.width = pct + '%';
+    document.getElementById('csProgressText').textContent =
+      'Pagina ' + pageNum + '/' + csTotalPages;
+    var msgIdx = (pageNum - 1) % loadingMsgs.length;
+    document.getElementById('csProgressMsg').textContent =
+      loadingMsgs[msgIdx].replace('{NAME}', name);
+
+    // Rotate message while waiting
+    var rotateInt = setInterval(function() {
+      msgIdx = (msgIdx + 1) % loadingMsgs.length;
+      document.getElementById('csProgressMsg').textContent =
+        loadingMsgs[msgIdx].replace('{NAME}', name);
+    }, 4000);
+
+    fetch('/api/child-story/page', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        characterSheetUrl: csCharUrl, // base64 data URL from /api/paxearte
+        characterSheetBase64: csCharBase64,
         childName: name,
         childAge: age,
         superpower: csPower,
+        pageNumber: pageNum,
+        format: csFormat,
+        totalPages: csTotalPages,
       }),
     })
     .then(function(r) { return r.json(); })
     .then(function(data) {
-      clearInterval(msgInt);
-      document.getElementById('cs-loading2').style.display = 'none';
-      if (data.ok && data.pages) {
-        showStory(data.pages, name);
+      clearInterval(rotateInt);
+      if (data.ok) {
+        appendPage(data, pageNum);
+        // Update progress after success
+        var donePct = Math.round((pageNum / csTotalPages) * 100);
+        document.getElementById('csProgressBar').style.width = donePct + '%';
+        // Generate next page
+        generatePagesSequentially(name, age, pageNum + 1);
       } else {
-        document.getElementById('cs-step2').style.display = '';
-        document.getElementById('csError2').textContent = data.error || 'Error al generar historia.';
-        document.getElementById('csError2').style.display = 'block';
+        // Error on this page — append placeholder and continue
+        appendPage({
+          pageNum: pageNum,
+          title: 'Pagina ' + pageNum,
+          text: data.error || 'Error al generar esta pagina.',
+          imageBase64: '',
+        }, pageNum);
+        generatePagesSequentially(name, age, pageNum + 1);
       }
     })
     .catch(function(err) {
-      clearInterval(msgInt);
-      document.getElementById('cs-loading2').style.display = 'none';
-      document.getElementById('cs-step2').style.display = '';
-      document.getElementById('csError2').textContent = 'Error de conexion.';
-      document.getElementById('csError2').style.display = 'block';
-      console.error(err);
+      clearInterval(rotateInt);
+      console.error('Error pagina ' + pageNum + ':', err);
+      appendPage({
+        pageNum: pageNum,
+        title: 'Pagina ' + pageNum,
+        text: 'Error de conexion al generar esta pagina.',
+        imageBase64: '',
+      }, pageNum);
+      generatePagesSequentially(name, age, pageNum + 1);
     });
-  };
+  }
 
-  function showStory(pages, name) {
-    document.getElementById('csStoryName').textContent = name;
+  function appendPage(page, pageNum) {
     var container = document.getElementById('csStoryPages');
-    container.innerHTML = '';
+    var div = document.createElement('div');
+    div.className = 'page-spread glass reveal';
+    div.style.marginBottom = '40px';
+    div.dataset.page = pageNum;
 
-    pages.forEach(function(page) {
-      var div = document.createElement('div');
-      div.className = 'page-spread glass';
-      div.style.marginBottom = '40px';
+    var aspectRatio = csFormat === 'comic' ? '2/3' : '3/2';
 
-      var imgHtml = page.imageBase64
-        ? '<img src="' + page.imageBase64 + '" alt="Pagina ' + page.pageNum + '" style="width:100%;display:block;aspect-ratio:3/2;object-fit:cover;border-radius:20px 20px 0 0;">'
-        : '<div style="width:100%;aspect-ratio:3/2;background:var(--basalt-2,#16161F);display:flex;align-items:center;justify-content:center;color:var(--text-dim);border-radius:20px 20px 0 0;">Imagen no disponible</div>';
+    var imgHtml = page.imageBase64
+      ? '<img src="' + page.imageBase64 + '" alt="Pagina ' + page.pageNum + '" style="width:100%;display:block;aspect-ratio:' + aspectRatio + ';object-fit:cover;border-radius:20px 20px 0 0;">'
+      : '<div style="width:100%;aspect-ratio:' + aspectRatio + ';background:var(--basalt-2,#16161F);display:flex;align-items:center;justify-content:center;color:var(--text-dim);border-radius:20px 20px 0 0;">Imagen no disponible</div>';
 
-      div.innerHTML = imgHtml +
-        '<div style="padding:20px 24px;">' +
-        '<span class="page-tag">Pagina ' + page.pageNum + '</span>' +
-        '<h3 style="font-size:18px;font-weight:800;margin-bottom:8px;">' + page.title + '</h3>' +
-        '<p style="color:var(--text-dim);font-size:14px;line-height:1.6;">' + page.text + '</p>' +
-        '</div>';
+    div.innerHTML = imgHtml +
+      '<div style="padding:20px 24px;">' +
+      '<span class="page-tag">Pagina ' + page.pageNum + '</span>' +
+      '<h3 style="font-size:18px;font-weight:800;margin-bottom:8px;">' + page.title + '</h3>' +
+      '<p style="color:var(--text-dim);font-size:14px;line-height:1.6;">' + page.text + '</p>' +
+      '<div class="vote-row">' +
+      '<button class="vote-btn" onclick="vote(this,\'up\')">&#128077; Me gusta</button>' +
+      '<button class="vote-btn" onclick="vote(this,\'down\')">&#128078; Mejorar</button>' +
+      '<input class="vote-input" type="text" placeholder="Comentario opcional..." maxlength="280" />' +
+      '<button class="vote-send" onclick="sendFb(this)">Enviar</button>' +
+      '</div>' +
+      '<div class="vote-status"></div>' +
+      '</div>';
 
-      container.appendChild(div);
+    container.appendChild(div);
+
+    // Trigger reveal animation
+    requestAnimationFrame(function() {
+      div.classList.add('in');
     });
 
-    document.getElementById('cs-step3').style.display = 'block';
-    document.getElementById('cs-step3').scrollIntoView({ behavior: 'smooth' });
+    // Scroll to new page
+    div.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 
   // Restart
   window.csRestart = function() {
     csFile = null;
-    csCharUrl = '';
+    csCharBase64 = '';
+    csGenerating = false;
     document.getElementById('cs-step3').style.display = 'none';
     document.getElementById('cs-step2').style.display = 'none';
-    document.getElementById('cs-step1').style.display = '';
+    document.getElementById('cs-step1').style.display = 'none';
+    document.getElementById('cs-step0').style.display = '';
     document.getElementById('csPreview').style.display = 'none';
     document.getElementById('csDropzone').style.display = '';
     document.getElementById('csGenCharBtn').disabled = true;
+    document.getElementById('csStoryPages').innerHTML = '';
     if (csFileInput) csFileInput.value = '';
     document.getElementById('cta').scrollIntoView({ behavior: 'smooth' });
   };
