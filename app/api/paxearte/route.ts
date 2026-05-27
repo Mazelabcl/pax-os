@@ -48,6 +48,23 @@ OUTFIT (mandatory on all poses):
 
 STYLE: 3D Pixar-quality render, PBR materials, soft studio lighting, white background, clean character sheet layout with clear separation between poses.`;
 
+const PIXAR_PROMPT = `Transform this child's photo into a 3D Pixar/Disney animated movie character.
+
+CRITICAL — LIKENESS IS EVERYTHING:
+- Keep the EXACT same face shape, nose, mouth, eyes, eyebrows, hair color, hair style, skin tone
+- The person looking at this must immediately say "that's my kid!"
+- Do NOT change proportions, do NOT add fantasy elements, do NOT change clothing significantly
+- This is a STYLE TRANSFER only: real photo → 3D animated Pixar render
+
+STYLE:
+- 3D Pixar-quality render (like Coco, Inside Out, Turning Red)
+- Soft ambient lighting, warm tones
+- Slightly larger eyes (Pixar style) but keeping the same eye color and shape
+- Smooth skin with subtle subsurface scattering
+- Clean white/light gradient background
+- Single portrait, chest-up, looking at camera with a natural smile
+- High quality, 4K render feel`;
+
 const FULL_PAX_PROMPT = `Transform this person into a FULL PAX tribe character sheet with 5 poses on a clean white background.
 
 CRITICAL IDENTITY RULES:
@@ -94,9 +111,9 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    if (!["humanized", "full-pax"].includes(style)) {
+    if (!["humanized", "full-pax", "pixar"].includes(style)) {
       return NextResponse.json(
-        { ok: false, error: "Estilo debe ser 'humanized' o 'full-pax'." },
+        { ok: false, error: "Estilo debe ser 'humanized', 'full-pax' o 'pixar'." },
         { status: 400 }
       );
     }
@@ -130,7 +147,7 @@ export async function POST(req: NextRequest) {
 
     // 3) Call OpenAI
     const openai = new OpenAI({ apiKey });
-    const prompt = style === "full-pax" ? FULL_PAX_PROMPT : HUMANIZED_PROMPT;
+    const prompt = style === "pixar" ? PIXAR_PROMPT : style === "full-pax" ? FULL_PAX_PROMPT : HUMANIZED_PROMPT;
 
     console.log(`[paxearte] Generando character sheet | style=${style} | photoSize=${photo.size}`);
     const t0 = Date.now();

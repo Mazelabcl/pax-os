@@ -1245,7 +1245,7 @@ function sendFb(btn) {
     document.getElementById('cs-step3').style.display = 'block';
     document.getElementById('cs-step3').scrollIntoView({ behavior: 'smooth' });
 
-    // Start ALL pages in parallel — ~45 seg total en vez de ~7.5 min
+    // Generate pages in batches of 3 (avoids OpenAI rate limiting)
     var completed = 0;
     var msgIdx = 0;
     var rotateInt = setInterval(function() {
@@ -1255,14 +1255,21 @@ function sendFb(btn) {
     }, 4000);
 
     document.getElementById('csProgressText').textContent =
-      'Generando ' + csTotalPages + ' paginas en paralelo...';
+      'Generando ' + csTotalPages + ' paginas...';
     document.getElementById('csProgressMsg').textContent =
       loadingMsgs[0].replace('{NAME}', name);
 
-    var promises = [];
-    for (var p = 1; p <= csTotalPages; p++) {
-      (function(pageNum) {
-        var promise = fetch('/api/child-story/page', {
+    // Build all page numbers, then process in batches of 3
+    var allPages = [];
+    for (var p = 1; p <= csTotalPages; p++) allPages.push(p);
+    var BATCH_SIZE = 3;
+
+    function processBatch(startIdx) {
+      var batch = allPages.slice(startIdx, startIdx + BATCH_SIZE);
+      if (batch.length === 0) return Promise.resolve();
+
+      var batchPromises = batch.map(function(pageNum) {
+        return fetch('/api/child-story/page', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -1303,11 +1310,14 @@ function sendFb(btn) {
             imageBase64: '',
           }, pageNum);
         });
-        promises.push(promise);
-      })(p);
+        return promise;
+      });
+      return Promise.all(batchPromises).then(function() {
+        return processBatch(startIdx + BATCH_SIZE);
+      });
     }
 
-    Promise.all(promises).then(function() {
+    processBatch(0).then(function() {
       clearInterval(rotateInt);
       csGenerating = false;
       document.getElementById('csProgressWrap').style.display = 'none';
