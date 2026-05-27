@@ -1245,82 +1245,83 @@ function sendFb(btn) {
     document.getElementById('cs-step3').style.display = 'block';
     document.getElementById('cs-step3').scrollIntoView({ behavior: 'smooth' });
 
-    // Start sequential page generation
-    generatePagesSequentially(name, age, 1);
-  };
-
-  function generatePagesSequentially(name, age, pageNum) {
-    if (pageNum > csTotalPages) {
-      // All done
-      csGenerating = false;
-      document.getElementById('csProgressWrap').style.display = 'none';
-      document.getElementById('csProgressCrystal').style.display = 'none';
-      document.getElementById('csCompleteActions').style.display = '';
-      return;
-    }
-
-    // Update progress
-    var pct = Math.round(((pageNum - 1) / csTotalPages) * 100);
-    document.getElementById('csProgressBar').style.width = pct + '%';
-    document.getElementById('csProgressText').textContent =
-      'Pagina ' + pageNum + '/' + csTotalPages;
-    var msgIdx = (pageNum - 1) % loadingMsgs.length;
-    document.getElementById('csProgressMsg').textContent =
-      loadingMsgs[msgIdx].replace('{NAME}', name);
-
-    // Rotate message while waiting
+    // Start ALL pages in parallel — ~45 seg total en vez de ~7.5 min
+    var completed = 0;
+    var msgIdx = 0;
     var rotateInt = setInterval(function() {
       msgIdx = (msgIdx + 1) % loadingMsgs.length;
       document.getElementById('csProgressMsg').textContent =
         loadingMsgs[msgIdx].replace('{NAME}', name);
     }, 4000);
 
-    fetch('/api/child-story/page', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        characterSheetBase64: csCharBase64,
-        childName: name,
-        childAge: age,
-        superpower: csPower,
-        pageNumber: pageNum,
-        format: csFormat,
-        totalPages: csTotalPages,
-      }),
-    })
-    .then(function(r) { return r.json(); })
-    .then(function(data) {
+    document.getElementById('csProgressText').textContent =
+      'Generando ' + csTotalPages + ' paginas en paralelo...';
+    document.getElementById('csProgressMsg').textContent =
+      loadingMsgs[0].replace('{NAME}', name);
+
+    var promises = [];
+    for (var p = 1; p <= csTotalPages; p++) {
+      (function(pageNum) {
+        var promise = fetch('/api/child-story/page', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            characterSheetBase64: csCharBase64,
+            childName: name,
+            childAge: age,
+            superpower: csPower,
+            pageNumber: pageNum,
+            format: csFormat,
+            totalPages: csTotalPages,
+          }),
+        })
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+          completed++;
+          var pct = Math.round((completed / csTotalPages) * 100);
+          document.getElementById('csProgressBar').style.width = pct + '%';
+          document.getElementById('csProgressText').textContent =
+            completed + '/' + csTotalPages + ' paginas listas';
+          if (data.ok) {
+            appendPage(data, pageNum);
+          } else {
+            appendPage({
+              pageNum: pageNum,
+              title: 'Pagina ' + pageNum,
+              text: data.error || 'Error al generar esta pagina.',
+              imageBase64: '',
+            }, pageNum);
+          }
+        })
+        .catch(function(err) {
+          completed++;
+          console.error('Error pagina ' + pageNum + ':', err);
+          appendPage({
+            pageNum: pageNum,
+            title: 'Pagina ' + pageNum,
+            text: 'Error de conexion.',
+            imageBase64: '',
+          }, pageNum);
+        });
+        promises.push(promise);
+      })(p);
+    }
+
+    Promise.all(promises).then(function() {
       clearInterval(rotateInt);
-      if (data.ok) {
-        appendPage(data, pageNum);
-        // Update progress after success
-        var donePct = Math.round((pageNum / csTotalPages) * 100);
-        document.getElementById('csProgressBar').style.width = donePct + '%';
-        // Generate next page
-        generatePagesSequentially(name, age, pageNum + 1);
-      } else {
-        // Error on this page — append placeholder and continue
-        appendPage({
-          pageNum: pageNum,
-          title: 'Pagina ' + pageNum,
-          text: data.error || 'Error al generar esta pagina.',
-          imageBase64: '',
-        }, pageNum);
-        generatePagesSequentially(name, age, pageNum + 1);
-      }
-    })
-    .catch(function(err) {
-      clearInterval(rotateInt);
-      console.error('Error pagina ' + pageNum + ':', err);
-      appendPage({
-        pageNum: pageNum,
-        title: 'Pagina ' + pageNum,
-        text: 'Error de conexion al generar esta pagina.',
-        imageBase64: '',
-      }, pageNum);
-      generatePagesSequentially(name, age, pageNum + 1);
+      csGenerating = false;
+      document.getElementById('csProgressWrap').style.display = 'none';
+      document.getElementById('csProgressCrystal').style.display = 'none';
+      document.getElementById('csCompleteActions').style.display = '';
+      // Sort pages by pageNum (they arrive out of order)
+      var container = document.getElementById('csStoryPages');
+      var items = Array.from(container.children);
+      items.sort(function(a, b) {
+        return (parseInt(a.dataset.page) || 0) - (parseInt(b.dataset.page) || 0);
+      });
+      items.forEach(function(item) { container.appendChild(item); });
     });
-  }
+  };
 
   function appendPage(page, pageNum) {
     var container = document.getElementById('csStoryPages');
