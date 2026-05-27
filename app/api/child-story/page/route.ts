@@ -89,7 +89,7 @@ function getStorybookPage(
       title: "La llegada",
       text: `${name} tiene ${age} anos y hoy es un dia especial. Una luz suave, entre verde y dorada, brilla debajo de su cama. Se agacha y descubre una grieta que late como un corazon. Sin pensarlo, mete la mano... y cae flotando entre raices luminosas y cristales que zumban. Aterriza de pie en un lugar imposible: el Uray Pacha.`,
       visualPrompt: `A child character (Pax-style: ONE cyclops eye, pointed elf ears, chibi proportions, purple tribal headband, cream vest with purple trim) landing softly inside a spectacular underground cavern. Giant magenta and cyan crystals illuminate basalt walls. God rays from a crack above. The child is seen from behind, arms spread in wonder. 3D Pixar render, cinematic lighting, children's book illustration.`,
-      useJiggyRef: false,
+      useJiggyRef: true,
     },
     2: {
       title: "Jiggy aparece",
@@ -131,19 +131,19 @@ function getStorybookPage(
       title: "La tribu celebra",
       text: `La noticia vuela por los tuneles. De todas partes llegan Pax: Wiz, el viejo sabio de barba blanca. Byte con sus auriculares de luces. Luxa, que se rie tan fuerte que tiemblan las estalactitas. Y Onyx, enorme y silencioso, que saluda a ${name} con la mano en el pecho. Alguien empieza a tocar musica. Los cristales pulsan al compas. Todos bailan.`,
       visualPrompt: `Image 2 is ${name}'s character sheet. Generate: celebration in a large underground Pax cavern. Many small Pax tribe characters (turquoise jade skin, ONE cyclops eye each, pointed ears, tribal outfits) dancing and celebrating. The child dancing in the center. Crystals pulsing with festive lights. Colorful, warm, joyful atmosphere. 3D Pixar render, children's book illustration.`,
-      useJiggyRef: false,
+      useJiggyRef: true,
     },
     9: {
       title: "Un recuerdo especial",
       text: `Wiz, el mas viejo de la tribu, se acerca a ${name}. En sus manos tiene un cristal pequeno, del tamano de una canica, que brilla con un pulso suave y constante. "Este cristal es tuyo" dice Wiz. "Va a brillar cada vez que hagas algo bueno, arriba o abajo. Y nosotros lo vamos a sentir." ${name} lo aprieta en la mano. Esta tibio.`,
       visualPrompt: `Image 2 is ${name}'s character sheet. Generate: An old wise Pax character (white mineral beard, purple robe, crystal staff) giving a small glowing crystal to the child. The crystal glows warm magenta-cyan in the child's hands. Other Pax tribe members watching warmly from behind. Emotional, intimate moment. 3D Pixar render, children's book illustration.`,
-      useJiggyRef: false,
+      useJiggyRef: true,
     },
     10: {
       title: "De vuelta a casa",
       text: `${name} sube por la grieta, aterriza en su cuarto, y todo esta igual que antes. Excepto una cosa: en su mano hay un cristal pequeno que brilla cada vez que siente esa cosquilla en el pecho. Y ahora sabe lo que es. Se llama anuraK. Y cada vez que brilla, en algun lugar debajo del mundo, un Pax sonrie.`,
       visualPrompt: `Image 2 is ${name}'s character sheet. Generate: a child lying in bed at night, looking at a small crystal glowing softly in their open palm. The crystal casts gentle magenta-cyan light on their face. Warm cozy bedroom. Subtle overlay or reflection showing Jiggy and the Pax world below. Emotional, warm closing scene. 3D Pixar render, children's book illustration, soft lighting.`,
-      useJiggyRef: false,
+      useJiggyRef: true,
     },
   };
 
@@ -193,13 +193,13 @@ function getComicPage(
       title: "La tribu celebra",
       text: `La noticia vuela por los tuneles. Llegan Wiz, Byte, Luxa, Onyx y mas Pax. Todos quieren conocer al humano que encendio el cristal. Empieza la musica, los cristales pulsan al compas. ${name} baila con la tribu.`,
       visualPrompt: `${comicStyle} Image 2 is ${name}'s character sheet. PAGE 5: Panel 1: Many Pax tribe members arriving through tunnels excitedly. Panel 2: Old wise Wiz character greets the child with reverence. Panel 3: Full celebration scene with dancing, glowing crystals pulsing. Panel 4: The child dancing happily surrounded by Pax friends. Speech bubbles in Spanish. 3D Pixar render, festive colorful lighting.`,
-      useJiggyRef: false,
+      useJiggyRef: true,
     },
     6: {
       title: "De vuelta + cristal de recuerdo",
       text: `Wiz le da a ${name} un cristal pequeno que brilla con un pulso suave. "Va a brillar cada vez que hagas algo bueno." ${name} vuelve a su cuarto con el cristal en la mano. Ahora sabe lo que es esa cosquilla. Se llama anuraK.`,
       visualPrompt: `${comicStyle} Image 2 is ${name}'s character sheet. PAGE 6: Panel 1: Wise old Pax gives the child a small glowing crystal. Panel 2: Child says goodbye to Jiggy and the tribe, waving. Panel 3: Back in bedroom at night, looking at the crystal glowing in hand. Panel 4: Close-up of the crystal with a warm glow, the child smiling. Speech bubbles in Spanish. 3D Pixar render, emotional closing.`,
-      useJiggyRef: false,
+      useJiggyRef: true,
     },
   };
 
