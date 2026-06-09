@@ -1,0 +1,1197 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Pax Flight — El vuelo de Jiggy</title>
+<meta name="description" content="Vuela con Jiggy por los túneles del Uray Pacha, recoge anuraK y enciende los cristales. Tu atención se convierte en donación.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   PAX FLIGHT — estilos (glassmorphism sobre basalto, paleta Pax)
+   jade #00C896 · amber #F59E0B · magenta #E91E63 · basalt #0F0F18
+   ============================================================ */
+:root{
+  --jade:#00C896; --amber:#F59E0B; --magenta:#E91E63;
+  --basalt:#0F0F18; --basalt2:#1F1F2B;
+  --glass:rgba(26,26,31,0.7); --glass-border:rgba(255,255,255,0.1);
+  --text:#EAEAF2; --text-dim:#9A9AAB;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{width:100%;height:100%;overflow:hidden;background:var(--basalt);
+  font-family:'Manrope',system-ui,sans-serif;color:var(--text);
+  touch-action:none;user-select:none;-webkit-user-select:none}
+canvas{position:fixed;inset:0;display:block}
+.mono{font-family:'JetBrains Mono',monospace}
+
+/* ---------- capas UI ---------- */
+#ui{position:fixed;inset:0;pointer-events:none;z-index:10}
+.screen{position:absolute;inset:0;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:14px;padding:20px;
+  pointer-events:auto;transition:opacity .35s ease}
+.hidden{display:none !important}
+
+.panel{background:var(--glass);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border:1px solid var(--glass-border);border-radius:20px;padding:22px 26px;
+  max-width:380px;width:calc(100% - 32px);text-align:center;
+  box-shadow:0 18px 50px rgba(0,0,0,.55);
+  animation:panelIn .4s cubic-bezier(.2,1.4,.4,1)}
+@keyframes panelIn{from{transform:translateY(24px) scale(.96);opacity:0}to{transform:none;opacity:1}}
+
+h1.title{font-size:clamp(34px,9vw,52px);font-weight:800;letter-spacing:-1px;line-height:1;
+  background:linear-gradient(120deg,var(--jade),#7fe7cf 45%,var(--amber));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 0 22px rgba(0,200,150,.35))}
+.subtitle{font-size:13px;color:var(--text-dim);letter-spacing:3px;text-transform:uppercase}
+.lore-intro{font-size:14.5px;line-height:1.55;color:var(--text);opacity:.92;max-width:330px}
+.lore-intro b{color:var(--jade)}
+
+.btn{pointer-events:auto;cursor:pointer;border:none;border-radius:14px;
+  font-family:'Manrope',sans-serif;font-weight:800;font-size:16px;
+  padding:14px 26px;color:#06251d;background:linear-gradient(135deg,var(--jade),#2fe0b4);
+  box-shadow:0 6px 24px rgba(0,200,150,.35);transition:transform .15s ease,box-shadow .15s ease}
+.btn:active{transform:scale(.95)}
+.btn.ghost{background:rgba(255,255,255,.07);color:var(--text);border:1px solid var(--glass-border);box-shadow:none;font-weight:600}
+.btn.amber{background:linear-gradient(135deg,var(--amber),#ffc14d);color:#2b1900;box-shadow:0 6px 24px rgba(245,158,11,.3)}
+.btn.magenta{background:linear-gradient(135deg,var(--magenta),#ff5d93);color:#fff;box-shadow:0 6px 24px rgba(233,30,99,.35)}
+.btn:disabled{opacity:.45;pointer-events:none}
+.btn-row{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+
+.tap-hint{font-size:15px;color:var(--jade);animation:pulseTxt 1.6s ease-in-out infinite;font-weight:600}
+@keyframes pulseTxt{0%,100%{opacity:.55}50%{opacity:1}}
+
+/* ---------- medidor Cristal Central ---------- */
+.crystal-meter{width:100%;max-width:330px;text-align:left}
+.crystal-meter .lbl{display:flex;justify-content:space-between;font-size:12px;color:var(--text-dim);margin-bottom:5px}
+.crystal-meter .lbl b{color:var(--jade)}
+.bar{height:10px;border-radius:6px;background:rgba(255,255,255,.08);overflow:hidden;border:1px solid var(--glass-border)}
+.bar>i{display:block;height:100%;border-radius:6px;width:0%;
+  background:linear-gradient(90deg,var(--jade),#7fe7cf);
+  box-shadow:0 0 12px rgba(0,200,150,.7);transition:width .5s cubic-bezier(.2,1,.3,1)}
+
+.stats-row{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;font-size:11.5px;color:var(--text-dim)}
+.stats-row span b{display:block;font-size:15px;color:var(--text);font-family:'JetBrains Mono',monospace}
+
+/* ---------- HUD in-game ---------- */
+#hud{position:absolute;top:0;left:0;right:0;display:flex;align-items:flex-start;
+  justify-content:space-between;padding:14px 16px;pointer-events:none}
+#hud .chip{background:var(--glass);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  border:1px solid var(--glass-border);border-radius:12px;padding:8px 12px;font-size:14px}
+#hudSparks{color:var(--jade);font-weight:700;font-family:'JetBrains Mono',monospace}
+#hudSparks.puff{animation:puff .3s ease}
+@keyframes puff{0%{transform:scale(1)}40%{transform:scale(1.35)}100%{transform:scale(1)}}
+#hudScore{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:20px;color:var(--text)}
+#hudScore.puff{animation:puff .3s ease}
+#hudCrystal{width:96px}
+#hudCrystal .lblmini{font-size:9.5px;color:var(--text-dim);margin-bottom:3px;text-align:right}
+#hudCrystal .bar{height:6px}
+
+/* ---------- banners / toasts / tips ---------- */
+#bannerZone{position:absolute;top:22%;left:0;right:0;text-align:center;pointer-events:none;
+  font-size:clamp(20px,6vw,30px);font-weight:800;letter-spacing:4px;text-transform:uppercase;
+  opacity:0;transition:opacity .5s ease;text-shadow:0 0 28px rgba(0,200,150,.6)}
+#toasts{position:absolute;top:70px;left:0;right:0;display:flex;flex-direction:column;
+  align-items:center;gap:6px;pointer-events:none}
+.toast{background:var(--glass);backdrop-filter:blur(12px);border:1px solid var(--glass-border);
+  border-radius:10px;padding:8px 14px;font-size:13px;color:var(--text);
+  animation:toastIn .35s ease, toastOut .4s ease 2.8s forwards}
+.toast b{color:var(--amber)}
+@keyframes toastIn{from{transform:translateY(-12px);opacity:0}to{transform:none;opacity:1}}
+@keyframes toastOut{to{transform:translateY(-8px);opacity:0}}
+#tip{position:absolute;bottom:24%;left:0;right:0;text-align:center;pointer-events:none;
+  font-size:17px;font-weight:700;color:var(--text);opacity:0;transition:opacity .4s ease;
+  text-shadow:0 2px 14px rgba(0,0,0,.8)}
+
+/* ---------- efectos pantalla ---------- */
+#flash{position:fixed;inset:0;background:#fff;opacity:0;pointer-events:none;z-index:30;transition:opacity .25s ease}
+#nearmiss{position:fixed;inset:0;pointer-events:none;z-index:29;opacity:0;transition:opacity .3s ease;
+  box-shadow:inset 0 0 90px rgba(0,200,150,.55)}
+
+/* ---------- misiones ---------- */
+.mission{display:flex;flex-direction:column;gap:5px;text-align:left;
+  background:rgba(255,255,255,.045);border:1px solid var(--glass-border);
+  border-radius:12px;padding:10px 12px;margin-bottom:8px}
+.mission .mtxt{font-size:13px;font-weight:600}
+.mission .mprog{font-size:11px;color:var(--text-dim);font-family:'JetBrains Mono',monospace}
+.mission.done{border-color:rgba(0,200,150,.5)}
+.mission.done .mtxt{color:var(--jade)}
+
+/* ---------- modal mensaje (rewardvertising placeholder) ---------- */
+#modalAd .ad-tag{font-size:10px;letter-spacing:3px;color:var(--amber);text-transform:uppercase;margin-bottom:8px}
+#adTitle{font-size:21px;font-weight:800;color:var(--jade);margin-bottom:8px}
+#adDesc{font-size:14px;line-height:1.6;color:var(--text);opacity:.95;min-height:66px}
+#adCount{font-size:34px;font-family:'JetBrains Mono',monospace;font-weight:700;color:var(--amber);margin:12px 0 4px}
+.ad-note{font-size:10px;color:var(--text-dim);margin-top:10px;font-style:italic}
+
+/* ---------- panel muerte / celebración ---------- */
+.death-title{font-size:24px;font-weight:800;color:var(--magenta)}
+.score-big{font-size:42px;font-family:'JetBrains Mono',monospace;font-weight:700}
+.record-tag{display:inline-block;font-size:11px;background:var(--amber);color:#2b1900;
+  border-radius:8px;padding:2px 8px;font-weight:800;margin-left:6px;vertical-align:middle}
+.celebrate-title{font-size:26px;font-weight:800;
+  background:linear-gradient(120deg,var(--jade),var(--amber));
+  -webkit-background-clip:text;background-clip:text;color:transparent}
+.divider{height:1px;background:var(--glass-border);margin:12px 0;width:100%}
+
+#cdnError{position:fixed;inset:0;z-index:99;background:var(--basalt);display:none;
+  align-items:center;justify-content:center;text-align:center;padding:30px;font-size:15px;line-height:1.6}
+</style>
+</head>
+<body>
+
+<div id="cdnError"><div>No se pudo cargar el motor 3D (Three.js).<br>Revisa tu conexión a internet y recarga la página.</div></div>
+
+<div id="ui">
+
+  <!-- HUD in-game -->
+  <div id="hud" class="hidden">
+    <div class="chip" id="hudSparks">✦ 0</div>
+    <div class="chip" id="hudScore">0</div>
+    <div class="chip" id="hudCrystal">
+      <div class="lblmini" id="hudCrystalLbl">Cristal I</div>
+      <div class="bar"><i id="hudCrystalFill"></i></div>
+    </div>
+  </div>
+
+  <div id="bannerZone"></div>
+  <div id="toasts"></div>
+  <div id="tip"></div>
+
+  <!-- Pantalla de inicio -->
+  <div id="screenStart" class="screen">
+    <div class="subtitle">Uray Pacha · gesto jugable de Pax</div>
+    <h1 class="title">PAX FLIGHT</h1>
+    <p class="lore-intro">Los cristales del <b>Uray Pacha</b> se apagan.<br>
+      Vuela con Jiggy y recoge <b>anuraK</b> para encenderlos.</p>
+    <div class="crystal-meter panel" style="padding:14px 18px">
+      <div class="lbl"><b id="startCrystalLbl">Cristal I</b><span id="startCrystalNum" class="mono">0 / 100</span></div>
+      <div class="bar"><i id="startCrystalFill"></i></div>
+      <div class="stats-row" style="margin-top:12px">
+        <span><b id="statAttention">0s</b>atención donada</span>
+        <span><b id="statLit">0</b>cristales encendidos</span>
+        <span><b id="statBest">0</b>récord</span>
+      </div>
+    </div>
+    <div class="btn-row">
+      <button class="btn" id="btnPlay">▶ &nbsp;Volar</button>
+      <button class="btn ghost" id="btnMissions">✦ Misiones</button>
+    </div>
+    <div class="tap-hint">Toca para volar</div>
+  </div>
+
+  <!-- Panel misiones -->
+  <div id="screenMissions" class="screen hidden">
+    <div class="panel">
+      <div class="subtitle" style="margin-bottom:12px">Misiones de la tribu</div>
+      <div id="missionList"></div>
+      <p style="font-size:11px;color:var(--text-dim);margin:8px 0 14px">
+        Cada misión cumplida suma <b style="color:var(--jade)">+15 ✦</b> al Cristal Central.</p>
+      <button class="btn ghost" id="btnMissionsClose">Cerrar</button>
+    </div>
+  </div>
+
+  <!-- Panel de muerte -->
+  <div id="screenDeath" class="screen hidden">
+    <div class="panel">
+      <div class="death-title">El basalto detuvo tu vuelo</div>
+      <div class="score-big" id="deathScore">0<span id="deathRecordTag" class="record-tag hidden">¡RÉCORD!</span></div>
+      <div style="font-size:12.5px;color:var(--text-dim)" id="deathBest">Récord: 0</div>
+      <div class="divider"></div>
+      <div style="font-size:14px">Chispas de anuraK: <b class="mono" style="color:var(--jade)" id="deathSparks">+0</b></div>
+      <div id="deathMissions" style="margin-top:10px"></div>
+      <div class="divider"></div>
+      <div class="btn-row">
+        <button class="btn amber" id="btnRevive">✨ Revivir — mensaje de la tribu (5s)</button>
+        <button class="btn" id="btnRetry">Reintentar</button>
+        <button class="btn ghost" id="btnMenu">Menú</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Celebración: cristal encendido -->
+  <div id="screenCrystal" class="screen hidden">
+    <div class="panel">
+      <div style="font-size:44px">💎</div>
+      <div class="celebrate-title">¡Cristal encendido!</div>
+      <p style="font-size:14px;line-height:1.6;margin-top:8px">
+        Tu atención encendió un cristal del Uray Pacha.<br>
+        <b style="color:var(--jade)">En el mundo real, esto sería una donación.</b></p>
+      <div style="font-size:12px;color:var(--text-dim);margin-top:6px" id="crystalLevelTxt">Cristal II desbloqueado</div>
+      <div class="divider"></div>
+      <div class="btn-row">
+        <button class="btn magenta" id="btnDouble">✨ Dobla tu donación simbólica (5s)</button>
+        <button class="btn ghost" id="btnCrystalOk">Continuar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal mensaje de la tribu (placeholder de rewarded ad) -->
+  <div id="modalAd" class="screen hidden" style="background:rgba(5,5,10,.75)">
+    <div class="panel">
+      <div class="ad-tag">✦ Mensaje de la tribu ✦</div>
+      <div id="adTitle"></div>
+      <p id="adDesc"></p>
+      <div id="adCount">5</div>
+      <button class="btn" id="btnAdDone" disabled>Continuar</button>
+      <div class="ad-note">Espacio reservado: aquí iría un anuncio recompensado real.</div>
+    </div>
+  </div>
+
+</div>
+
+<div id="nearmiss"></div>
+<div id="flash"></div>
+
+<script type="module">
+/* ============================================================
+   PAX FLIGHT — Jiggy vuela por el Uray Pacha
+   Un gesto jugable del proyecto Pax.
+   Lore: los cristales solo se cargan con anuraK — la energía
+   de los actos de bondad humanos. Tu atención genera valor,
+   y ese valor se dona. El juego ES el ciclo.
+   ============================================================ */
+
+// === BOOT / CDN ===
+let THREE;
+try {
+  THREE = await import('https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.min.js');
+} catch (e) {
+  document.getElementById('cdnError').style.display = 'flex';
+  throw e;
+}
+
+const $ = id => document.getElementById(id);
+const rand = (a, b) => a + Math.random() * (b - a);
+const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+
+// === CONSTANTES ===
+const TUNNEL_R = 8.6;          // radio del túnel
+const KILL_Y = 7.3;            // golpear pared arriba/abajo = muerte
+const SEG_LEN = 36, SEG_COUNT = 6;
+const PAIR_COUNT = 8, PAIR_SPACING = 17, CONE_H = 16;
+const SPARK_COUNT = 24;
+const GRAVITY = 26, FLAP_VY = 8.8;
+const JIGGY_R = 0.68;          // radio de colisión de Jiggy
+const MISSION_BONUS = 15;
+
+const COL = {
+  jade: 0x00C896, amber: 0xF59E0B, magenta: 0xE91E63,
+  basalt: 0x16161f, basalt2: 0x1F1F2B, turquoise: 0x35D4C0,
+  bandana: 0x6B2FA8, dread: 0x3E2A20
+};
+
+// === ZONAS (cada 25 obstáculos cambia la paleta) ===
+const ZONES = [
+  { name: 'Zona Jade',     fog: 0x0c1410, accent: 0x00C896 },
+  { name: 'Zona Ámbar',    fog: 0x161005, accent: 0xF59E0B },
+  { name: 'Zona Magenta',  fog: 0x160712, accent: 0xE91E63 },
+  { name: 'Zona Profunda', fog: 0x07070f, accent: 0x7C4DFF },
+];
+
+// === PERSISTENCIA (localStorage) ===
+const LS_KEY = 'paxflight_save_v1';
+const defaultSave = () => ({
+  crystalLevel: 1,        // nivel del Cristal Central (I, II, III...)
+  sparksInCrystal: 0,     // chispas acumuladas hacia el nivel actual
+  lifetimeSparks: 0,      // chispas totales históricas
+  crystalsLit: 0,         // cristales encendidos
+  best: 0,                // mejor score (obstáculos)
+  attentionSec: 0,        // segundos de "mensajes de la tribu" vistos
+  runsDate: '', runsCount: 0,
+  onboarded: false,
+  missionsActive: [],     // ids de las 3 misiones activas
+  missionsDone: [],       // ids completadas en el ciclo actual de rotación
+});
+let save = defaultSave();
+try {
+  const raw = localStorage.getItem(LS_KEY);
+  if (raw) save = Object.assign(defaultSave(), JSON.parse(raw));
+} catch (e) { /* localStorage bloqueado: el juego corre sin persistencia */ }
+function persist() {
+  try { localStorage.setItem(LS_KEY, JSON.stringify(save)); } catch (e) {}
+}
+const crystalGoal = lvl => 100 + (lvl - 1) * 75;
+const roman = n => ['I','II','III','IV','V','VI','VII','VIII','IX','X'][Math.min(n - 1, 9)] || n;
+
+// === AUDIO (Web Audio API — todo sintético, sin archivos) ===
+let actx = null;
+function audio() {
+  if (!actx) { try { actx = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) {} }
+  if (actx && actx.state === 'suspended') actx.resume();
+  return actx;
+}
+function tone(freq, dur, type = 'sine', vol = 0.18, slideTo = 0, delay = 0) {
+  const ctx = audio(); if (!ctx) return;
+  const t0 = ctx.currentTime + delay;
+  const o = ctx.createOscillator(), g = ctx.createGain();
+  o.type = type; o.frequency.setValueAtTime(freq, t0);
+  if (slideTo) o.frequency.exponentialRampToValueAtTime(Math.max(slideTo, 20), t0 + dur);
+  g.gain.setValueAtTime(vol, t0);
+  g.gain.exponentialRampToValueAtTime(0.001, t0 + dur);
+  o.connect(g).connect(ctx.destination);
+  o.start(t0); o.stop(t0 + dur + 0.02);
+}
+const sfx = {
+  flap:    () => tone(300, 0.08, 'square', 0.07, 420),
+  spark:   () => tone(740, 0.13, 'sine', 0.16, 1480),
+  rare:    () => { tone(660, 0.12, 'sine', 0.16, 990); tone(990, 0.16, 'sine', 0.14, 1320, 0.08); },
+  death:   () => { tone(140, 0.4, 'sine', 0.3, 38); tone(90, 0.3, 'triangle', 0.2, 30, 0.04); },
+  crystal: () => [523, 659, 784, 1047].forEach((f, i) => tone(f, 0.5, 'sine', 0.14, 0, i * 0.11)),
+  mission: () => { tone(587, 0.12, 'triangle', 0.14); tone(880, 0.18, 'triangle', 0.14, 0, 0.1); },
+  ui:      () => tone(520, 0.06, 'sine', 0.08),
+  zone:    () => { tone(392, 0.2, 'sine', 0.1); tone(523, 0.25, 'sine', 0.1, 0, 0.12); },
+  nearmiss:() => tone(1200, 0.06, 'sine', 0.05, 1600),
+};
+
+// === ESCENA THREE ===
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.setSize(innerWidth, innerHeight);
+document.body.prepend(renderer.domElement);
+
+const scene = new THREE.Scene();
+scene.fog = new THREE.Fog(ZONES[0].fog, 26, 115);
+scene.background = new THREE.Color(ZONES[0].fog);
+
+const camera = new THREE.PerspectiveCamera(72, innerWidth / innerHeight, 0.1, 200);
+camera.position.set(0, 2.7, 7.6);
+
+const hemi = new THREE.HemisphereLight(0x8b97b8, 0x14141f, 0.85);
+scene.add(hemi);
+const keyLight = new THREE.PointLight(0xbfffe9, 55, 70, 1.7);
+keyLight.position.set(0, 3, 5);
+scene.add(keyLight);
+const deepLight = new THREE.PointLight(COL.magenta, 40, 90, 1.8);
+deepLight.position.set(0, -2, -70);
+scene.add(deepLight);
+
+addEventListener('resize', () => {
+  camera.aspect = innerWidth / innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(innerWidth, innerHeight);
+});
+
+// === TÚNEL (segmentos reciclados de basalto + cristales instanciados) ===
+const rockMat = new THREE.MeshStandardMaterial({
+  color: COL.basalt, roughness: 0.96, metalness: 0.04,
+  side: THREE.BackSide, flatShading: true
+});
+const crystalGeo = new THREE.OctahedronGeometry(0.55);
+const crystalMats = [
+  new THREE.MeshStandardMaterial({ color: 0x003322, emissive: COL.jade,    emissiveIntensity: 1.2, roughness: 0.3 }),
+  new THREE.MeshStandardMaterial({ color: 0x332200, emissive: COL.amber,   emissiveIntensity: 1.0, roughness: 0.3 }),
+  new THREE.MeshStandardMaterial({ color: 0x330022, emissive: COL.magenta, emissiveIntensity: 1.1, roughness: 0.3 }),
+];
+const segments = [];
+const dummy = new THREE.Object3D();
+for (let i = 0; i < SEG_COUNT; i++) {
+  const geo = new THREE.CylinderGeometry(TUNNEL_R, TUNNEL_R, SEG_LEN, 14, 4, true);
+  geo.rotateX(Math.PI / 2); // eje a lo largo de z
+  const pos = geo.attributes.position;
+  for (let v = 0; v < pos.count; v++) {
+    const x = pos.getX(v), y = pos.getY(v), z = pos.getZ(v);
+    const a = Math.atan2(y, x);
+    // ruido determinista continuo entre segmentos (periodo = SEG_LEN en z)
+    const r = TUNNEL_R + Math.sin(a * 5) * 0.45 + Math.sin(a * 9 + z * (Math.PI * 4 / SEG_LEN)) * 0.4;
+    pos.setX(v, Math.cos(a) * r); pos.setY(v, Math.sin(a) * r);
+  }
+  geo.computeVertexNormals();
+  const seg = new THREE.Mesh(geo, rockMat);
+  seg.position.z = 20 - i * SEG_LEN;
+  // cristales decorativos incrustados en la pared (InstancedMesh: 1 draw call por segmento)
+  const inst = new THREE.InstancedMesh(crystalGeo, crystalMats[i % 3], 14);
+  for (let k = 0; k < 14; k++) {
+    const a = rand(0, Math.PI * 2), rr = TUNNEL_R - 0.35;
+    dummy.position.set(Math.cos(a) * rr, Math.sin(a) * rr, rand(-SEG_LEN / 2, SEG_LEN / 2));
+    dummy.rotation.set(rand(0, 3), rand(0, 3), rand(0, 3));
+    dummy.scale.setScalar(rand(0.5, 1.9));
+    dummy.updateMatrix();
+    inst.setMatrixAt(k, dummy.matrix);
+  }
+  seg.add(inst);
+  scene.add(seg);
+  segments.push(seg);
+}
+
+// polvo ambiental flotante (1 draw call)
+const DUST_N = 70;
+const dustPos = new Float32Array(DUST_N * 3);
+for (let i = 0; i < DUST_N; i++) {
+  dustPos[i * 3] = rand(-6, 6); dustPos[i * 3 + 1] = rand(-6, 6); dustPos[i * 3 + 2] = rand(-120, 10);
+}
+const dustGeo = new THREE.BufferGeometry();
+dustGeo.setAttribute('position', new THREE.BufferAttribute(dustPos, 3));
+const dust = new THREE.Points(dustGeo, new THREE.PointsMaterial({
+  color: 0x6fae9c, size: 0.09, transparent: true, opacity: 0.55, sizeAttenuation: true
+}));
+scene.add(dust);
+
+// === JIGGY (cíclope turquesa low-poly: cuerpo + ojo único + bandana + dreads + orejas) ===
+const jiggy = new THREE.Group();
+{
+  const skin = new THREE.MeshStandardMaterial({ color: COL.turquoise, roughness: 0.55 });
+  const body = new THREE.Mesh(new THREE.SphereGeometry(0.72, 18, 14), skin);
+  body.scale.set(1, 1.06, 0.95);
+  jiggy.add(body);
+  // ojo único grande (cíclope)
+  const eyeW = new THREE.Mesh(new THREE.SphereGeometry(0.34, 14, 12),
+    new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.25 }));
+  eyeW.position.set(0, 0.16, 0.52);
+  jiggy.add(eyeW);
+  const iris = new THREE.Mesh(new THREE.SphereGeometry(0.155, 12, 10),
+    new THREE.MeshStandardMaterial({ color: 0x3a2350, roughness: 0.3 }));
+  iris.position.set(0, 0.16, 0.78);
+  jiggy.add(iris);
+  const glint = new THREE.Mesh(new THREE.SphereGeometry(0.05, 8, 6),
+    new THREE.MeshBasicMaterial({ color: 0xffffff }));
+  glint.position.set(0.06, 0.23, 0.88);
+  jiggy.add(glint);
+  // bandana púrpura
+  const bandMat = new THREE.MeshStandardMaterial({ color: COL.bandana, roughness: 0.7 });
+  const band = new THREE.Mesh(new THREE.CylinderGeometry(0.71, 0.74, 0.26, 16), bandMat);
+  band.position.y = 0.5; band.rotation.x = 0.12;
+  jiggy.add(band);
+  const knot = new THREE.Mesh(new THREE.SphereGeometry(0.13, 8, 6), bandMat);
+  knot.position.set(-0.62, 0.52, -0.28);
+  jiggy.add(knot);
+  // dreads (rastas oscuras)
+  const dreadMat = new THREE.MeshStandardMaterial({ color: COL.dread, roughness: 0.95 });
+  for (let i = 0; i < 7; i++) {
+    const d = new THREE.Mesh(new THREE.CapsuleGeometry(0.085, rand(0.28, 0.5), 3, 6), dreadMat);
+    const a = rand(0, Math.PI * 2);
+    d.position.set(Math.cos(a) * rand(0.05, 0.4), 0.78 + rand(0, 0.15), Math.sin(a) * rand(0.05, 0.4) - 0.05);
+    d.rotation.set(rand(-0.7, 0.7), 0, rand(-0.7, 0.7));
+    jiggy.add(d);
+  }
+  // orejas puntiagudas
+  const earL = new THREE.Mesh(new THREE.ConeGeometry(0.15, 0.5, 6), skin);
+  earL.position.set(0.74, 0.12, 0); earL.rotation.z = -Math.PI / 2;
+  jiggy.add(earL);
+  const earR = earL.clone(); earR.position.x = -0.74; earR.rotation.z = Math.PI / 2;
+  jiggy.add(earR);
+  // bracitos (aletean al flap)
+  const armGeo = new THREE.CapsuleGeometry(0.09, 0.34, 3, 6);
+  const armL = new THREE.Mesh(armGeo, skin);
+  armL.position.set(0.62, -0.18, 0.12); armL.rotation.z = -0.9;
+  const armR = new THREE.Mesh(armGeo, skin);
+  armR.position.set(-0.62, -0.18, 0.12); armR.rotation.z = 0.9;
+  jiggy.add(armL, armR);
+  jiggy.userData.arms = [armL, armR];
+  // piecitos
+  const footGeo = new THREE.SphereGeometry(0.16, 8, 6);
+  const fL = new THREE.Mesh(footGeo, skin); fL.position.set(0.26, -0.72, 0.1); fL.scale.set(1, 0.7, 1.3);
+  const fR = fL.clone(); fR.position.x = -0.26;
+  jiggy.add(fL, fR);
+  // colgante de cristal magenta (guiño al lore)
+  const gem = new THREE.Mesh(new THREE.OctahedronGeometry(0.11),
+    new THREE.MeshStandardMaterial({ color: 0x550022, emissive: COL.magenta, emissiveIntensity: 1.6 }));
+  gem.position.set(0, -0.22, 0.66);
+  jiggy.add(gem);
+}
+scene.add(jiggy);
+
+// === OBSTÁCULOS (estalactitas/estalagmitas de basalto con gap) ===
+const coneMat = new THREE.MeshStandardMaterial({
+  color: COL.basalt2, roughness: 0.92, metalness: 0.05, flatShading: true,
+  emissive: 0x0a0a14, emissiveIntensity: 0.6
+});
+function makeRockCone() {
+  const g = new THREE.ConeGeometry(2.6, CONE_H, 7, 3);
+  const p = g.attributes.position;
+  for (let v = 0; v < p.count; v++) {
+    const x = p.getX(v), z = p.getZ(v);
+    if (Math.abs(x) + Math.abs(z) > 0.01) {
+      p.setX(v, x * rand(0.78, 1.22)); p.setZ(v, z * rand(0.78, 1.22));
+    }
+  }
+  g.computeVertexNormals();
+  return g;
+}
+const pairs = [];
+let pairsSpawned = 0;
+for (let i = 0; i < PAIR_COUNT; i++) {
+  const group = new THREE.Group();
+  const top = new THREE.Mesh(makeRockCone(), coneMat);   // estalactita (punta abajo)
+  top.rotation.z = Math.PI;
+  const bottom = new THREE.Mesh(makeRockCone(), coneMat); // estalagmita (punta arriba)
+  group.add(top, bottom);
+  scene.add(group);
+  pairs.push({ group, top, bottom, gapTop: 0, gapBottom: 0, passed: false, counted: false });
+}
+
+// === COLECCIONABLES (chispas de anuraK instanciadas + cristal raro) ===
+const sparkMat = new THREE.MeshStandardMaterial({
+  color: 0x044, emissive: COL.jade, emissiveIntensity: 2.2, roughness: 0.3
+});
+const sparkMesh = new THREE.InstancedMesh(new THREE.SphereGeometry(0.3, 10, 8), sparkMat, SPARK_COUNT);
+sparkMesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
+scene.add(sparkMesh);
+const sparkSlots = [];
+for (let i = 0; i < SPARK_COUNT; i++) sparkSlots.push({ active: false, y: 0, z: 999, phase: rand(0, 6.28) });
+// matrices iniciales en escala ~0 (si no, las 24 esferas aparecen en el origen durante el menú)
+{
+  const d0 = new THREE.Object3D();
+  d0.position.set(0, 0, 999); d0.scale.setScalar(0.0001); d0.updateMatrix();
+  for (let i = 0; i < SPARK_COUNT; i++) sparkMesh.setMatrixAt(i, d0.matrix);
+  sparkMesh.instanceMatrix.needsUpdate = true;
+}
+
+const rareMesh = new THREE.Mesh(new THREE.OctahedronGeometry(0.62),
+  new THREE.MeshStandardMaterial({ color: 0x330011, emissive: COL.magenta, emissiveIntensity: 2.4, roughness: 0.25 }));
+rareMesh.visible = false;
+scene.add(rareMesh);
+const rare = { active: false, y: 0, z: 999 };
+
+// === PARTÍCULAS (estela jade + bursts al recoger) ===
+const TRAIL_N = 44;
+const trailPos = new Float32Array(TRAIL_N * 3).fill(999);
+const trailGeo = new THREE.BufferGeometry();
+trailGeo.setAttribute('position', new THREE.BufferAttribute(trailPos, 3));
+const trail = new THREE.Points(trailGeo, new THREE.PointsMaterial({
+  color: COL.jade, size: 0.16, transparent: true, opacity: 0.75, sizeAttenuation: true
+}));
+scene.add(trail);
+let trailHead = 0;
+
+const BURST_N = 60;
+const burstPos = new Float32Array(BURST_N * 3).fill(999);
+const burstCol = new Float32Array(BURST_N * 3);
+const burstGeo = new THREE.BufferGeometry();
+burstGeo.setAttribute('position', new THREE.BufferAttribute(burstPos, 3));
+burstGeo.setAttribute('color', new THREE.BufferAttribute(burstCol, 3));
+const burstPts = new THREE.Points(burstGeo, new THREE.PointsMaterial({
+  size: 0.22, vertexColors: true, transparent: true, opacity: 0.95, sizeAttenuation: true
+}));
+scene.add(burstPts);
+const burstData = [];
+for (let i = 0; i < BURST_N; i++) burstData.push({ life: 0, vx: 0, vy: 0, vz: 0 });
+let burstHead = 0;
+const tmpColor = new THREE.Color();
+function burst(x, y, z, colorHex, n = 12) {
+  tmpColor.set(colorHex);
+  for (let i = 0; i < n; i++) {
+    const idx = burstHead = (burstHead + 1) % BURST_N;
+    burstPos[idx * 3] = x; burstPos[idx * 3 + 1] = y; burstPos[idx * 3 + 2] = z;
+    burstCol[idx * 3] = tmpColor.r; burstCol[idx * 3 + 1] = tmpColor.g; burstCol[idx * 3 + 2] = tmpColor.b;
+    const d = burstData[idx];
+    d.life = rand(0.35, 0.7);
+    d.vx = rand(-3.5, 3.5); d.vy = rand(-2.5, 4); d.vz = rand(-2, 3);
+  }
+  burstGeo.attributes.color.needsUpdate = true;
+}
+
+// === ESTADO DEL JUEGO ===
+let state = 'MENU';      // MENU | PLAYING | DYING | DEAD | AD | CRYSTAL | MISSIONS
+let jy = 0, vy = 0;      // posición/velocidad vertical de Jiggy
+let speed = 11, distance = 0, score = 0;
+let timeScale = 1, deathTimer = 0, invuln = 0;
+let shake = 0, flapAnim = 1;
+let reviveUsed = false, paused = false;
+let zoneIdx = -1, zoneLerp = 1;
+const fogFrom = new THREE.Color(), fogTo = new THREE.Color(ZONES[0].fog);
+let runStats = null;
+let adCallback = null, adTimer = 0, pendingCrystal = false, lastGoal = 0;
+let onboardStep = -1, onboardT = 0;
+
+function newRunStats() {
+  return { sparks: 0, time: 0, score: 0, rares: 0, nearMiss: 0, revived: 0, flaps: 0 };
+}
+
+// === MISIONES (10 en rotación, 3 activas) ===
+const MISSIONS = [
+  { id: 'sparks20',  txt: 'Recolecta 20 chispas en un run',        target: 20,  val: r => r.sparks },
+  { id: 'survive30', txt: 'Sobrevive 30 segundos',                 target: 30,  val: r => Math.floor(r.time) },
+  { id: 'pass10',    txt: 'Pasa 10 obstáculos en un run',          target: 10,  val: r => r.score },
+  { id: 'rare2',     txt: 'Recoge 2 cristales raros en un run',    target: 2,   val: r => r.rares },
+  { id: 'runs3',     txt: 'Juega 3 runs hoy',                      target: 3,   val: () => save.runsDate === today() ? save.runsCount : 0 },
+  { id: 'near5',     txt: 'Roza 5 obstáculos sin chocar',          target: 5,   val: r => r.nearMiss },
+  { id: 'zona2',     txt: 'Llega a la Zona Ámbar (25 obstáculos)', target: 25,  val: r => r.score },
+  { id: 'sparks150', txt: 'Acumula 150 chispas en total',          target: 150, val: () => save.lifetimeSparks },
+  { id: 'revive1',   txt: 'Revive con un mensaje de la tribu',     target: 1,   val: r => r.revived },
+  { id: 'flaps100',  txt: 'Aletea 100 veces en un run',            target: 100, val: r => r.flaps },
+];
+const today = () => new Date().toISOString().slice(0, 10);
+function ensureMissions() {
+  // mantiene 3 activas; rota con el orden del mazo saltando hechas/activas
+  while (save.missionsActive.length < 3) {
+    const next = MISSIONS.find(m => !save.missionsActive.includes(m.id) && !save.missionsDone.includes(m.id));
+    if (!next) { save.missionsDone = []; continue; } // ciclo completo: reinicia rotación
+    save.missionsActive.push(next.id);
+  }
+}
+ensureMissions();
+function checkMissions() {
+  if (!runStats) return;
+  for (const id of [...save.missionsActive]) {
+    const m = MISSIONS.find(x => x.id === id);
+    if (m && m.val(runStats) >= m.target) {
+      save.missionsActive = save.missionsActive.filter(x => x !== id);
+      save.missionsDone.push(id);
+      ensureMissions();
+      toast(`Misión cumplida: <b>${m.txt}</b> +${MISSION_BONUS} ✦`);
+      sfx.mission();
+      addSparks(MISSION_BONUS, false);
+      persist();
+    }
+  }
+}
+function missionHTML() {
+  return save.missionsActive.map(id => {
+    const m = MISSIONS.find(x => x.id === id);
+    const v = Math.min(m.val(runStats || newRunStats()), m.target);
+    const pct = Math.round(v / m.target * 100);
+    return `<div class="mission${v >= m.target ? ' done' : ''}">
+      <div class="mtxt">${m.txt}</div>
+      <div class="bar"><i style="width:${pct}%"></i></div>
+      <div class="mprog">${v} / ${m.target}</div></div>`;
+  }).join('');
+}
+
+// === CRISTAL CENTRAL (medidor persistente entre runs) ===
+function addSparks(n, fromRun = true) {
+  save.sparksInCrystal += n;
+  save.lifetimeSparks += n;
+  if (fromRun && runStats) runStats.sparks += n;
+  let lit = false;
+  while (save.sparksInCrystal >= crystalGoal(save.crystalLevel)) {
+    save.sparksInCrystal -= crystalGoal(save.crystalLevel);
+    lastGoal = crystalGoal(save.crystalLevel);
+    save.crystalLevel++;
+    save.crystalsLit++;
+    lit = true;
+  }
+  if (lit) {
+    sfx.crystal();
+    flash(0.35);
+    burst(0, jy, 0, COL.jade, 30);
+    if (state === 'PLAYING') {
+      pendingCrystal = true; // celebración completa al terminar el run
+      toast('💎 <b>¡Cristal encendido!</b> Tu atención encendió un cristal.');
+    } else {
+      showCrystalScreen();
+    }
+  }
+  updateCrystalUI();
+  checkMissions();
+}
+function updateCrystalUI() {
+  const goal = crystalGoal(save.crystalLevel);
+  const pct = Math.min(100, save.sparksInCrystal / goal * 100);
+  $('hudCrystalLbl').textContent = `Cristal ${roman(save.crystalLevel)}`;
+  $('hudCrystalFill').style.width = pct + '%';
+  $('startCrystalLbl').textContent = `Cristal ${roman(save.crystalLevel)}`;
+  $('startCrystalNum').textContent = `${save.sparksInCrystal} / ${goal}`;
+  $('startCrystalFill').style.width = pct + '%';
+}
+
+// === REWARDVERTISING (placeholder — aquí iría el SDK de rewarded ads real: AdMob/Unity/AppLovin) ===
+// El "anuncio" es una card del lore Pax con countdown de 5s. La atención se contabiliza
+// y se muestra como "atención donada" — el puente explícito entre jugar y donar.
+const LORE_CARDS = [
+  { t: '¿Qué es anuraK?', d: 'Es la energía que generan los actos de bondad humanos auténticos. La cosquilla que sientes cuando ayudas de verdad. Cada chispa que recoges la representa.' },
+  { t: 'El Uray Pacha', d: 'El mundo de abajo. Una red de túneles bajo todo el planeta donde la tribu Pax custodia los cristales que sostienen ambos mundos.' },
+  { t: '¿Qué es un Ayni?', d: 'Cada gesto concreto que ayuda: enseñar gratis, donar tiempo, cubrir el café de alguien. No hay gesto pequeño. Todo carga cristales.' },
+  { t: 'Pax es real', d: 'Tu atención genera valor, y ese valor se dona a causas reales. Conoce el proyecto en pax-os.vercel.app' },
+];
+let loreIdx = Math.floor(Math.random() * LORE_CARDS.length);
+function showAd(onDone) {
+  state = 'AD';
+  adCallback = onDone;
+  adTimer = 5;
+  const card = LORE_CARDS[loreIdx % LORE_CARDS.length];
+  loreIdx++;
+  $('adTitle').textContent = card.t;
+  $('adDesc').textContent = card.d;
+  $('adCount').textContent = '5';
+  $('btnAdDone').disabled = true;
+  show('modalAd');
+}
+setInterval(() => {
+  if (state !== 'AD') return;
+  adTimer = Math.max(0, adTimer - 1);
+  $('adCount').textContent = adTimer > 0 ? adTimer : '✦';
+  if (adTimer <= 0) $('btnAdDone').disabled = false;
+}, 1000);
+$('btnAdDone').addEventListener('click', e => {
+  e.stopPropagation();
+  sfx.ui();
+  save.attentionSec += 5; // segundos de atención donada
+  persist();
+  hide('modalAd');
+  const cb = adCallback; adCallback = null;
+  if (cb) cb();
+});
+
+// === UI HELPERS ===
+const show = id => $(id).classList.remove('hidden');
+const hide = id => $(id).classList.add('hidden');
+function toast(html) {
+  const el = document.createElement('div');
+  el.className = 'toast';
+  el.innerHTML = html;
+  $('toasts').appendChild(el);
+  setTimeout(() => el.remove(), 3400);
+}
+function flash(op = 0.5) {
+  const f = $('flash');
+  f.style.opacity = op;
+  setTimeout(() => { f.style.opacity = 0; }, 90);
+}
+function puff(id) {
+  const el = $(id);
+  el.classList.remove('puff');
+  void el.offsetWidth; // reinicia la animación
+  el.classList.add('puff');
+}
+function fmtAttention(s) {
+  return s >= 60 ? `${Math.floor(s / 60)}m ${s % 60}s` : `${s}s`;
+}
+function updateMenuStats() {
+  $('statAttention').textContent = fmtAttention(save.attentionSec);
+  $('statLit').textContent = save.crystalsLit;
+  $('statBest').textContent = save.best;
+}
+
+// === ZONAS — transición de paleta ===
+function setZone(idx, announce) {
+  const z = ZONES[idx % ZONES.length];
+  const cycle = Math.floor(idx / ZONES.length);
+  fogFrom.copy(scene.fog.color);
+  fogTo.set(z.fog);
+  zoneLerp = 0;
+  deepLight.color.set(z.accent);
+  if (announce) {
+    const name = z.name + (cycle > 0 ? ' ' + roman(cycle + 1) : '');
+    const b = $('bannerZone');
+    b.textContent = name;
+    b.style.color = '#' + new THREE.Color(z.accent).getHexString();
+    b.style.opacity = 1;
+    setTimeout(() => { b.style.opacity = 0; }, 2200);
+    sfx.zone();
+  }
+}
+
+// === SPAWNING ===
+function freeSparkSlot() { return sparkSlots.find(s => !s.active); }
+function placePair(pair, z) {
+  pairsSpawned++;
+  const gap = Math.max(5.2, 9.4 - score * 0.055);
+  const lim = 6.4 - gap / 2;
+  const center = rand(-lim, lim);
+  pair.gapTop = center + gap / 2;
+  pair.gapBottom = center - gap / 2;
+  pair.top.position.y = pair.gapTop + CONE_H / 2;
+  pair.bottom.position.y = pair.gapBottom - CONE_H / 2;
+  pair.group.position.z = z;
+  pair.passed = false;
+  // chispas de anuraK: en el gap y entre obstáculos
+  for (const off of [-8, 0, 8]) {
+    if (Math.random() < 0.62) {
+      const slot = freeSparkSlot();
+      if (slot) {
+        slot.active = true;
+        slot.z = z + off;
+        slot.y = off === 0
+          ? center + rand(-Math.max(0.3, gap / 2 - 1.6), Math.max(0.3, gap / 2 - 1.6))
+          : rand(-4.5, 4.5);
+      }
+    }
+  }
+  // cristal raro cada ~15 obstáculos, en posición arriesgada (borde del gap)
+  if (pairsSpawned % 15 === 0 && !rare.active) {
+    rare.active = true;
+    rare.z = z;
+    rare.y = Math.random() < 0.5 ? pair.gapTop - 0.55 : pair.gapBottom + 0.55;
+  }
+}
+function farthestPairZ() {
+  return Math.min(...pairs.map(p => p.group.position.z));
+}
+function resetWorld() {
+  pairsSpawned = 0;
+  score = 0; distance = 0; speed = 11;
+  sparkSlots.forEach(s => { s.active = false; s.z = 999; });
+  rare.active = false; rare.z = 999;
+  trailPos.fill(999);
+  pairs.forEach((p, i) => placePair(p, -42 - i * PAIR_SPACING));
+  zoneIdx = -1;
+  setZone(0, false);
+  zoneLerp = 1;
+  scene.fog.color.set(ZONES[0].fog);
+  scene.background.set(ZONES[0].fog);
+}
+
+// === FLUJO DE JUEGO ===
+function startRun() {
+  // contador de runs del día (para misión runs3)
+  const t = today();
+  if (save.runsDate !== t) { save.runsDate = t; save.runsCount = 0; }
+  save.runsCount++;
+  persist();
+  runStats = newRunStats();
+  resetWorld();
+  jy = 0; vy = 3.5;
+  reviveUsed = false; invuln = 0;
+  timeScale = 1; // pendingCrystal se conserva: la celebración se muestra al volver al menú
+  state = 'PLAYING';
+  hide('screenStart'); hide('screenDeath'); hide('screenMissions');
+  show('hud');
+  $('hudScore').textContent = '0';
+  $('hudSparks').textContent = '✦ 0';
+  updateCrystalUI();
+  checkMissions(); // runs3 puede completarse al arrancar
+  if (!save.onboarded) { onboardStep = 0; onboardT = 0; tip('Toca para volar'); }
+}
+function die() {
+  if (state !== 'PLAYING') return;
+  state = 'DYING';
+  deathTimer = 0.65;
+  timeScale = 0.22;
+  shake = 1;
+  flash(0.55);
+  sfx.death();
+  burst(0, jy, 0, COL.magenta, 24);
+  navigator.vibrate && navigator.vibrate(80);
+}
+function showDeathPanel() {
+  state = 'DEAD';
+  timeScale = 0;
+  const isRecord = score > save.best;
+  if (isRecord) { save.best = score; }
+  persist();
+  $('deathScore').childNodes[0].textContent = score;
+  $('deathRecordTag').classList.toggle('hidden', !isRecord);
+  $('deathBest').textContent = 'Récord: ' + save.best;
+  $('deathSparks').textContent = '+' + runStats.sparks;
+  $('deathMissions').innerHTML = missionHTML();
+  $('btnRevive').classList.toggle('hidden', reviveUsed);
+  show('screenDeath');
+}
+function revive() {
+  // empuja los obstáculos cercanos hacia el fondo y reanuda
+  reviveUsed = true;
+  runStats.revived = 1;
+  for (const p of pairs) {
+    if (p.group.position.z > -30) placePair(p, farthestPairZ() - PAIR_SPACING);
+  }
+  sparkSlots.forEach(s => { if (s.z > -25 && s.z < 8) s.active = false; });
+  jy = 0; vy = 2.5; invuln = 1.6;
+  timeScale = 1;
+  state = 'PLAYING';
+  hide('screenDeath');
+  checkMissions();
+}
+function goMenu() {
+  state = 'MENU';
+  timeScale = 1;
+  jy = 0; vy = 0;
+  trailPos.fill(999);
+  trailGeo.attributes.position.needsUpdate = true;
+  hide('screenDeath'); hide('hud'); hide('screenCrystal');
+  show('screenStart');
+  updateMenuStats();
+  updateCrystalUI();
+  if (pendingCrystal) { pendingCrystal = false; showCrystalScreen(); }
+}
+function showCrystalScreen() {
+  state = 'CRYSTAL';
+  $('crystalLevelTxt').textContent = `Cristal ${roman(save.crystalLevel)} desbloqueado — meta: ${crystalGoal(save.crystalLevel)} ✦`;
+  hide('screenStart'); hide('screenDeath');
+  show('screenCrystal');
+}
+
+// === ONBOARDING (solo el primer run) ===
+function tip(txt) {
+  const t = $('tip');
+  t.textContent = txt;
+  t.style.opacity = 1;
+}
+function tipOff() { $('tip').style.opacity = 0; }
+function onboardUpdate(dt) {
+  if (onboardStep < 0) return;
+  if (onboardStep === 0) return; // espera el primer flap
+  onboardT += dt;
+  if (onboardStep === 1 && onboardT > 1.2) { tip('Recoge las chispas ✦'); onboardStep = 2; }
+  else if (onboardStep === 2 && onboardT > 3.6) { tip('Esquiva el basalto'); onboardStep = 3; }
+  else if (onboardStep === 3 && onboardT > 6) {
+    tipOff(); onboardStep = -1;
+    save.onboarded = true; persist();
+  }
+}
+
+// === INPUT ===
+function flap() {
+  if (paused) { paused = false; return; }
+  if (state === 'PLAYING') {
+    vy = FLAP_VY;
+    flapAnim = 0;
+    runStats.flaps++;
+    sfx.flap();
+    if (onboardStep === 0) { onboardStep = 1; onboardT = 0; tipOff(); }
+    checkMissions();
+  }
+}
+addEventListener('pointerdown', e => {
+  audio();
+  if (e.target.closest('button')) return;
+  if (state === 'PLAYING') flap();
+  else if (state === 'MENU' && e.target.closest('#screenStart')) startRun();
+});
+addEventListener('keydown', e => {
+  if (e.code === 'Space' || e.code === 'ArrowUp') {
+    e.preventDefault();
+    audio();
+    if (state === 'PLAYING') flap();
+    else if (state === 'MENU') startRun();
+    else if (state === 'DEAD') { hide('screenDeath'); startRun(); }
+  }
+});
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) { if (state === 'PLAYING') paused = true; persist(); }
+});
+
+// botones
+$('btnPlay').addEventListener('click', e => { e.stopPropagation(); audio(); sfx.ui(); startRun(); });
+$('btnMissions').addEventListener('click', e => {
+  e.stopPropagation(); sfx.ui();
+  $('missionList').innerHTML = missionHTML();
+  hide('screenStart'); show('screenMissions'); state = 'MISSIONS';
+});
+$('btnMissionsClose').addEventListener('click', e => {
+  e.stopPropagation(); sfx.ui();
+  hide('screenMissions'); show('screenStart'); state = 'MENU';
+});
+$('btnRetry').addEventListener('click', e => { e.stopPropagation(); sfx.ui(); startRun(); });
+$('btnMenu').addEventListener('click', e => { e.stopPropagation(); sfx.ui(); goMenu(); });
+$('btnRevive').addEventListener('click', e => {
+  e.stopPropagation(); sfx.ui();
+  hide('screenDeath');
+  showAd(() => revive()); // ver mensaje de la tribu → revivir donde moriste
+});
+$('btnCrystalOk').addEventListener('click', e => {
+  e.stopPropagation(); sfx.ui();
+  hide('screenCrystal'); goMenu();
+});
+$('btnDouble').addEventListener('click', e => {
+  e.stopPropagation(); sfx.ui();
+  hide('screenCrystal');
+  showAd(() => { // dobla las chispas del nivel recién completado
+    addSparks(lastGoal, false);
+    toast(`✨ Donación simbólica doblada: <b>+${lastGoal} ✦</b>`);
+    goMenu();
+  });
+});
+
+// === FÍSICA Y LOOP PRINCIPAL ===
+const clock = new THREE.Clock();
+let elapsed = 0;
+
+function update(dt) {
+  const sdt = dt * timeScale; // delta escalado (slow-motion en muerte)
+  elapsed += dt;
+
+  // --- transición de zona ---
+  if (zoneLerp < 1) {
+    zoneLerp = Math.min(1, zoneLerp + dt * 0.5);
+    scene.fog.color.lerpColors(fogFrom, fogTo, zoneLerp);
+    scene.background.copy(scene.fog.color);
+  }
+
+  // --- pulso de cristales decorativos ---
+  crystalMats[0].emissiveIntensity = 1.1 + Math.sin(elapsed * 2.1) * 0.45;
+  crystalMats[1].emissiveIntensity = 1.0 + Math.sin(elapsed * 1.7 + 2) * 0.4;
+  crystalMats[2].emissiveIntensity = 1.1 + Math.sin(elapsed * 2.5 + 4) * 0.45;
+  sparkMat.emissiveIntensity = 2.0 + Math.sin(elapsed * 4) * 0.5;
+
+  if (state === 'MENU' || state === 'MISSIONS' || state === 'CRYSTAL') {
+    // Jiggy idle rotando en el menú
+    jy = Math.sin(elapsed * 1.3) * 0.4;
+    jiggy.rotation.y = elapsed * 0.7;
+    jiggy.rotation.x = 0;
+    jiggy.position.set(0, jy, 0);
+    camera.position.set(Math.sin(elapsed * 0.2) * 0.6, 1.6, 6.4);
+    camera.lookAt(0, 0.2, 0);
+    return;
+  }
+  if (state === 'AD' || state === 'DEAD' || paused) return;
+
+  if (state === 'DYING') {
+    deathTimer -= dt;
+    if (deathTimer <= 0) { showDeathPanel(); return; }
+  }
+
+  const dz = speed * sdt; // cuánto avanza el mundo hacia la cámara
+
+  // --- física de Jiggy ---
+  if (state === 'PLAYING') {
+    vy -= GRAVITY * sdt;
+    vy = Math.max(vy, -16);
+    jy += vy * sdt;
+    distance += dz;
+    runStats.time += sdt;
+    speed = Math.min(24, 11 + score * 0.16);
+    onboardUpdate(dt);
+    // misión survive30 se evalúa con el tiempo
+    if ((runStats.time | 0) % 5 === 0) checkMissions();
+  } else {
+    // DYING: Jiggy cae en slow-motion
+    vy -= GRAVITY * sdt;
+    jy += vy * sdt;
+  }
+  jiggy.rotation.y = 0;
+  jiggy.rotation.x = clamp(-vy * 0.07, -0.5, 1.05);
+  jiggy.position.set(0, jy, 0);
+
+  // aleteo de brazos
+  flapAnim = Math.min(1, flapAnim + dt * 5);
+  const armAng = 0.9 - Math.sin(flapAnim * Math.PI) * 1.3;
+  jiggy.userData.arms[0].rotation.z = -armAng;
+  jiggy.userData.arms[1].rotation.z = armAng;
+
+  // invulnerabilidad post-revive (parpadeo)
+  if (invuln > 0) {
+    invuln -= dt;
+    jiggy.visible = Math.floor(elapsed * 12) % 2 === 0;
+  } else jiggy.visible = true;
+
+  // --- mover el mundo ---
+  for (const seg of segments) {
+    seg.position.z += dz;
+    if (seg.position.z > 38) seg.position.z -= SEG_COUNT * SEG_LEN;
+  }
+  dust.position.z += dz * 0.9;
+  if (dust.position.z > 60) dust.position.z = 0;
+
+  for (const p of pairs) {
+    p.group.position.z += dz;
+    const pz = p.group.position.z;
+    // colisión con el par (Jiggy está en z=0)
+    if (state === 'PLAYING' && invuln <= 0 && Math.abs(pz) < 1.9) {
+      if (jy + JIGGY_R > p.gapTop || jy - JIGGY_R < p.gapBottom) die();
+    }
+    // pasó el obstáculo
+    if (!p.passed && pz > 2.2) {
+      p.passed = true;
+      if (state === 'PLAYING') {
+        score++;
+        runStats.score = score;
+        $('hudScore').textContent = score;
+        puff('hudScore');
+        // near-miss: pasó rozando el borde del gap
+        if (jy + JIGGY_R > p.gapTop - 1.1 || jy - JIGGY_R < p.gapBottom + 1.1) {
+          runStats.nearMiss++;
+          sfx.nearmiss();
+          const nm = $('nearmiss');
+          nm.style.opacity = 1;
+          setTimeout(() => { nm.style.opacity = 0; }, 220);
+        }
+        // cambio de zona cada 25 obstáculos
+        const zi = Math.floor(score / 25);
+        if (zi > zoneIdx) { zoneIdx = zi; if (zi > 0) setZone(zi, true); }
+        checkMissions();
+      }
+    }
+    if (pz > 14) placePair(p, farthestPairZ() - PAIR_SPACING);
+  }
+
+  // --- chispas de anuraK ---
+  for (let i = 0; i < SPARK_COUNT; i++) {
+    const s = sparkSlots[i];
+    if (s.active) {
+      s.z += dz;
+      const bobY = s.y + Math.sin(elapsed * 3 + s.phase) * 0.25;
+      dummy.position.set(0, bobY, s.z);
+      dummy.rotation.set(0, elapsed * 2 + s.phase, 0);
+      dummy.scale.setScalar(1 + Math.sin(elapsed * 5 + s.phase) * 0.15);
+      // recolección
+      if (state === 'PLAYING' && Math.abs(s.z) < 1.4 && Math.abs(bobY - jy) < 1.35) {
+        s.active = false; s.z = 999;
+        addSparks(1);
+        burst(0, jy, 0, COL.jade, 10);
+        $('hudSparks').textContent = '✦ ' + runStats.sparks;
+        puff('hudSparks');
+        sfx.spark();
+      }
+      if (s.z > 12) { s.active = false; s.z = 999; }
+    }
+    if (!s.active) dummy.scale.setScalar(0.0001);
+    if (!s.active) dummy.position.set(0, 0, 999);
+    dummy.updateMatrix();
+    sparkMesh.setMatrixAt(i, dummy.matrix);
+  }
+  sparkMesh.instanceMatrix.needsUpdate = true;
+
+  // --- cristal raro (vale 5 chispas) ---
+  if (rare.active) {
+    rare.z += dz;
+    rareMesh.visible = true;
+    rareMesh.position.set(0, rare.y + Math.sin(elapsed * 2.4) * 0.2, rare.z);
+    rareMesh.rotation.y = elapsed * 1.8;
+    rareMesh.scale.setScalar(1 + Math.sin(elapsed * 4) * 0.12);
+    if (state === 'PLAYING' && Math.abs(rare.z) < 1.5 && Math.abs(rare.y - jy) < 1.5) {
+      rare.active = false; rare.z = 999;
+      runStats.rares++;
+      addSparks(5);
+      burst(0, jy, 0, COL.magenta, 22);
+      $('hudSparks').textContent = '✦ ' + runStats.sparks;
+      puff('hudSparks');
+      sfx.rare();
+      toast('💠 Cristal raro <b>+5 ✦</b>');
+    }
+    if (rare.z > 12) { rare.active = false; rare.z = 999; }
+  } else rareMesh.visible = false;
+
+  // --- choque con la pared del túnel ---
+  if (state === 'PLAYING' && invuln <= 0 && (jy > KILL_Y || jy < -KILL_Y)) die();
+
+  // --- estela jade ---
+  if (state === 'PLAYING') {
+    trailHead = (trailHead + 1) % TRAIL_N;
+    trailPos[trailHead * 3] = rand(-0.15, 0.15);
+    trailPos[trailHead * 3 + 1] = jy - 0.25 + rand(-0.1, 0.1);
+    trailPos[trailHead * 3 + 2] = 0.55;
+  }
+  for (let i = 0; i < TRAIL_N; i++) {
+    if (trailPos[i * 3 + 2] < 500) trailPos[i * 3 + 2] += dz * 1.05;
+  }
+  trailGeo.attributes.position.needsUpdate = true;
+
+  // --- bursts ---
+  for (let i = 0; i < BURST_N; i++) {
+    const d = burstData[i];
+    if (d.life > 0) {
+      d.life -= dt;
+      burstPos[i * 3] += d.vx * dt;
+      burstPos[i * 3 + 1] += d.vy * dt;
+      burstPos[i * 3 + 2] += (d.vz + speed * 0.6) * sdt;
+      d.vy -= 5 * dt;
+      if (d.life <= 0) burstPos[i * 3 + 1] = 999;
+    }
+  }
+  burstGeo.attributes.position.needsUpdate = true;
+
+  // --- cámara (tercera persona, atrás-arriba) + screen shake ---
+  shake = Math.max(0, shake - dt * 2.2);
+  const shx = (Math.random() - 0.5) * shake * 0.8;
+  const shy = (Math.random() - 0.5) * shake * 0.8;
+  camera.position.set(shx, 2.7 + jy * 0.3 + shy, 7.6);
+  camera.lookAt(shx * 0.5, jy * 0.48, -10);
+  keyLight.position.set(0, jy * 0.4 + 3, 5);
+}
+
+renderer.setAnimationLoop(() => {
+  const dt = Math.min(clock.getDelta(), 0.05);
+  update(dt);
+  renderer.render(scene, camera);
+});
+
+// === INICIO ===
+resetWorld();
+updateMenuStats();
+updateCrystalUI();
+persist();
+</script>
+</body>
+</html>
