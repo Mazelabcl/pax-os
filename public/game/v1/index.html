@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <title>Pax Flight — El vuelo de Jiggy</title>
-<meta name="description" content="Jiggy cabalga un cristal raro del templo olvidado. Cada pulso de anuraK lo eleva por los túneles del Uray Pacha. Tu atención se convierte en donación.">
+<meta name="description" content="Vuela con Jiggy por los túneles del Uray Pacha, recoge anuraK y enciende los cristales. Tu atención se convierte en donación.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
@@ -163,9 +163,8 @@ h1.title{font-size:clamp(34px,9vw,52px);font-weight:800;letter-spacing:-1px;line
   <div id="screenStart" class="screen">
     <div class="subtitle">Uray Pacha · gesto jugable de Pax</div>
     <h1 class="title">PAX FLIGHT</h1>
-    <p class="lore-intro">Jiggy encontró un <b>cristal raro</b> del templo olvidado.<br>
-      Responde al <b>anuraK</b>: cada pulso lo eleva.<br>
-      Tu atención lo sostiene en el aire.</p>
+    <p class="lore-intro">Los cristales del <b>Uray Pacha</b> se apagan.<br>
+      Vuela con Jiggy y recoge <b>anuraK</b> para encenderlos.</p>
     <div class="crystal-meter panel" style="padding:14px 18px">
       <div class="lbl"><b id="startCrystalLbl">Cristal I</b><span id="startCrystalNum" class="mono">0 / 100</span></div>
       <div class="bar"><i id="startCrystalFill"></i></div>
@@ -176,11 +175,10 @@ h1.title{font-size:clamp(34px,9vw,52px);font-weight:800;letter-spacing:-1px;line
       </div>
     </div>
     <div class="btn-row">
-      <button class="btn" id="btnPlay">▶ &nbsp;Cabalgar</button>
+      <button class="btn" id="btnPlay">▶ &nbsp;Volar</button>
       <button class="btn ghost" id="btnMissions">✦ Misiones</button>
     </div>
-    <div style="margin-top:10px"><a href="2d/" style="color:rgba(232,232,240,0.45);font-size:12px;text-decoration:none;font-family:'JetBrains Mono',monospace;letter-spacing:0.08em">↗ VERSIÓN 2D</a></div>
-    <div class="tap-hint">Toca — un pulso de anuraK</div>
+    <div class="tap-hint">Toca para volar</div>
   </div>
 
   <!-- Panel misiones -->
@@ -197,7 +195,7 @@ h1.title{font-size:clamp(34px,9vw,52px);font-weight:800;letter-spacing:-1px;line
   <!-- Panel de muerte -->
   <div id="screenDeath" class="screen hidden">
     <div class="panel">
-      <div class="death-title">El cristal se apagó…</div>
+      <div class="death-title">El basalto detuvo tu vuelo</div>
       <div class="score-big" id="deathScore">0<span id="deathRecordTag" class="record-tag hidden">¡RÉCORD!</span></div>
       <div style="font-size:12.5px;color:var(--text-dim)" id="deathBest">Récord: 0</div>
       <div class="divider"></div>
@@ -205,7 +203,7 @@ h1.title{font-size:clamp(34px,9vw,52px);font-weight:800;letter-spacing:-1px;line
       <div id="deathMissions" style="margin-top:10px"></div>
       <div class="divider"></div>
       <div class="btn-row">
-        <button class="btn amber" id="btnRevive">✨ La tribu envía un pulso (5s)</button>
+        <button class="btn amber" id="btnRevive">✨ Revivir — mensaje de la tribu (5s)</button>
         <button class="btn" id="btnRetry">Reintentar</button>
         <button class="btn ghost" id="btnMenu">Menú</button>
       </div>
@@ -248,13 +246,11 @@ h1.title{font-size:clamp(34px,9vw,52px);font-weight:800;letter-spacing:-1px;line
 
 <script type="module">
 /* ============================================================
-   PAX FLIGHT — Jiggy cabalga un cristal raro del templo olvidado
+   PAX FLIGHT — Jiggy vuela por el Uray Pacha
    Un gesto jugable del proyecto Pax.
-   Lore: Jiggy NO vuela — monta un cristal del templo que responde
-   al anuraK. Cada toque del jugador es un pulso que lo eleva;
-   sin pulsos, la gravedad gana. La gran herida emite sombras
-   que drenan chispas. Tu atención genera valor, y ese valor
-   se dona. El juego ES el ciclo.
+   Lore: los cristales solo se cargan con anuraK — la energía
+   de los actos de bondad humanos. Tu atención genera valor,
+   y ese valor se dona. El juego ES el ciclo.
    ============================================================ */
 
 // === BOOT / CDN ===
@@ -279,12 +275,6 @@ const SPARK_COUNT = 24;
 const GRAVITY = 26, FLAP_VY = 8.8;
 const JIGGY_R = 0.68;          // radio de colisión de Jiggy
 const MISSION_BONUS = 15;
-// enemigos (la gran herida emite sombras — ver _lore/canon.md §3.2)
-const SHADOW_COUNT = 5;        // pool de sombras de la herida
-const BAT_COUNT = 2;           // pool de murciélagos de basalto
-const SHADOW_STEAL = 3;        // chispas que roba una sombra al tocarte
-const SHADOW_SCORE_MIN = 10;   // sombras aparecen tras el obstáculo 10 (onboarding limpio)
-const BAT_SCORE_MIN = 18;      // murciélagos tras el obstáculo 18
 
 const COL = {
   jade: 0x00C896, amber: 0xF59E0B, magenta: 0xE91E63,
@@ -353,14 +343,11 @@ const sfx = {
   ui:      () => tone(520, 0.06, 'sine', 0.08),
   zone:    () => { tone(392, 0.2, 'sine', 0.1); tone(523, 0.25, 'sine', 0.1, 0, 0.12); },
   nearmiss:() => tone(1200, 0.06, 'sine', 0.05, 1600),
-  shadow:  () => { tone(220, 0.3, 'sawtooth', 0.07, 70); tone(160, 0.35, 'sine', 0.12, 50, 0.05); },
-  bat:     () => { tone(1500, 0.09, 'square', 0.04, 1900); tone(1500, 0.09, 'square', 0.04, 1900, 0.14); },
 };
 
 // === ESCENA THREE ===
 const renderer = new THREE.WebGLRenderer({ antialias: true });
-const IS_TOUCH = matchMedia('(pointer:coarse)').matches;
-renderer.setPixelRatio(Math.min(devicePixelRatio, IS_TOUCH ? 1.5 : 2)); // cap móvil: evita throttling GPU
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
 renderer.setSize(innerWidth, innerHeight);
 document.body.prepend(renderer.domElement);
 
@@ -371,42 +358,14 @@ scene.background = new THREE.Color(ZONES[0].fog);
 const camera = new THREE.PerspectiveCamera(72, innerWidth / innerHeight, 0.1, 200);
 camera.position.set(0, 2.7, 7.6);
 
-// === ILUMINACIÓN (ambiental baja + 3 PointLights de color que viajan con la cámara → contraste dramático) ===
-const hemi = new THREE.HemisphereLight(0x67739c, 0x0b0b14, 0.45);
+const hemi = new THREE.HemisphereLight(0x8b97b8, 0x14141f, 0.85);
 scene.add(hemi);
-const keyLight = new THREE.PointLight(0xbfffe9, 55, 70, 1.7);   // luz clave fría junto a Jiggy
+const keyLight = new THREE.PointLight(0xbfffe9, 55, 70, 1.7);
 keyLight.position.set(0, 3, 5);
 scene.add(keyLight);
-const jadeLight = new THREE.PointLight(COL.jade, 34, 48, 1.8);  // baño jade adelante (sigue al jugador)
-jadeLight.position.set(0, -1.5, -15);
-scene.add(jadeLight);
-const deepLight = new THREE.PointLight(COL.magenta, 46, 95, 1.8); // fondo magenta (cambia con la zona)
+const deepLight = new THREE.PointLight(COL.magenta, 40, 90, 1.8);
 deepLight.position.set(0, -2, -70);
 scene.add(deepLight);
-
-// === GLOW FALSO (sprite aditivo con textura radial de canvas — bloom barato, sin postprocesado) ===
-function makeGlowTexture(size = 128) {
-  const cv = document.createElement('canvas');
-  cv.width = cv.height = size;
-  const c2 = cv.getContext('2d');
-  const g = c2.createRadialGradient(size / 2, size / 2, 0, size / 2, size / 2, size / 2);
-  g.addColorStop(0,    'rgba(255,255,255,1)');
-  g.addColorStop(0.25, 'rgba(255,255,255,0.5)');
-  g.addColorStop(0.6,  'rgba(255,255,255,0.12)');
-  g.addColorStop(1,    'rgba(255,255,255,0)');
-  c2.fillStyle = g;
-  c2.fillRect(0, 0, size, size);
-  return new THREE.CanvasTexture(cv);
-}
-const glowTex = makeGlowTexture();
-function makeGlowSprite(colorHex, scale, opacity = 0.85) {
-  const s = new THREE.Sprite(new THREE.SpriteMaterial({
-    map: glowTex, color: colorHex, blending: THREE.AdditiveBlending,
-    transparent: true, depthWrite: false, opacity
-  }));
-  s.scale.setScalar(scale);
-  return s;
-}
 
 addEventListener('resize', () => {
   camera.aspect = innerWidth / innerHeight;
@@ -414,10 +373,10 @@ addEventListener('resize', () => {
   renderer.setSize(innerWidth, innerHeight);
 });
 
-// === TÚNEL (segmentos reciclados de basalto con vertex colors + cristales/rocas instanciados + grietas de luz) ===
+// === TÚNEL (segmentos reciclados de basalto + cristales instanciados) ===
 const rockMat = new THREE.MeshStandardMaterial({
-  color: 0xffffff, roughness: 0.96, metalness: 0.04,
-  side: THREE.BackSide, flatShading: true, vertexColors: true
+  color: COL.basalt, roughness: 0.96, metalness: 0.04,
+  side: THREE.BackSide, flatShading: true
 });
 const crystalGeo = new THREE.OctahedronGeometry(0.55);
 const crystalMats = [
@@ -425,103 +384,39 @@ const crystalMats = [
   new THREE.MeshStandardMaterial({ color: 0x332200, emissive: COL.amber,   emissiveIntensity: 1.0, roughness: 0.3 }),
   new THREE.MeshStandardMaterial({ color: 0x330022, emissive: COL.magenta, emissiveIntensity: 1.1, roughness: 0.3 }),
 ];
-const GLOW_HEX = [COL.jade, COL.amber, COL.magenta];
-const rockDecoGeo = new THREE.DodecahedronGeometry(0.7, 0);
-const rockDecoMat = new THREE.MeshStandardMaterial({ color: 0x23232f, roughness: 0.95, flatShading: true });
-const stalacGeo = new THREE.ConeGeometry(0.5, 3.2, 5);
-const stalacMat = new THREE.MeshStandardMaterial({ color: 0x191922, roughness: 0.97, flatShading: true });
-const crackMat = new THREE.MeshBasicMaterial({ color: 0xcafff0, transparent: true, opacity: 0.13,
-  blending: THREE.AdditiveBlending, depthWrite: false, side: THREE.DoubleSide });
-const shaftMat = new THREE.MeshBasicMaterial({ color: 0x9fffe4, transparent: true, opacity: 0.05,
-  blending: THREE.AdditiveBlending, depthWrite: false, side: THREE.DoubleSide });
 const segments = [];
 const dummy = new THREE.Object3D();
 for (let i = 0; i < SEG_COUNT; i++) {
   const geo = new THREE.CylinderGeometry(TUNNEL_R, TUNNEL_R, SEG_LEN, 14, 4, true);
   geo.rotateX(Math.PI / 2); // eje a lo largo de z
   const pos = geo.attributes.position;
-  const vcol = new Float32Array(pos.count * 3);
   for (let v = 0; v < pos.count; v++) {
     const x = pos.getX(v), y = pos.getY(v), z = pos.getZ(v);
     const a = Math.atan2(y, x);
     // ruido determinista continuo entre segmentos (periodo = SEG_LEN en z)
     const r = TUNNEL_R + Math.sin(a * 5) * 0.45 + Math.sin(a * 9 + z * (Math.PI * 4 / SEG_LEN)) * 0.4;
     pos.setX(v, Math.cos(a) * r); pos.setY(v, Math.sin(a) * r);
-    // vertex colors: basalto vivo con vetas minerales (jade hacia abajo, violeta hacia arriba)
-    const vein = Math.pow(Math.max(0, Math.sin(a * 7 + z * 0.45)), 3);
-    const base = 0.07 + Math.abs(Math.sin(a * 3 + z * 0.2)) * 0.05;
-    const up = Math.max(0, Math.sin(a)); // 1 = techo, 0 = piso
-    vcol[v * 3]     = base + vein * 0.05 + up * 0.03;
-    vcol[v * 3 + 1] = base + vein * 0.16 * (1 - up) + 0.012;
-    vcol[v * 3 + 2] = base + 0.05 + vein * 0.08 * up;
   }
-  geo.setAttribute('color', new THREE.BufferAttribute(vcol, 3));
   geo.computeVertexNormals();
   const seg = new THREE.Mesh(geo, rockMat);
   seg.position.z = 20 - i * SEG_LEN;
-  // cristales decorativos incrustados en la pared + glow falso (2 draw calls por segmento)
+  // cristales decorativos incrustados en la pared (InstancedMesh: 1 draw call por segmento)
   const inst = new THREE.InstancedMesh(crystalGeo, crystalMats[i % 3], 14);
-  const wallGlowPos = new Float32Array(14 * 3);
   for (let k = 0; k < 14; k++) {
     const a = rand(0, Math.PI * 2), rr = TUNNEL_R - 0.35;
     dummy.position.set(Math.cos(a) * rr, Math.sin(a) * rr, rand(-SEG_LEN / 2, SEG_LEN / 2));
-    wallGlowPos[k * 3] = dummy.position.x * 0.94;
-    wallGlowPos[k * 3 + 1] = dummy.position.y * 0.94;
-    wallGlowPos[k * 3 + 2] = dummy.position.z;
     dummy.rotation.set(rand(0, 3), rand(0, 3), rand(0, 3));
     dummy.scale.setScalar(rand(0.5, 1.9));
     dummy.updateMatrix();
     inst.setMatrixAt(k, dummy.matrix);
   }
   seg.add(inst);
-  const wallGlowGeo = new THREE.BufferGeometry();
-  wallGlowGeo.setAttribute('position', new THREE.BufferAttribute(wallGlowPos, 3));
-  seg.add(new THREE.Points(wallGlowGeo, new THREE.PointsMaterial({
-    map: glowTex, color: GLOW_HEX[i % 3], size: 2.6, transparent: true, opacity: 0.5,
-    blending: THREE.AdditiveBlending, depthWrite: false, sizeAttenuation: true
-  })));
-  // rocas low-poly desordenadas pegadas a la pared (1 draw call)
-  const rocks = new THREE.InstancedMesh(rockDecoGeo, rockDecoMat, 16);
-  for (let k = 0; k < 16; k++) {
-    const a = rand(0, Math.PI * 2), rr = TUNNEL_R - rand(0.1, 0.5);
-    dummy.position.set(Math.cos(a) * rr, Math.sin(a) * rr, rand(-SEG_LEN / 2, SEG_LEN / 2));
-    dummy.rotation.set(rand(0, 3), rand(0, 3), rand(0, 3));
-    dummy.scale.set(rand(0.5, 1.6), rand(0.4, 1.1), rand(0.5, 1.8));
-    dummy.updateMatrix();
-    rocks.setMatrixAt(k, dummy.matrix);
-  }
-  seg.add(rocks);
-  // estalactitas decorativas de fondo, lejos del carril del jugador (1 draw call, sin colisión)
-  const stals = new THREE.InstancedMesh(stalacGeo, stalacMat, 12);
-  for (let k = 0; k < 12; k++) {
-    const top = k % 2 === 0;
-    const sx = (Math.random() < 0.5 ? -1 : 1) * rand(2.4, 5.2);
-    dummy.position.set(sx, top ? rand(6.8, 7.8) : rand(-7.8, -6.8), rand(-SEG_LEN / 2, SEG_LEN / 2));
-    dummy.rotation.set(top ? Math.PI : 0, 0, rand(-0.15, 0.15));
-    dummy.scale.set(rand(0.5, 1.3), rand(0.6, 1.4), rand(0.5, 1.3));
-    dummy.updateMatrix();
-    stals.setMatrixAt(k, dummy.matrix);
-  }
-  seg.add(stals);
-  // grietas en el techo con luz tenue cayendo (planos aditivos, "cielo" del túnel)
-  for (let k = 0; k < 2; k++) {
-    const zc = rand(-SEG_LEN / 2 + 4, SEG_LEN / 2 - 4);
-    const cx = rand(-2.5, 2.5);
-    const crack = new THREE.Mesh(new THREE.PlaneGeometry(rand(0.3, 0.6), rand(3.5, 7)), crackMat);
-    crack.position.set(cx, 7.55, zc);
-    crack.rotation.x = Math.PI / 2;
-    crack.rotation.z = rand(0, Math.PI);
-    seg.add(crack);
-    const shaft = new THREE.Mesh(new THREE.PlaneGeometry(rand(1.2, 2), rand(5, 8)), shaftMat);
-    shaft.position.set(cx, 4.4, zc);
-    seg.add(shaft);
-  }
   scene.add(seg);
   segments.push(seg);
 }
 
-// polvo ambiental flotante (1 draw call, aditivo con textura glow)
-const DUST_N = 80;
+// polvo ambiental flotante (1 draw call)
+const DUST_N = 70;
 const dustPos = new Float32Array(DUST_N * 3);
 for (let i = 0; i < DUST_N; i++) {
   dustPos[i * 3] = rand(-6, 6); dustPos[i * 3 + 1] = rand(-6, 6); dustPos[i * 3 + 2] = rand(-120, 10);
@@ -529,28 +424,11 @@ for (let i = 0; i < DUST_N; i++) {
 const dustGeo = new THREE.BufferGeometry();
 dustGeo.setAttribute('position', new THREE.BufferAttribute(dustPos, 3));
 const dust = new THREE.Points(dustGeo, new THREE.PointsMaterial({
-  map: glowTex, color: 0x6fae9c, size: 0.16, transparent: true, opacity: 0.4,
-  blending: THREE.AdditiveBlending, depthWrite: false, sizeAttenuation: true
+  color: 0x6fae9c, size: 0.09, transparent: true, opacity: 0.55, sizeAttenuation: true
 }));
 scene.add(dust);
 
-// "luciérnagas" de anuraK lejanas (1 draw call) — motas cálidas que derivan lento
-const FIRE_N = 36;
-const firePos = new Float32Array(FIRE_N * 3);
-const firePhase = [];
-for (let i = 0; i < FIRE_N; i++) {
-  firePos[i * 3] = rand(-7, 7); firePos[i * 3 + 1] = rand(-6.5, 6.5); firePos[i * 3 + 2] = rand(-140, 5);
-  firePhase.push(rand(0, 6.28));
-}
-const fireGeo = new THREE.BufferGeometry();
-fireGeo.setAttribute('position', new THREE.BufferAttribute(firePos, 3));
-const fireflies = new THREE.Points(fireGeo, new THREE.PointsMaterial({
-  map: glowTex, color: 0xffd27a, size: 0.55, transparent: true, opacity: 0.75,
-  blending: THREE.AdditiveBlending, depthWrite: false, sizeAttenuation: true
-}));
-scene.add(fireflies);
-
-// === JIGGY (cíclope turquesa low-poly) MONTADO en el cristal raro del templo — Jiggy NO vuela ===
+// === JIGGY (cíclope turquesa low-poly: cuerpo + ojo único + bandana + dreads + orejas) ===
 const jiggy = new THREE.Group();
 {
   const skin = new THREE.MeshStandardMaterial({ color: COL.turquoise, roughness: 0.55 });
@@ -593,13 +471,14 @@ const jiggy = new THREE.Group();
   jiggy.add(earL);
   const earR = earL.clone(); earR.position.x = -0.74; earR.rotation.z = Math.PI / 2;
   jiggy.add(earR);
-  // bracitos en pose de jinete, hacia el cristal (Jiggy cabalga, no aletea)
+  // bracitos (aletean al flap)
   const armGeo = new THREE.CapsuleGeometry(0.09, 0.34, 3, 6);
   const armL = new THREE.Mesh(armGeo, skin);
-  armL.position.set(0.55, -0.36, 0.2); armL.rotation.set(0.55, 0, -0.5);
+  armL.position.set(0.62, -0.18, 0.12); armL.rotation.z = -0.9;
   const armR = new THREE.Mesh(armGeo, skin);
-  armR.position.set(-0.55, -0.36, 0.2); armR.rotation.set(0.55, 0, 0.5);
+  armR.position.set(-0.62, -0.18, 0.12); armR.rotation.z = 0.9;
   jiggy.add(armL, armR);
+  jiggy.userData.arms = [armL, armR];
   // piecitos
   const footGeo = new THREE.SphereGeometry(0.16, 8, 6);
   const fL = new THREE.Mesh(footGeo, skin); fL.position.set(0.26, -0.72, 0.1); fL.scale.set(1, 0.7, 1.3);
@@ -610,53 +489,8 @@ const jiggy = new THREE.Group();
     new THREE.MeshStandardMaterial({ color: 0x550022, emissive: COL.magenta, emissiveIntensity: 1.6 }));
   gem.position.set(0, -0.22, 0.66);
   jiggy.add(gem);
-
-  // === MONTURA: cristal raro del templo olvidado (piedra flotante facetada con glow jade) ===
-  const mountMat = new THREE.MeshStandardMaterial({
-    color: 0x02322a, emissive: COL.jade, emissiveIntensity: 1.5, roughness: 0.18, flatShading: true
-  });
-  const mount = new THREE.Group();
-  const mountCore = new THREE.Mesh(new THREE.OctahedronGeometry(0.66, 0), mountMat);
-  mountCore.scale.set(1.35, 0.8, 1.05);
-  mount.add(mountCore);
-  const frags = [];
-  for (let i = 0; i < 3; i++) { // fragmentos menores que orbitan la piedra
-    const f = new THREE.Mesh(new THREE.OctahedronGeometry(rand(0.09, 0.15)), mountMat);
-    f.userData.orbit = { r: rand(0.85, 1.15), sp: rand(1.4, 2.4), ph: rand(0, 6.28), y: rand(-0.15, 0.2) };
-    frags.push(f);
-    mount.add(f);
-  }
-  const mountGlow = makeGlowSprite(COL.jade, 3.4, 0.75);
-  mount.add(mountGlow);
-  // anillo de pulso anuraK: se expande desde el cristal con cada toque del jugador
-  const pulseRing = new THREE.Mesh(new THREE.TorusGeometry(0.6, 0.05, 8, 36),
-    new THREE.MeshBasicMaterial({ color: COL.jade, transparent: true, opacity: 0,
-      blending: THREE.AdditiveBlending, depthWrite: false }));
-  pulseRing.rotation.x = Math.PI / 2;
-  mount.add(pulseRing);
-  mount.position.set(0, -1.06, 0.04);
-  jiggy.add(mount);
-  jiggy.userData.mount = { mat: mountMat, glow: mountGlow, ring: pulseRing, frags };
 }
 scene.add(jiggy);
-
-// pulso de anuraK del cristal-montura (reemplaza el aleteo: cada toque = un pulso que eleva el cristal)
-function animateMount(dt) {
-  flapAnim = Math.min(1, flapAnim + dt * 3.2);
-  const M = jiggy.userData.mount;
-  M.ring.scale.setScalar(0.6 + flapAnim * 4.4);
-  M.ring.material.opacity = (1 - flapAnim) * 0.9;
-  M.mat.emissiveIntensity = 1.4 + (1 - flapAnim) * 2.8 + Math.sin(elapsed * 3) * 0.25;
-  M.glow.scale.setScalar(3.2 + (1 - flapAnim) * 1.8 + Math.sin(elapsed * 3) * 0.3);
-  for (const f of M.frags) {
-    const o = f.userData.orbit;
-    f.position.set(
-      Math.cos(elapsed * o.sp + o.ph) * o.r,
-      o.y + Math.sin(elapsed * 2 + o.ph) * 0.1,
-      Math.sin(elapsed * o.sp + o.ph) * o.r * 0.75
-    );
-  }
-}
 
 // === OBSTÁCULOS (estalactitas/estalagmitas de basalto con gap) ===
 const coneMat = new THREE.MeshStandardMaterial({
@@ -677,37 +511,14 @@ function makeRockCone() {
 }
 const pairs = [];
 let pairsSpawned = 0;
-const blockerMat = new THREE.MeshStandardMaterial({
-  color: 0x1a0530, emissive: 0x7C4DFF, emissiveIntensity: 1.5, roughness: 0.25, flatShading: true
-});
 for (let i = 0; i < PAIR_COUNT; i++) {
   const group = new THREE.Group();
   const top = new THREE.Mesh(makeRockCone(), coneMat);   // estalactita (punta abajo)
   top.rotation.z = Math.PI;
   const bottom = new THREE.Mesh(makeRockCone(), coneMat); // estalagmita (punta arriba)
   group.add(top, bottom);
-  // cristales incrustados en el obstáculo, cerca del gap (1 InstancedMesh + 1 Points glow por par)
-  const gems = new THREE.InstancedMesh(crystalGeo, crystalMats[i % 3], 6);
-  const gemGlowPos = new Float32Array(6 * 3);
-  const gemGlowGeo = new THREE.BufferGeometry();
-  gemGlowGeo.setAttribute('position', new THREE.BufferAttribute(gemGlowPos, 3));
-  const gemGlow = new THREE.Points(gemGlowGeo, new THREE.PointsMaterial({
-    map: glowTex, color: GLOW_HEX[i % 3], size: 2.0, transparent: true, opacity: 0.55,
-    blending: THREE.AdditiveBlending, depthWrite: false, sizeAttenuation: true
-  }));
-  group.add(gems, gemGlow);
-  // cristal-bloqueo: cristal violeta que tapa parte del gap en secciones difíciles (tocar = muerte)
-  const blocker = new THREE.Group();
-  const b1 = new THREE.Mesh(new THREE.OctahedronGeometry(0.85, 0), blockerMat);
-  b1.scale.set(1, 1.4, 1);
-  const b2 = new THREE.Mesh(new THREE.OctahedronGeometry(0.5, 0), blockerMat);
-  b2.position.set(0.55, -0.4, 0.2); b2.rotation.z = 0.5;
-  blocker.add(b1, b2, makeGlowSprite(0x9b6bff, 3.0, 0.6));
-  blocker.visible = false;
-  group.add(blocker);
   scene.add(group);
-  pairs.push({ group, top, bottom, gems, gemGlowPos, gemGlowGeo, blocker, blockerOn: false, blockerY: 0,
-    gapTop: 0, gapBottom: 0, passed: false, counted: false });
+  pairs.push({ group, top, bottom, gapTop: 0, gapBottom: 0, passed: false, counted: false });
 }
 
 // === COLECCIONABLES (chispas de anuraK instanciadas + cristal raro) ===
@@ -719,14 +530,6 @@ sparkMesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
 scene.add(sparkMesh);
 const sparkSlots = [];
 for (let i = 0; i < SPARK_COUNT; i++) sparkSlots.push({ active: false, y: 0, z: 999, phase: rand(0, 6.28) });
-// glow falso de las chispas (1 solo draw call para las 24, Points aditivo)
-const sparkGlowPos = new Float32Array(SPARK_COUNT * 3).fill(999);
-const sparkGlowGeo = new THREE.BufferGeometry();
-sparkGlowGeo.setAttribute('position', new THREE.BufferAttribute(sparkGlowPos, 3));
-scene.add(new THREE.Points(sparkGlowGeo, new THREE.PointsMaterial({
-  map: glowTex, color: COL.jade, size: 1.7, transparent: true, opacity: 0.7,
-  blending: THREE.AdditiveBlending, depthWrite: false, sizeAttenuation: true
-})));
 // matrices iniciales en escala ~0 (si no, las 24 esferas aparecen en el origen durante el menú)
 {
   const d0 = new THREE.Object3D();
@@ -737,53 +540,9 @@ scene.add(new THREE.Points(sparkGlowGeo, new THREE.PointsMaterial({
 
 const rareMesh = new THREE.Mesh(new THREE.OctahedronGeometry(0.62),
   new THREE.MeshStandardMaterial({ color: 0x330011, emissive: COL.magenta, emissiveIntensity: 2.4, roughness: 0.25 }));
-rareMesh.add(makeGlowSprite(COL.magenta, 3.2, 0.7));
 rareMesh.visible = false;
 scene.add(rareMesh);
 const rare = { active: false, y: 0, z: 999 };
-
-// === ENEMIGOS — la gran herida emite sombras (lore: canon §3.2) ===
-// Decisión de diseño: las sombras ROBAN chispas (no matan). Son semi-transparentes y flotan
-// en seno — morir por algo difícil de leer se siente injusto en mobile. Castigan la economía
-// (drenan anuraK) sin cortar el flow. Los murciélagos de basalto SÍ matan: son opacos,
-// rápidos y telegrafiados con un brillo 0.5s antes — muerte legible y justa.
-const shadowMat = new THREE.MeshStandardMaterial({
-  color: 0x07040f, emissive: 0x7C4DFF, emissiveIntensity: 0.6, roughness: 0.9,
-  transparent: true, opacity: 0.62, flatShading: true
-});
-const shadowGeo = new THREE.IcosahedronGeometry(0.85, 0);
-const shadows = [];
-for (let i = 0; i < SHADOW_COUNT; i++) {
-  const mesh = new THREE.Mesh(shadowGeo, shadowMat);
-  mesh.add(makeGlowSprite(0x7C4DFF, 2.4, 0.5));
-  mesh.visible = false;
-  scene.add(mesh);
-  shadows.push({ mesh, active: false, baseY: 0, z: 999, phase: rand(0, 6.28), amp: rand(1.4, 2.8), spd: rand(0.6, 1.3) });
-}
-let shadowTimer = 3, shadowTipShown = false;
-
-// murciélagos de basalto: cruzan el túnel en diagonal
-const batMat = new THREE.MeshStandardMaterial({ color: 0x2a2a38, roughness: 0.9, flatShading: true });
-const batWingMat = new THREE.MeshStandardMaterial({ color: 0x232330, roughness: 0.9, side: THREE.DoubleSide, flatShading: true });
-const batWingGeo = new THREE.PlaneGeometry(0.85, 0.42);
-batWingGeo.translate(0.45, 0, 0); // pivote en la raíz del ala
-const bats = [];
-for (let i = 0; i < BAT_COUNT; i++) {
-  const group = new THREE.Group();
-  const body = new THREE.Mesh(new THREE.ConeGeometry(0.28, 0.8, 5), batMat);
-  body.rotation.x = -Math.PI / 2;
-  const wL = new THREE.Mesh(batWingGeo, batWingMat);
-  wL.position.x = 0.12;
-  const wR = new THREE.Mesh(batWingGeo, batWingMat);
-  wR.scale.x = -1; wR.position.x = -0.12;
-  group.add(body, wL, wR);
-  group.visible = false;
-  scene.add(group);
-  const tele = makeGlowSprite(0xE91E63, 3.2, 0); // brillo telegrafiado 0.5s antes de entrar
-  scene.add(tele);
-  bats.push({ group, wL, wR, tele, active: false, state: 'idle', t: 0, y: 0, z: 999, vy: 0 });
-}
-let batTimer = 5, batTipShown = false;
 
 // === PARTÍCULAS (estela jade + bursts al recoger) ===
 const TRAIL_N = 44;
@@ -851,7 +610,7 @@ const MISSIONS = [
   { id: 'zona2',     txt: 'Llega a la Zona Ámbar (25 obstáculos)', target: 25,  val: r => r.score },
   { id: 'sparks150', txt: 'Acumula 150 chispas en total',          target: 150, val: () => save.lifetimeSparks },
   { id: 'revive1',   txt: 'Revive con un mensaje de la tribu',     target: 1,   val: r => r.revived },
-  { id: 'flaps100',  txt: 'Envía 100 pulsos de anuraK en un run',  target: 100, val: r => r.flaps },
+  { id: 'flaps100',  txt: 'Aletea 100 veces en un run',            target: 100, val: r => r.flaps },
 ];
 const today = () => new Date().toISOString().slice(0, 10);
 function ensureMissions() {
@@ -935,8 +694,6 @@ const LORE_CARDS = [
   { t: 'El Uray Pacha', d: 'El mundo de abajo. Una red de túneles bajo todo el planeta donde la tribu Pax custodia los cristales que sostienen ambos mundos.' },
   { t: '¿Qué es un Ayni?', d: 'Cada gesto concreto que ayuda: enseñar gratis, donar tiempo, cubrir el café de alguien. No hay gesto pequeño. Todo carga cristales.' },
   { t: 'Pax es real', d: 'Tu atención genera valor, y ese valor se dona a causas reales. Conoce el proyecto en pax-os.vercel.app' },
-  { t: 'El cristal de Jiggy', d: 'Jiggy no vuela: cabalga un cristal raro del templo olvidado. Responde al anuraK — cada pulso de tu atención lo eleva. Sin pulsos, la gravedad gana.' },
-  { t: 'La gran herida', d: 'La crisis antigua dejó una herida en el Uray Pacha. De ella brotan sombras que drenan anuraK. No las toques: se llevan tus chispas.' },
 ];
 let loreIdx = Math.floor(Math.random() * LORE_CARDS.length);
 function showAd(onDone) {
@@ -1016,82 +773,19 @@ function setZone(idx, announce) {
   }
 }
 
-// === SPAWNING — gap a altura ALEATORIA + patrones (escalera, dobles columnas, cristal-bloqueo) ===
+// === SPAWNING ===
 function freeSparkSlot() { return sparkSlots.find(s => !s.active); }
-let nextSpacing = PAIR_SPACING;
-let patternState = { type: 'free', left: 0, dir: 1, lastCenter: 0 };
-function pickPattern() {
-  const r = Math.random();
-  if (score >= 8 && r < 0.25) {        // escalera: gaps consecutivos que suben/bajan
-    patternState = { type: 'stair', left: 3 + (Math.random() < 0.5 ? 1 : 0),
-      dir: Math.random() < 0.5 ? 1 : -1, lastCenter: patternState.lastCenter };
-  } else if (score >= 14 && r < 0.45) { // doble columna: dos pares pegados con gap desplazado
-    patternState = { type: 'double', left: 2,
-      dir: Math.random() < 0.5 ? 1 : -1, lastCenter: patternState.lastCenter };
-  } else {
-    patternState = { type: 'free', left: 2 + Math.floor(Math.random() * 3), dir: 1, lastCenter: patternState.lastCenter };
-  }
-}
 function placePair(pair, z) {
   pairsSpawned++;
-  if (patternState.left <= 0 && pairsSpawned > 5) pickPattern();
-  // tamaño del gap: generoso los primeros 5 obstáculos, luego aprieta con la distancia + variación leve
-  let gap = pairsSpawned <= 5
-    ? rand(8.9, 9.6)
-    : clamp(8.7 - score * 0.055 + rand(-0.45, 0.45), 4.9, 8.8);
-  // centro del gap a altura ALEATORIA en rango amplio (≈25%-75% del túnel jugable)
-  let lim = KILL_Y - 0.9 - gap / 2;
-  let center;
-  nextSpacing = PAIR_SPACING;
-  if (pairsSpawned <= 5) {
-    center = rand(-lim * 0.5, lim * 0.5); // arranque suave: cerca del medio
-  } else if (patternState.type === 'stair') {
-    center = clamp(patternState.lastCenter + patternState.dir * rand(1.7, 2.5), -lim, lim);
-    nextSpacing = 14;
-  } else if (patternState.type === 'double' && patternState.left === 1) {
-    gap = Math.min(gap + 1.0, 9); // segunda columna pegada: gap desplazado, algo más ancho por justicia
-    lim = KILL_Y - 0.9 - gap / 2;
-    center = clamp(patternState.lastCenter + patternState.dir * rand(2.6, 3.6), -lim, lim);
-    nextSpacing = 9.5;
-  } else {
-    center = rand(-lim, lim);
-    if (patternState.type === 'double') nextSpacing = 9.5; // la siguiente viene pegada
-  }
-  patternState.left--;
-  patternState.lastCenter = center;
-  // cristal-bloqueo: tapa un borde del gap (solo con gap ancho, tras el obstáculo 12)
-  pair.blockerOn = false;
-  if (score >= 12 && patternState.type === 'free' && gap > 6.4 && Math.random() < 0.18) {
-    gap += 1.1; // compensa el espacio que tapa el cristal
-    lim = KILL_Y - 0.9 - gap / 2;
-    center = clamp(center, -lim, lim);
-    pair.blockerOn = true;
-    pair.blockerY = center + (Math.random() < 0.5 ? 1 : -1) * (gap / 2 - 0.9);
-    pair.blocker.position.y = pair.blockerY;
-    pair.blocker.rotation.z = rand(0, 3);
-  }
-  pair.blocker.visible = pair.blockerOn;
+  const gap = Math.max(5.2, 9.4 - score * 0.055);
+  const lim = 6.4 - gap / 2;
+  const center = rand(-lim, lim);
   pair.gapTop = center + gap / 2;
   pair.gapBottom = center - gap / 2;
   pair.top.position.y = pair.gapTop + CONE_H / 2;
   pair.bottom.position.y = pair.gapBottom - CONE_H / 2;
   pair.group.position.z = z;
   pair.passed = false;
-  // cristales incrustados pegados a las puntas del obstáculo (donde mira el jugador)
-  for (let k = 0; k < 6; k++) {
-    const onTop = k < 3;
-    const gy = onTop ? pair.gapTop + rand(0.4, 2.6) : pair.gapBottom - rand(0.4, 2.6);
-    dummy.position.set(rand(-1.3, 1.3), gy, rand(-0.9, 0.9));
-    dummy.rotation.set(rand(0, 3), rand(0, 3), rand(0, 3));
-    dummy.scale.setScalar(rand(0.45, 0.95));
-    dummy.updateMatrix();
-    pair.gems.setMatrixAt(k, dummy.matrix);
-    pair.gemGlowPos[k * 3] = dummy.position.x;
-    pair.gemGlowPos[k * 3 + 1] = gy;
-    pair.gemGlowPos[k * 3 + 2] = dummy.position.z;
-  }
-  pair.gems.instanceMatrix.needsUpdate = true;
-  pair.gemGlowGeo.attributes.position.needsUpdate = true;
   // chispas de anuraK: en el gap y entre obstáculos
   for (const off of [-8, 0, 8]) {
     if (Math.random() < 0.62) {
@@ -1119,15 +813,8 @@ function resetWorld() {
   pairsSpawned = 0;
   score = 0; distance = 0; speed = 11;
   sparkSlots.forEach(s => { s.active = false; s.z = 999; });
-  sparkGlowPos.fill(999);
   rare.active = false; rare.z = 999;
   trailPos.fill(999);
-  // enemigos y patrones a cero
-  shadows.forEach(s => { s.active = false; s.mesh.visible = false; s.z = 999; });
-  bats.forEach(b => { b.active = false; b.state = 'idle'; b.group.visible = false; b.tele.material.opacity = 0; b.z = 999; });
-  shadowTimer = 3; batTimer = 5;
-  nextSpacing = PAIR_SPACING;
-  patternState = { type: 'free', left: 0, dir: 1, lastCenter: 0 };
   pairs.forEach((p, i) => placePair(p, -42 - i * PAIR_SPACING));
   zoneIdx = -1;
   setZone(0, false);
@@ -1155,7 +842,7 @@ function startRun() {
   $('hudSparks').textContent = '✦ 0';
   updateCrystalUI();
   checkMissions(); // runs3 puede completarse al arrancar
-  if (!save.onboarded) { onboardStep = 0; onboardT = 0; tip('Toca: un pulso eleva el cristal'); }
+  if (!save.onboarded) { onboardStep = 0; onboardT = 0; tip('Toca para volar'); }
 }
 function die() {
   if (state !== 'PLAYING') return;
@@ -1190,9 +877,6 @@ function revive() {
     if (p.group.position.z > -30) placePair(p, farthestPairZ() - PAIR_SPACING);
   }
   sparkSlots.forEach(s => { if (s.z > -25 && s.z < 8) s.active = false; });
-  // limpia los enemigos cercanos: el pulso de la tribu ahuyenta las sombras
-  shadows.forEach(s => { if (s.z > -45) { s.active = false; s.mesh.visible = false; s.z = 999; } });
-  bats.forEach(b => { b.active = false; b.state = 'idle'; b.group.visible = false; b.tele.material.opacity = 0; b.z = 999; });
   jy = 0; vy = 2.5; invuln = 1.6;
   timeScale = 1;
   state = 'PLAYING';
@@ -1322,8 +1006,7 @@ function update(dt) {
   sparkMat.emissiveIntensity = 2.0 + Math.sin(elapsed * 4) * 0.5;
 
   if (state === 'MENU' || state === 'MISSIONS' || state === 'CRYSTAL') {
-    // Jiggy idle rotando en el menú, montado en su cristal
-    animateMount(dt);
+    // Jiggy idle rotando en el menú
     jy = Math.sin(elapsed * 1.3) * 0.4;
     jiggy.rotation.y = elapsed * 0.7;
     jiggy.rotation.x = 0;
@@ -1361,8 +1044,11 @@ function update(dt) {
   jiggy.rotation.x = clamp(-vy * 0.07, -0.5, 1.05);
   jiggy.position.set(0, jy, 0);
 
-  // PULSO de anuraK: anillo que se expande desde el cristal-montura (ya no hay aleteo)
-  animateMount(dt);
+  // aleteo de brazos
+  flapAnim = Math.min(1, flapAnim + dt * 5);
+  const armAng = 0.9 - Math.sin(flapAnim * Math.PI) * 1.3;
+  jiggy.userData.arms[0].rotation.z = -armAng;
+  jiggy.userData.arms[1].rotation.z = armAng;
 
   // invulnerabilidad post-revive (parpadeo)
   if (invuln > 0) {
@@ -1378,29 +1064,12 @@ function update(dt) {
   dust.position.z += dz * 0.9;
   if (dust.position.z > 60) dust.position.z = 0;
 
-  // luciérnagas de anuraK lejanas: derivan lento y se reciclan al fondo
-  for (let i = 0; i < FIRE_N; i++) {
-    firePos[i * 3 + 2] += dz * 0.8;
-    firePos[i * 3 + 1] += Math.sin(elapsed * 0.9 + firePhase[i]) * dt * 0.5;
-    if (firePos[i * 3 + 2] > 10) {
-      firePos[i * 3 + 2] -= 150;
-      firePos[i * 3] = rand(-7, 7);
-      firePos[i * 3 + 1] = rand(-6.5, 6.5);
-    }
-  }
-  fireGeo.attributes.position.needsUpdate = true;
-
   for (const p of pairs) {
     p.group.position.z += dz;
     const pz = p.group.position.z;
     // colisión con el par (Jiggy está en z=0)
     if (state === 'PLAYING' && invuln <= 0 && Math.abs(pz) < 1.9) {
       if (jy + JIGGY_R > p.gapTop || jy - JIGGY_R < p.gapBottom) die();
-    }
-    // cristal-bloqueo dentro del gap: tocar = muerte (gira lento para leerse como amenaza)
-    if (p.blockerOn) {
-      p.blocker.rotation.y = elapsed * 1.2;
-      if (state === 'PLAYING' && invuln <= 0 && Math.abs(pz) < 1.5 && Math.abs(jy - p.blockerY) < 1.15) die();
     }
     // pasó el obstáculo
     if (!p.passed && pz > 2.2) {
@@ -1424,7 +1093,7 @@ function update(dt) {
         checkMissions();
       }
     }
-    if (pz > 14) placePair(p, farthestPairZ() - nextSpacing);
+    if (pz > 14) placePair(p, farthestPairZ() - PAIR_SPACING);
   }
 
   // --- chispas de anuraK ---
@@ -1433,7 +1102,6 @@ function update(dt) {
     if (s.active) {
       s.z += dz;
       const bobY = s.y + Math.sin(elapsed * 3 + s.phase) * 0.25;
-      sparkGlowPos[i * 3] = 0; sparkGlowPos[i * 3 + 1] = bobY; sparkGlowPos[i * 3 + 2] = s.z;
       dummy.position.set(0, bobY, s.z);
       dummy.rotation.set(0, elapsed * 2 + s.phase, 0);
       dummy.scale.setScalar(1 + Math.sin(elapsed * 5 + s.phase) * 0.15);
@@ -1448,16 +1116,12 @@ function update(dt) {
       }
       if (s.z > 12) { s.active = false; s.z = 999; }
     }
-    if (!s.active) {
-      dummy.scale.setScalar(0.0001);
-      dummy.position.set(0, 0, 999);
-      sparkGlowPos[i * 3 + 2] = 999;
-    }
+    if (!s.active) dummy.scale.setScalar(0.0001);
+    if (!s.active) dummy.position.set(0, 0, 999);
     dummy.updateMatrix();
     sparkMesh.setMatrixAt(i, dummy.matrix);
   }
   sparkMesh.instanceMatrix.needsUpdate = true;
-  sparkGlowGeo.attributes.position.needsUpdate = true;
 
   // --- cristal raro (vale 5 chispas) ---
   if (rare.active) {
@@ -1478,92 +1142,6 @@ function update(dt) {
     }
     if (rare.z > 12) { rare.active = false; rare.z = 999; }
   } else rareMesh.visible = false;
-
-  // --- sombras de la herida (aparecen tras el obstáculo 10; frecuencia sube con la distancia) ---
-  if (state === 'PLAYING' && score >= SHADOW_SCORE_MIN) {
-    shadowTimer -= sdt;
-    if (shadowTimer <= 0) {
-      const s = shadows.find(x => !x.active);
-      if (s) {
-        s.active = true; s.mesh.visible = true;
-        s.z = -115; s.baseY = rand(-4.6, 4.6);
-        s.phase = rand(0, 6.28); s.amp = rand(1.4, 2.8); s.spd = rand(0.6, 1.3);
-        if (!shadowTipShown) { shadowTipShown = true; tip('¡Sombras de la herida! Te roban chispas'); setTimeout(tipOff, 2600); }
-      }
-      shadowTimer = clamp(rand(6.5, 10.5) - score * 0.05, 2.8, 10.5);
-    }
-  }
-  for (const s of shadows) {
-    if (!s.active) continue;
-    s.z += dz;
-    const sy = s.baseY + Math.sin(elapsed * s.spd + s.phase) * s.amp; // patrón sinusoidal lento
-    s.mesh.position.set(0, sy, s.z);
-    s.mesh.rotation.y = elapsed * 0.8 + s.phase;
-    s.mesh.scale.setScalar(1 + Math.sin(elapsed * 2.2 + s.phase) * 0.12);
-    if (state === 'PLAYING' && invuln <= 0 && Math.abs(s.z) < 1.35 && Math.abs(sy - jy) < 1.3) {
-      // la sombra drena anuraK: roba chispas del run y del cristal en carga (no del histórico)
-      s.active = false; s.mesh.visible = false; s.z = 999;
-      const stolen = Math.min(SHADOW_STEAL, runStats.sparks);
-      if (stolen > 0) {
-        runStats.sparks -= stolen;
-        save.sparksInCrystal = Math.max(0, save.sparksInCrystal - stolen);
-        persist(); updateCrystalUI();
-        $('hudSparks').textContent = '✦ ' + runStats.sparks;
-        puff('hudSparks');
-        toast(`🌑 Una sombra drenó <b>−${stolen} ✦</b>`);
-      } else {
-        toast('🌑 Una sombra te rozó — sin chispas que robar');
-      }
-      sfx.shadow();
-      burst(0, jy, 0, 0x7C4DFF, 18);
-      shake = Math.max(shake, 0.5);
-      invuln = Math.max(invuln, 0.9);
-      navigator.vibrate && navigator.vibrate(40);
-    }
-    if (s.z > 12) { s.active = false; s.mesh.visible = false; s.z = 999; }
-  }
-
-  // --- murciélagos de basalto (telegrafiados 0.5s con brillo magenta; tocar = muerte) ---
-  if (state === 'PLAYING' && score >= BAT_SCORE_MIN) {
-    batTimer -= sdt;
-    if (batTimer <= 0) {
-      const b = bats.find(x => !x.active);
-      if (b) {
-        b.active = true; b.state = 'tele'; b.t = 0.55;
-        b.z = -34;
-        const fromTop = Math.random() < 0.5;
-        b.y = fromTop ? 7.5 : -7.5;
-        b.vy = (fromTop ? -1 : 1) * rand(5.5, 7.5);
-        b.tele.position.set(0, b.y, b.z);
-        sfx.bat();
-        if (!batTipShown) { batTipShown = true; tip('¡Murciélago! Mira el destello'); setTimeout(tipOff, 2400); }
-      }
-      batTimer = clamp(rand(9, 14) - score * 0.06, 4.5, 14);
-    }
-  }
-  for (const b of bats) {
-    if (!b.active) continue;
-    if (b.state === 'tele') {
-      b.t -= sdt;
-      b.z += dz;
-      b.tele.position.set(0, b.y, b.z);
-      b.tele.material.opacity = 0.25 + 0.55 * Math.abs(Math.sin(elapsed * 18)); // parpadeo de aviso
-      if (b.t <= 0) {
-        b.state = 'fly';
-        b.tele.material.opacity = 0;
-        b.group.visible = true;
-      }
-    } else if (b.state === 'fly') {
-      b.z += dz * 1.15; // cruza en diagonal: avanza más rápido que el mundo
-      b.y += b.vy * sdt;
-      b.group.position.set(0, b.y, b.z);
-      b.group.rotation.z = b.vy > 0 ? 0.3 : -0.3;
-      const wf = Math.sin(elapsed * 22) * 0.85;
-      b.wL.rotation.z = wf; b.wR.rotation.z = -wf;
-      if (state === 'PLAYING' && invuln <= 0 && Math.abs(b.z) < 1.2 && Math.abs(b.y - jy) < 1.05) die();
-      if (b.z > 12 || Math.abs(b.y) > 9.5) { b.active = false; b.state = 'idle'; b.group.visible = false; b.z = 999; }
-    }
-  }
 
   // --- choque con la pared del túnel ---
   if (state === 'PLAYING' && invuln <= 0 && (jy > KILL_Y || jy < -KILL_Y)) die();
@@ -1601,7 +1179,6 @@ function update(dt) {
   camera.position.set(shx, 2.7 + jy * 0.3 + shy, 7.6);
   camera.lookAt(shx * 0.5, jy * 0.48, -10);
   keyLight.position.set(0, jy * 0.4 + 3, 5);
-  jadeLight.position.set(0, jy * 0.5 - 1, -15); // baño jade que acompaña al jugador
 }
 
 renderer.setAnimationLoop(() => {

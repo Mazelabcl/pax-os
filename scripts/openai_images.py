@@ -68,7 +68,11 @@ _load_env()
 # ---------------------------------------------------------------------------
 MODEL = "gpt-image-2"
 
-client = OpenAI(api_key=os.environ["OPENAI_API_KEY"])
+import httpx as _httpx
+client = OpenAI(
+    api_key=os.environ["OPENAI_API_KEY"],
+    timeout=_httpx.Timeout(180.0, connect=30.0),
+)
 
 
 def generate_image(
@@ -76,6 +80,7 @@ def generate_image(
     output_path: str = "output.png",
     size: str = "1024x1024",
     quality: str = "medium",
+    background: str = None,
 ) -> str:
     """
     Genera una imagen desde texto puro.
@@ -85,16 +90,16 @@ def generate_image(
         output_path: Ruta donde guardar el PNG resultante.
         size: "1024x1024", "1024x1536" (vertical) o "1536x1024" (horizontal).
         quality: "low", "medium" o "high".
+        background: "transparent", "opaque" o None (auto). Con "transparent"
+            la API devuelve PNG con canal alfa real (soportado por gpt-image).
 
     Returns:
         output_path tal como se entrego.
     """
-    result = client.images.generate(
-        model=MODEL,
-        prompt=prompt,
-        size=size,
-        quality=quality,
-    )
+    kwargs = dict(model=MODEL, prompt=prompt, size=size, quality=quality)
+    if background:
+        kwargs["background"] = background
+    result = client.images.generate(**kwargs)
     image_base64 = result.data[0].b64_json
     with open(output_path, "wb") as f:
         f.write(base64.b64decode(image_base64))
@@ -107,6 +112,7 @@ def edit_image(
     output_path: str = "edited.png",
     size: str = "1024x1024",
     quality: str = "medium",
+    background: str = None,
 ) -> str:
     """
     Genera una imagen usando una o varias imagenes de referencia.
@@ -136,13 +142,16 @@ def edit_image(
         file_handles.append(fh)
         file_tuples.append((os.path.basename(p), fh, _mime_for(p)))
     try:
-        result = client.images.edit(
+        kwargs = dict(
             model=MODEL,
             image=file_tuples if len(file_tuples) > 1 else file_tuples[0],
             prompt=prompt,
             size=size,
             quality=quality,
         )
+        if background:
+            kwargs["background"] = background
+        result = client.images.edit(**kwargs)
     finally:
         for fh in file_handles:
             fh.close()
@@ -163,6 +172,7 @@ async def edit_image_async(
     output_path: str,
     size: str = "1024x1024",
     quality: str = "medium",
+    background: str = None,
 ) -> str:
     """Async version of edit_image. Mantiene la misma firma logica."""
     if isinstance(input_image_paths, str):
@@ -175,13 +185,16 @@ async def edit_image_async(
         file_handles.append(fh)
         file_tuples.append((os.path.basename(p), fh, _mime_for(p)))
     try:
-        result = await client_async.images.edit(
+        kwargs = dict(
             model=MODEL,
             image=file_tuples if len(file_tuples) > 1 else file_tuples[0],
             prompt=prompt,
             size=size,
             quality=quality,
         )
+        if background:
+            kwargs["background"] = background
+        result = await client_async.images.edit(**kwargs)
     finally:
         for fh in file_handles:
             fh.close()
@@ -221,6 +234,7 @@ async def generate_batch_async(jobs, max_concurrent: int = 8):
                 output_path=job["output_path"],
                 size=job.get("size", "1024x1024"),
                 quality=job.get("quality", "medium"),
+                background=job.get("background"),
             )
 
     results = await asyncio.gather(
